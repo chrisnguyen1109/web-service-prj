@@ -1,0 +1,38 @@
+{
+    "name": "web-service-prj",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "scripts": {
+        "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json && cp src/config/keys -r build/config/",
+        "start": "node build/app.js",
+        "dev": "SET NODE_ENV=development && nodemon",
+        "prod": "SET NODE_ENV=production && nodemon"
+    },
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "compression": "^1.7.4",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.0",
+        "express": "^4.18.1",
+        "http-errors": "^2.0.0",
+        "jsonwebtoken": "^8.5.1",
+        "mongoose": "^6.3.2",
+        "validator": "^13.7.0"
+    },
+    "devDependencies": {
+        "@types/bcryptjs": "^2.4.2",
+        "@types/compression": "^1.7.2",
+        "@types/cors": "^2.8.12",
+        "@types/express": "^4.17.13",
+        "@types/http-errors": "^1.8.2",
+        "@types/jsonwebtoken": "^8.5.8",
+        "@types/node": "^17.0.31",
+        "@types/validator": "^13.7.2",
+        "nodemon": "^2.0.16",
+        "ts-node": "^10.7.0",
+        "tsc-alias": "^1.6.7",
+        "tsconfig-paths": "^3.14.1",
+        "typescript": "^4.6.4"
+    }
+}
