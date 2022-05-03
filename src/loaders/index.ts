@@ -1,9 +1,11 @@
+import { globalErrorHandler } from '@/controllers';
+import { errors } from 'celebrate';
 import compression from 'compression';
-import express, { Express, Request, Response, NextFunction } from 'express';
+import cors from 'cors';
+import express, { Express } from 'express';
 import createHttpError from 'http-errors';
 import connectDB from './database';
 import routeLoader from './routes';
-import cors from 'cors';
 
 const appLoader = async (app: Express) => {
     await connectDB();
@@ -29,19 +31,9 @@ const appLoader = async (app: Express) => {
         );
     });
 
-    app.use(
-        (error: unknown, req: Request, res: Response, next: NextFunction) => {
-            if (
-                error instanceof Error ||
-                error instanceof createHttpError.HttpError
-            ) {
-                console.log(error.name);
-                console.log(error.message);
-            }
+    app.use(globalErrorHandler);
 
-            res.status(500).json({ message: 'Unknow error!' });
-        }
-    );
+    app.use(errors());
 };
 
 export default appLoader;

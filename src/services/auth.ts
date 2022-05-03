@@ -13,13 +13,12 @@ export const createPatient = (patient: IPatient) => {
     return Patient.create({ ...patient });
 };
 
-export const checkLogin = async ({
-    email,
-    password,
-}: {
+interface CheckLoginProps {
     email: string;
     password: string;
-}) => {
+}
+
+export const checkLogin = async ({ email, password }: CheckLoginProps) => {
     const user = await Patient.findOne({ email });
     if (!user) {
         throw createHttpError(400, 'Invalid email!');
@@ -33,15 +32,17 @@ export const checkLogin = async ({
     return user;
 };
 
+interface UpdatePasswordProps {
+    patient: PatientDocument;
+    password: string;
+    newPassword: string;
+}
+
 export const updatePassword = async ({
     patient,
     password,
     newPassword,
-}: {
-    patient: PatientDocument;
-    password: string;
-    newPassword: string;
-}) => {
+}: UpdatePasswordProps) => {
     const passwordMatching = await comparePassword(password, patient.password);
     if (!passwordMatching) {
         throw createHttpError(400, 'Wrong password!');
@@ -52,13 +53,12 @@ export const updatePassword = async ({
     await patient.save();
 };
 
-export const updateProfile = async ({
-    id,
-    body,
-}: {
+interface UpdateProfileProps {
     id: ObjectId;
     body: User;
-}) => {
+}
+
+export const updateProfile = async ({ id, body }: UpdateProfileProps) => {
     const updatePatient = await Patient.findByIdAndUpdate(
         id,
         {

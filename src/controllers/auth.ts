@@ -5,8 +5,8 @@ import {
     updatePassword,
     updateProfile,
 } from '@/services';
-import { IPatient, User } from '@/types';
-import { catchAsync, omitValueObj } from '@/utils';
+import { IPatient } from '@/types';
+import { catchAsync } from '@/utils';
 
 export const register = catchAsync(async (req, res) => {
     const newUser = await createPatient(req.body as IPatient);
@@ -49,15 +49,10 @@ export const getMe = catchAsync(async (req, res) => {
 
 export const updateMe = catchAsync(async (req, res) => {
     const { password, newPassword, ...rest } = req.body;
-    const validBody = omitValueObj(rest, [
-        'health_infor',
-        'email',
-        'passwordModified',
-    ]) as User;
 
     const updateUser = await updateProfile({
         id: req.user!._id,
-        body: validBody,
+        body: rest,
     });
 
     if (newPassword && password) {
