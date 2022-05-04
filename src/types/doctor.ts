@@ -9,6 +9,6 @@ export interface UnavailableTime {
 export interface IDoctor extends User {
     descriptions?: string;
     specialisation: string;
-    unavailable_time?: UnavailableTime[];
+    unavailableTime?: UnavailableTime[];
     facility: IFacility;
 }

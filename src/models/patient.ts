@@ -1,5 +1,5 @@
 import { IPatient } from '@/types';
-import { trimmedStringType } from '@/utils';
+import { checkMultipleWords, trimmedStringType } from '@/utils';
 import mongoose, { Document, Model, Schema } from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
@@ -12,13 +12,11 @@ interface PatientModel extends Model<PatientDocument> {}
 
 const patientSchema: Schema<PatientDocument, PatientModel> = new Schema(
     {
-        full_name: {
+        fullName: {
             ...trimmedStringType,
             required: [true, 'Full name field must be required!'],
             validate: {
-                validator: (val: string) => {
-                    return val.split(' ').length > 1;
-                },
+                validator: (val: string) => checkMultipleWords(val, 2),
                 message: 'Full name contains at least 2 words',
             },
         },
@@ -36,19 +34,21 @@ const patientSchema: Schema<PatientDocument, PatientModel> = new Schema(
                 'Password must have more or equal than 6 characters!',
             ],
         },
-        phone_number: {
+        phoneNumber: {
             ...trimmedStringType,
             validate: [validator.isMobilePhone, 'Invalid phone number format!'],
         },
         avatar: {
             ...trimmedStringType,
-            default: '',
+            validate: [validator.isURL, 'Invalid url!'],
+            default:
+                'https://res.cloudinary.com/chriscloud1109/image/upload/v1651629584/media/default_gr1p4q.jpg',
         },
-        health_infor: {
+        healthInfor: {
             bmiAndBsa: {
                 ...trimmedStringType,
             },
-            blood_pressure: {
+            bloodPressure: {
                 ...trimmedStringType,
             },
             temprature: {
@@ -64,6 +64,8 @@ const patientSchema: Schema<PatientDocument, PatientModel> = new Schema(
         toJSON: {
             transform(_doc, ret) {
                 delete ret.__v;
+                delete ret.password;
+                delete ret.passwordModified;
                 return ret;
             },
         },
@@ -90,7 +92,10 @@ patientSchema.pre('save', async function (next) {
 
 patientSchema.methods.checkPasswordModified = function (jwtIat: number) {
     if (this.passwordModified) {
-        return this.passwordModified.getTime() / 1000 > jwtIat;
+        return (
+            parseInt((this.passwordModified.getTime() / 1000).toString()) >
+            jwtIat
+        );
     }
 
     return false;

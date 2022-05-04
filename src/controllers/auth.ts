@@ -55,24 +55,19 @@ export const updateMe = catchAsync(async (req, res) => {
         body: rest,
     });
 
+    let accessToken: string | undefined = undefined;
+
     if (newPassword && password) {
         await updatePassword({ patient: req.user!, password, newPassword });
 
-        const accessToken = await generateToken({ id: req.user!._id });
-
-        res.status(200).json({
-            message: 'Success',
-            data: {
-                user: updateUser,
-                accessToken,
-            },
-        });
+        accessToken = await generateToken({ id: req.user!._id });
     }
 
     res.status(200).json({
         message: 'Success',
         data: {
             user: updateUser,
+            accessToken,
         },
     });
 });

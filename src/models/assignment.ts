@@ -30,7 +30,7 @@ const assignmentSchema: Schema<AssignmentDocument, AssignmentModel> =
                 },
                 default: AssignmentStatus.PENDING,
             },
-            time: {
+            assignmentTime: {
                 date: {
                     type: Date,
                     required: [true, 'Date field must be required!'],

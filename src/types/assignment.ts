@@ -12,7 +12,7 @@ export interface IAssignment {
     doctor: IDoctor;
     notes?: string;
     status?: AssignmentStatus;
-    time: {
+    assignmentTime: {
         date: string | Date;
         time: string;
     };

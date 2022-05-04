@@ -5,7 +5,7 @@ export interface Account {
 }
 
 export interface User {
-    full_name: string;
+    fullName: string;
     avatar?: string;
-    phone_number?: string;
+    phoneNumber?: string;
 }

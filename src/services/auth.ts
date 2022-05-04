@@ -21,7 +21,7 @@ interface CheckLoginProps {
 export const checkLogin = async ({ email, password }: CheckLoginProps) => {
     const user = await Patient.findOne({ email });
     if (!user) {
-        throw createHttpError(400, 'Invalid email!');
+        throw createHttpError(400, 'This email seems to no longer exist!');
     }
 
     const passwordMatching = await comparePassword(password, user.password);

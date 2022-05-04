@@ -9,7 +9,7 @@ interface DoctorModel extends Model<DoctorDocument> {}
 
 const doctorSchema: Schema<DoctorDocument, DoctorModel> = new Schema(
     {
-        full_name: {
+        fullName: {
             ...trimmedStringType,
             required: [true, 'Full name field must be required!'],
             validate: {
@@ -19,13 +19,15 @@ const doctorSchema: Schema<DoctorDocument, DoctorModel> = new Schema(
                 message: 'Full name contains at least 2 words',
             },
         },
-        phone_number: {
+        phoneNumber: {
             ...trimmedStringType,
             validate: [validator.isMobilePhone, 'Invalid phone number format!'],
         },
         avatar: {
             ...trimmedStringType,
-            default: '',
+            validate: [validator.isURL, 'Invalid url!'],
+            default:
+                'https://res.cloudinary.com/chriscloud1109/image/upload/v1651629584/media/default_gr1p4q.jpg',
         },
         descriptions: {
             ...trimmedStringType,
@@ -34,7 +36,7 @@ const doctorSchema: Schema<DoctorDocument, DoctorModel> = new Schema(
             ...trimmedStringType,
             required: [true, 'Specialisation field must be required!'],
         },
-        unavailable_time: [
+        unavailableTime: [
             {
                 date: Date,
                 times: [{ ...trimmedStringType }],
