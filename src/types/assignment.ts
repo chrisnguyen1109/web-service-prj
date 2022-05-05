@@ -1,3 +1,4 @@
+import { IsDelete } from './common';
 import { IDoctor } from './doctor';
 import { IPatient } from './patient';
 
@@ -7,7 +8,7 @@ export enum AssignmentStatus {
     COMPLETED = 'completed',
 }
 
-export interface IAssignment {
+export interface IAssignment extends IsDelete {
     patient: IPatient;
     doctor: IDoctor;
     notes?: string;

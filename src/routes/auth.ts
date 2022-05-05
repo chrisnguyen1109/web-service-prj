@@ -34,14 +34,14 @@ authRouter.use(
     checkAuth
 );
 
-authRouter.get('/me', getMe);
-
-authRouter.patch(
-    '/me',
-    celebrate({
-        [Segments.BODY]: schemaAuthUpdate,
-    }),
-    updateMe
-);
+authRouter
+    .route('/me')
+    .get(getMe)
+    .patch(
+        celebrate({
+            [Segments.BODY]: schemaAuthUpdate,
+        }),
+        updateMe
+    );
 
 authRouter.post('/logout', logout);

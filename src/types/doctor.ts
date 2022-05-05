@@ -1,14 +1,15 @@
 import { IFacility } from './facility';
-import { User } from './user';
+import { IUser } from './user';
 
 export interface UnavailableTime {
     date: Date | string;
     times: string[];
 }
 
-export interface IDoctor extends User {
+export interface IDoctor {
     descriptions?: string;
     specialisation: string;
     unavailableTime?: UnavailableTime[];
     facility: IFacility;
+    user: IUser;
 }

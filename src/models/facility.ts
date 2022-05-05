@@ -1,8 +1,9 @@
+import { DEFAULT_FACILITY_IMAGE } from '@/config';
 import { IFacility } from '@/types';
 import { trimmedStringType } from '@/utils';
-import mongoose, { Document, Model, Schema } from 'mongoose';
+import mongoose, { Document, Model, Query, Schema } from 'mongoose';
 
-interface FacilityDocument extends IFacility, Document {}
+export interface FacilityDocument extends IFacility, Document {}
 
 interface FacilityModel extends Model<FacilityDocument> {}
 
@@ -18,7 +19,7 @@ const facilitySchema: Schema<FacilityDocument, FacilityModel> = new Schema(
         },
         image: {
             ...trimmedStringType,
-            default: '',
+            default: DEFAULT_FACILITY_IMAGE,
         },
         location: {
             type: {
@@ -28,12 +29,18 @@ const facilitySchema: Schema<FacilityDocument, FacilityModel> = new Schema(
             },
             coordinates: [Number],
         },
+        isDelete: {
+            type: Boolean,
+            default: false,
+        },
     },
     {
         timestamps: true,
         toJSON: {
+            virtuals: true,
             transform(_doc, ret) {
                 delete ret.__v;
+                delete ret.isDelete;
                 return ret;
             },
         },
@@ -42,10 +49,20 @@ const facilitySchema: Schema<FacilityDocument, FacilityModel> = new Schema(
     }
 );
 
+facilitySchema.index({ location: '2dsphere' });
+
 facilitySchema.virtual('doctors', {
     ref: 'Doctor',
     foreignField: 'facility',
     localField: '_id',
+});
+
+facilitySchema.pre<
+    Query<FacilityDocument | FacilityDocument[], FacilityDocument>
+>(/^find/, async function (next) {
+    this.find({ isDelete: { $ne: true } });
+
+    next();
 });
 
 export const Facility = mongoose.model<FacilityDocument, FacilityModel>(

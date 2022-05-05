@@ -2,7 +2,7 @@ import { AssignmentStatus, IAssignment } from '@/types';
 import { trimmedStringType } from '@/utils';
 import mongoose, { Document, Model, Schema } from 'mongoose';
 
-interface AssignmentDocument extends IAssignment, Document {}
+export interface AssignmentDocument extends IAssignment, Document {}
 
 interface AssignmentModel extends Model<AssignmentDocument> {}
 
@@ -40,12 +40,17 @@ const assignmentSchema: Schema<AssignmentDocument, AssignmentModel> =
                     required: [true, 'Time field must be required!'],
                 },
             },
+            isDelete: {
+                type: Boolean,
+                default: false,
+            },
         },
         {
             timestamps: true,
             toJSON: {
                 transform(_doc, ret) {
                     delete ret.__v;
+                    delete ret.isDelete;
                     return ret;
                 },
             },

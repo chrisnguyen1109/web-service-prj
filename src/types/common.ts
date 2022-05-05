@@ -19,3 +19,16 @@ export type ServerResponse<T> = T extends Document[]
     : { data?: Record<string, any> };
 
 export type ApiResponse<T = any> = ServerResponse<T> & { message: string };
+
+export type FieldOfModel<T extends Document> = keyof Omit<T, keyof Document>;
+
+export interface PopulateFields {
+    embedFields?: string[];
+    expandFields?: string[];
+}
+
+export interface IsDelete {
+    isDelete: boolean;
+}
+
+export type OmitIsDelete<T extends IsDelete> = Omit<T, 'isDelete'>;

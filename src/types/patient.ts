@@ -1,4 +1,4 @@
-import { Account, User } from './user';
+import { IUser } from './user';
 
 export interface HealthInfor {
     bmiAndBsa: string;
@@ -6,6 +6,7 @@ export interface HealthInfor {
     temprature: string;
 }
 
-export interface IPatient extends User, Account {
+export interface IPatient {
     healthInfor?: Partial<HealthInfor>;
+    user: IUser;
 }

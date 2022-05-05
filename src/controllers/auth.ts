@@ -1,22 +1,21 @@
 import {
     checkLogin,
-    createPatient,
     generateToken,
     updatePassword,
-    updateProfile,
+    findAndUpdateUser,
+    newUser,
 } from '@/services';
-import { IPatient } from '@/types';
 import { catchAsync } from '@/utils';
 
 export const register = catchAsync(async (req, res) => {
-    const newUser = await createPatient(req.body as IPatient);
+    const patient = await newUser(req.body);
 
-    const accessToken = await generateToken({ id: newUser._id });
+    const accessToken = await generateToken({ id: patient.user._id });
 
     res.status(201).json({
         message: 'Success',
         data: {
-            user: newUser,
+            user: patient.user,
             accessToken,
         },
     });
@@ -50,7 +49,7 @@ export const getMe = catchAsync(async (req, res) => {
 export const updateMe = catchAsync(async (req, res) => {
     const { password, newPassword, ...rest } = req.body;
 
-    const updateUser = await updateProfile({
+    const updateUser = await findAndUpdateUser({
         id: req.user!._id,
         body: rest,
     });
@@ -58,7 +57,7 @@ export const updateMe = catchAsync(async (req, res) => {
     let accessToken: string | undefined = undefined;
 
     if (newPassword && password) {
-        await updatePassword({ patient: req.user!, password, newPassword });
+        await updatePassword({ user: req.user!, password, newPassword });
 
         accessToken = await generateToken({ id: req.user!._id });
     }

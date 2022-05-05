@@ -1,12 +1,12 @@
 import 'dotenv/config';
 import express from 'express';
 import { PORT } from '@/config';
-import { PatientDocument } from '@/models';
+import { UserDocument } from '@/models';
 
 declare global {
     namespace Express {
         interface Request {
-            user?: PatientDocument & {
+            user?: UserDocument & {
                 _id: any;
             };
         }

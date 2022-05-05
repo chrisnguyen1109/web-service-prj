@@ -1,17 +1,11 @@
 import { JWT_EXPIRE } from '@/config';
-import { Patient, PatientDocument } from '@/models';
-import { IPatient, User } from '@/types';
-import { comparePassword } from '@/utils';
+import { User, UserDocument } from '@/models';
+import { comparePassword, userPopulate } from '@/utils';
 import fs from 'fs';
 import createHttpError from 'http-errors';
 import jwt from 'jsonwebtoken';
-import { ObjectId } from 'mongoose';
 import path from 'path';
 import { promisify } from 'util';
-
-export const createPatient = (patient: IPatient) => {
-    return Patient.create({ ...patient });
-};
 
 interface CheckLoginProps {
     email: string;
@@ -19,9 +13,13 @@ interface CheckLoginProps {
 }
 
 export const checkLogin = async ({ email, password }: CheckLoginProps) => {
-    const user = await Patient.findOne({ email });
+    const user = await User.findOne({ email });
     if (!user) {
-        throw createHttpError(400, 'This email seems to no longer exist!');
+        throw createHttpError(404, 'This email seems to no longer exist!');
+    }
+
+    if (user.isDelete) {
+        throw createHttpError(400, 'This account has been deleted!');
     }
 
     const passwordMatching = await comparePassword(password, user.password);
@@ -29,49 +27,28 @@ export const checkLogin = async ({ email, password }: CheckLoginProps) => {
         throw createHttpError(400, 'Wrong password!');
     }
 
-    return user;
+    return userPopulate(user);
 };
 
 interface UpdatePasswordProps {
-    patient: PatientDocument;
+    user: UserDocument;
     password: string;
     newPassword: string;
 }
 
 export const updatePassword = async ({
-    patient,
+    user,
     password,
     newPassword,
 }: UpdatePasswordProps) => {
-    const passwordMatching = await comparePassword(password, patient.password);
+    const passwordMatching = await comparePassword(password, user.password);
     if (!passwordMatching) {
         throw createHttpError(400, 'Wrong password!');
     }
 
-    patient.password = newPassword;
+    user.password = newPassword;
 
-    await patient.save();
-};
-
-interface UpdateProfileProps {
-    id: ObjectId;
-    body: User;
-}
-
-export const updateProfile = async ({ id, body }: UpdateProfileProps) => {
-    const updatePatient = await Patient.findByIdAndUpdate(
-        id,
-        {
-            ...body,
-        },
-        { new: true }
-    );
-
-    if (!updatePatient) {
-        throw createHttpError(404, `No user with this id: ${id}`);
-    }
-
-    return updatePatient;
+    await user.save();
 };
 
 export const generateToken = async (payload: any): Promise<string> => {
@@ -97,8 +74,10 @@ export const decodeToken = async (token: string) => {
     const decodeAsync = promisify(jwt.verify) as any;
     const { id, iat } = await decodeAsync(token, publicKey);
 
-    const user = await Patient.findById(id);
-    if (!user) throw createHttpError(401, 'This user seems to no longer exist');
+    const user = await User.findById(id);
+    if (!user) {
+        throw createHttpError(404, 'This email seems to no longer exist!');
+    }
 
     if (user.checkPasswordModified(iat)) {
         throw createHttpError(
@@ -107,5 +86,5 @@ export const decodeToken = async (token: string) => {
         );
     }
 
-    return user;
+    return userPopulate(user);
 };

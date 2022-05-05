@@ -1,34 +1,13 @@
 import { IDoctor } from '@/types';
 import { trimmedStringType } from '@/utils';
 import mongoose, { Document, Model, Schema } from 'mongoose';
-import validator from 'validator';
 
-interface DoctorDocument extends IDoctor, Document {}
+export interface DoctorDocument extends IDoctor, Document {}
 
 interface DoctorModel extends Model<DoctorDocument> {}
 
 const doctorSchema: Schema<DoctorDocument, DoctorModel> = new Schema(
     {
-        fullName: {
-            ...trimmedStringType,
-            required: [true, 'Full name field must be required!'],
-            validate: {
-                validator: (val: string) => {
-                    return val.split(' ').length > 1;
-                },
-                message: 'Full name contains at least 2 words',
-            },
-        },
-        phoneNumber: {
-            ...trimmedStringType,
-            validate: [validator.isMobilePhone, 'Invalid phone number format!'],
-        },
-        avatar: {
-            ...trimmedStringType,
-            validate: [validator.isURL, 'Invalid url!'],
-            default:
-                'https://res.cloudinary.com/chriscloud1109/image/upload/v1651629584/media/default_gr1p4q.jpg',
-        },
         descriptions: {
             ...trimmedStringType,
         },
@@ -47,10 +26,16 @@ const doctorSchema: Schema<DoctorDocument, DoctorModel> = new Schema(
             ref: 'Facility',
             require: [true, 'Doctor must belong to a facility!'],
         },
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            require: [true, 'Doctor must be an user!'],
+        },
     },
     {
         timestamps: true,
         toJSON: {
+            virtuals: true,
             transform(_doc, ret) {
                 delete ret.__v;
                 return ret;
