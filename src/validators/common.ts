@@ -82,3 +82,14 @@ export const schemaRoleCondition = (role: UserRole, schema: any) => {
         otherwise: Joi.forbidden(),
     });
 };
+
+export const schemaValidMongoId = (msg: string) =>
+    Joi.string()
+        .custom((val, helpers) =>
+            validator.isMongoId(val)
+                ? val
+                : helpers.message({
+                      custom: msg,
+                  })
+        )
+        .required();

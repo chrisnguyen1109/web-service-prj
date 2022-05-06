@@ -1,6 +1,8 @@
 import { AssignmentStatus, IAssignment } from '@/types';
-import { trimmedStringType } from '@/utils';
-import mongoose, { Document, Model, Schema } from 'mongoose';
+import { checkSimilarTime, trimmedStringType } from '@/utils';
+import createHttpError from 'http-errors';
+import mongoose, { Document, Model, Query, Schema } from 'mongoose';
+import { User } from './user';
 
 export interface AssignmentDocument extends IAssignment, Document {}
 
@@ -56,6 +58,38 @@ const assignmentSchema: Schema<AssignmentDocument, AssignmentModel> =
             },
         }
     );
+
+assignmentSchema.pre<
+    Query<AssignmentDocument | AssignmentDocument[], AssignmentDocument>
+>(/^find/, async function (next) {
+    this.find({ isDelete: { $ne: true } });
+
+    next();
+});
+
+assignmentSchema.pre('save', async function (next) {
+    if (!this.isNew) return next();
+
+    const doctor = await User.findById(this.doctor);
+
+    if (!doctor) {
+        throw createHttpError(404, `No doctor with this id: ${this.doctor}`);
+    }
+
+    for (const unavailableTime of doctor.unavailableTime || []) {
+        if (checkSimilarTime(this.assignmentTime, unavailableTime)) {
+            throw createHttpError(400, `This schedule has been existed!`);
+        }
+    }
+
+    doctor.unavailableTime = (doctor.unavailableTime ?? []).concat(
+        this.assignmentTime
+    );
+
+    await doctor.save();
+
+    next();
+});
 
 export const Assignment = mongoose.model<AssignmentDocument, AssignmentModel>(
     'Assignment',

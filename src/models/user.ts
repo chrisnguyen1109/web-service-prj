@@ -1,9 +1,16 @@
 import { IUser, UserRole } from '@/types';
-import { checkMultipleWords, trimmedStringType } from '@/utils';
+import {
+    checkMultipleWords,
+    groupByDate,
+    omitValueObj,
+    trimmedStringType,
+} from '@/utils';
 import mongoose, { Document, Model, Query, Schema } from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
 import { DEFAULT_AVATAR, HASH_ROUND } from '@/config';
+import { Facility } from './facility';
+import createHttpError from 'http-errors';
 
 export interface UserDocument extends IUser, Document {
     checkPasswordModified: (jwtIat: number) => boolean;
@@ -73,7 +80,9 @@ const userSchema: Schema<UserDocument, UserModel> = new Schema(
             type: [
                 {
                     date: Date,
-                    times: [{ ...trimmedStringType }],
+                    time: {
+                        ...trimmedStringType,
+                    },
                 },
             ],
             default: undefined,
@@ -109,12 +118,19 @@ const userSchema: Schema<UserDocument, UserModel> = new Schema(
         toJSON: {
             virtuals: true,
             transform(doc, ret) {
-                delete ret.__v;
-                delete ret.password;
-                delete ret.passwordModified;
-                delete ret.isDelete;
+                const response = omitValueObj(ret, [
+                    '__v',
+                    'password',
+                    'passwordModified',
+                    'isDelete',
+                ]);
 
-                return ret;
+                doc.unavailableTime?.length > 0 &&
+                    (response.unavailableTime = groupByDate(
+                        doc.unavailableTime
+                    ));
+
+                return response;
             },
         },
         toObject: { virtuals: true },
@@ -144,6 +160,17 @@ userSchema.pre<Query<UserDocument | UserDocument[], UserDocument>>(
 );
 
 userSchema.pre('save', async function (next) {
+    if (this.isNew && this.role === UserRole.DOCTOR) {
+        const facility = await Facility.findById(this.facility);
+
+        if (!facility) {
+            throw createHttpError(
+                404,
+                `No facility with this id: ${this.facility}`
+            );
+        }
+    }
+
     if (!this.isModified('password')) return next();
 
     const salt = await bcrypt.genSalt(+HASH_ROUND);

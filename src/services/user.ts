@@ -1,4 +1,4 @@
-import { User, UserDocument } from '@/models';
+import { Facility, User, UserDocument } from '@/models';
 import { FieldUserUpdate, IUser, OmitIsDelete, UserRole } from '@/types';
 import { getFilterData, getRecordData, omitValueObj } from '@/utils';
 import createHttpError from 'http-errors';

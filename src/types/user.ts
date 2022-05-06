@@ -1,15 +1,10 @@
-import { IsDelete } from './common';
+import { IsDelete, UnavailableTime } from './common';
 import { IFacility } from './facility';
 
 export enum UserRole {
     PATIENT = 'patient',
     DOCTOR = 'doctor',
     ADMIN = 'admin',
-}
-
-export interface UnavailableTime {
-    date: Date | string;
-    times: string[];
 }
 
 export interface HealthInfor {
@@ -28,6 +23,6 @@ export interface IUser extends IsDelete {
     descriptions?: string;
     specialisation?: string;
     unavailableTime?: UnavailableTime[];
-    facility?: IFacility;
+    facility?: IFacility | string;
     healthInfor?: HealthInfor;
 }

@@ -6,6 +6,7 @@ import {
     objectSchemaUserUpdate,
     schemaRoleCondition,
     schemaUserRole,
+    schemaValidMongoId,
 } from './common';
 
 const userFields: (keyof IUser)[] = [
@@ -29,7 +30,10 @@ export const schemaUserCreate = Joi.object({
         UserRole.DOCTOR,
         Joi.string().required()
     ),
-    facility: schemaRoleCondition(UserRole.DOCTOR, Joi.string().required()),
+    facility: schemaRoleCondition(
+        UserRole.DOCTOR,
+        schemaValidMongoId('Facility id must be valid Mongo Id')
+    ),
     healthInfor: schemaRoleCondition(
         UserRole.PATIENT,
         Joi.object({

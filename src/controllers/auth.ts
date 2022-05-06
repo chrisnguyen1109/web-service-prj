@@ -52,6 +52,7 @@ export const updateMe = catchAsync(async (req, res) => {
     const updateUser = await findAndUpdateUser({
         id: req.user!._id,
         body: rest,
+        currentRole: req.user!.role,
     });
 
     let accessToken: string | undefined = undefined;

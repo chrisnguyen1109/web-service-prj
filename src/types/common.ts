@@ -33,3 +33,8 @@ export type FieldUserUpdate = Omit<
     OmitIsDelete<IUser>,
     'email' | 'password' | 'passwordModified' | 'role'
 >;
+
+export interface UnavailableTime {
+    date: Date;
+    time: string;
+}
