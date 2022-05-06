@@ -10,6 +10,7 @@ import { UserRole } from '@/types';
 import {
     schemaAuthAuthorization,
     schemaGetUsers,
+    schemaRecordQuery,
     schemaUserCreate,
     schemaUserUpdate,
 } from '@/validators';
@@ -40,13 +41,18 @@ userRouter
 
 userRouter
     .route('/:id')
-    .get(getUser)
+    .get(
+        celebrate({
+            [Segments.QUERY]: schemaRecordQuery,
+        }),
+        getUser
+    )
     .patch(
         celebrate({
             [Segments.HEADERS]: schemaAuthAuthorization,
         }),
         checkAuth,
-        checkRole([UserRole.ADMIN]),
+        checkRole([UserRole.ADMIN, UserRole.DOCTOR]),
         celebrate({
             [Segments.BODY]: schemaUserUpdate,
         }),

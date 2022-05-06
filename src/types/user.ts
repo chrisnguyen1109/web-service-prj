@@ -1,6 +1,5 @@
 import { IsDelete } from './common';
-import { IDoctor } from './doctor';
-import { IPatient } from './patient';
+import { IFacility } from './facility';
 
 export enum UserRole {
     PATIENT = 'patient',
@@ -8,6 +7,16 @@ export enum UserRole {
     ADMIN = 'admin',
 }
 
+export interface UnavailableTime {
+    date: Date | string;
+    times: string[];
+}
+
+export interface HealthInfor {
+    bmiAndBsa: string;
+    bloodPressure: string;
+    temprature: string;
+}
 export interface IUser extends IsDelete {
     email: string;
     password: string;
@@ -16,6 +25,9 @@ export interface IUser extends IsDelete {
     avatar: string;
     phoneNumber?: string;
     role: UserRole;
-    patient?: IPatient;
-    doctor?: IDoctor;
+    descriptions?: string;
+    specialisation?: string;
+    unavailableTime?: UnavailableTime[];
+    facility?: IFacility;
+    healthInfor?: HealthInfor;
 }

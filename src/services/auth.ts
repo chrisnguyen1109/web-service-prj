@@ -1,6 +1,6 @@
 import { JWT_EXPIRE } from '@/config';
 import { User, UserDocument } from '@/models';
-import { comparePassword, userPopulate } from '@/utils';
+import { comparePassword } from '@/utils';
 import fs from 'fs';
 import createHttpError from 'http-errors';
 import jwt from 'jsonwebtoken';
@@ -18,16 +18,12 @@ export const checkLogin = async ({ email, password }: CheckLoginProps) => {
         throw createHttpError(404, 'This email seems to no longer exist!');
     }
 
-    if (user.isDelete) {
-        throw createHttpError(400, 'This account has been deleted!');
-    }
-
     const passwordMatching = await comparePassword(password, user.password);
     if (!passwordMatching) {
         throw createHttpError(400, 'Wrong password!');
     }
 
-    return userPopulate(user);
+    return user;
 };
 
 interface UpdatePasswordProps {
@@ -86,5 +82,5 @@ export const decodeToken = async (token: string) => {
         );
     }
 
-    return userPopulate(user);
+    return user;
 };

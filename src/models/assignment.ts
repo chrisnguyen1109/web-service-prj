@@ -11,12 +11,12 @@ const assignmentSchema: Schema<AssignmentDocument, AssignmentModel> =
         {
             patient: {
                 type: Schema.Types.ObjectId,
-                ref: 'Patient',
+                ref: 'User',
                 require: [true, 'Assignment must belong to a patient!'],
             },
             doctor: {
                 type: Schema.Types.ObjectId,
-                ref: 'Doctor',
+                ref: 'User',
                 require: [true, 'Assignment must belong to a doctor!'],
             },
             notes: {

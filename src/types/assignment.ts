@@ -1,6 +1,5 @@
 import { IsDelete } from './common';
-import { IDoctor } from './doctor';
-import { IPatient } from './patient';
+import { IUser } from './user';
 
 export enum AssignmentStatus {
     PENDING = 'pending',
@@ -9,8 +8,8 @@ export enum AssignmentStatus {
 }
 
 export interface IAssignment extends IsDelete {
-    patient: IPatient;
-    doctor: IDoctor;
+    patient: IUser;
+    doctor: IUser;
     notes?: string;
     status?: AssignmentStatus;
     assignmentTime: {

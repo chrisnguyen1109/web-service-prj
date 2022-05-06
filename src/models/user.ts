@@ -3,7 +3,7 @@ import { checkMultipleWords, trimmedStringType } from '@/utils';
 import mongoose, { Document, Model, Query, Schema } from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
-import { DEFAULT_AVATAR } from '@/config';
+import { DEFAULT_AVATAR, HASH_ROUND } from '@/config';
 
 export interface UserDocument extends IUser, Document {
     checkPasswordModified: (jwtIat: number) => boolean;
@@ -57,6 +57,48 @@ const userSchema: Schema<UserDocument, UserModel> = new Schema(
         passwordModified: {
             type: Date,
         },
+        descriptions: {
+            ...trimmedStringType,
+        },
+        specialisation: {
+            ...trimmedStringType,
+            required: [
+                function (this: UserDocument) {
+                    return this.role === UserRole.DOCTOR;
+                },
+                'Specialisation field must be required!',
+            ],
+        },
+        unavailableTime: {
+            type: [
+                {
+                    date: Date,
+                    times: [{ ...trimmedStringType }],
+                },
+            ],
+            default: undefined,
+        },
+        facility: {
+            type: Schema.Types.ObjectId,
+            ref: 'Facility',
+            required: [
+                function (this: UserDocument) {
+                    return this.role === UserRole.DOCTOR;
+                },
+                'Doctor must belong to a facility!',
+            ],
+        },
+        healthInfor: {
+            bmiAndBsa: {
+                ...trimmedStringType,
+            },
+            bloodPressure: {
+                ...trimmedStringType,
+            },
+            temprature: {
+                ...trimmedStringType,
+            },
+        },
         isDelete: {
             type: Boolean,
             default: false,
@@ -72,9 +114,6 @@ const userSchema: Schema<UserDocument, UserModel> = new Schema(
                 delete ret.passwordModified;
                 delete ret.isDelete;
 
-                doc.patient?.length > 0 && (ret.patient = doc.patient[0]);
-                doc.doctor?.length > 0 && (ret.patient = doc.doctor[0]);
-
                 return ret;
             },
         },
@@ -83,15 +122,15 @@ const userSchema: Schema<UserDocument, UserModel> = new Schema(
     }
 );
 
-userSchema.virtual('patient', {
-    ref: 'Patient',
-    foreignField: 'user',
+userSchema.virtual('patientAssignments', {
+    ref: 'Assignment',
+    foreignField: 'patient',
     localField: '_id',
 });
 
-userSchema.virtual('doctor', {
-    ref: 'Doctor',
-    foreignField: 'user',
+userSchema.virtual('doctorAssignments', {
+    ref: 'Assignment',
+    foreignField: 'doctor',
     localField: '_id',
 });
 
@@ -107,7 +146,7 @@ userSchema.pre<Query<UserDocument | UserDocument[], UserDocument>>(
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) return next();
 
-    const salt = await bcrypt.genSalt(12);
+    const salt = await bcrypt.genSalt(+HASH_ROUND);
     this.password = await bcrypt.hash(this.password, salt);
     this.passwordModified = new Date();
 

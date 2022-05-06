@@ -8,14 +8,14 @@ import {
 import { catchAsync } from '@/utils';
 
 export const register = catchAsync(async (req, res) => {
-    const patient = await newUser(req.body);
+    const user = await newUser(req.body);
 
-    const accessToken = await generateToken({ id: patient.user._id });
+    const accessToken = await generateToken({ id: user._id });
 
     res.status(201).json({
         message: 'Success',
         data: {
-            user: patient.user,
+            user,
             accessToken,
         },
     });

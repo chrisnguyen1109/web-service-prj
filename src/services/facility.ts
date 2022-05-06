@@ -1,6 +1,6 @@
 import { Facility, FacilityDocument } from '@/models';
 import { IFacility, OmitIsDelete } from '@/types';
-import { getFilterData } from '@/utils';
+import { getFilterData, getRecordData } from '@/utils';
 import createHttpError from 'http-errors';
 
 export const getFilterFacility = (query: Record<string, any>) => {
@@ -10,8 +10,11 @@ export const getFilterFacility = (query: Record<string, any>) => {
     ]);
 };
 
-export const getFacilityById = async (id: string) => {
-    const facility = await Facility.findById(id);
+export const getFacilityById = async (
+    id: string,
+    query: Record<string, any>
+) => {
+    const facility = await getRecordData<FacilityDocument>(Facility, id, query);
 
     if (!facility) {
         throw createHttpError(404, `No facility with this id: ${id}`);

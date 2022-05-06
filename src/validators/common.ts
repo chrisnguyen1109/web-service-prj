@@ -57,11 +57,10 @@ export const objectSchemaQuery = (fileds: string[], schemas?: object) =>
         _limit: Joi.number().integer().positive(),
         _start: Joi.number().integer().positive(),
         _end: Joi.number().integer().positive().greater(Joi.ref('_start')),
-        _embed: Joi.string(),
-        _expand: Joi.string(),
+        _expand: [Joi.array().items(Joi.string()), Joi.string()],
         _q: Joi.string(),
-        _sort: Joi.string(),
-        _fields: Joi.string(),
+        _sort: [Joi.array().items(Joi.string()), Joi.string()],
+        _fields: [Joi.array().items(Joi.string()), Joi.string()],
         ...fileds.reduce((acc, cur) => {
             return { ...acc, [cur]: Joi.string() };
         }, {}),
@@ -70,3 +69,16 @@ export const objectSchemaQuery = (fileds: string[], schemas?: object) =>
         Joi.string(),
         Joi.number(),
     ]);
+
+export const schemaRecordQuery = Joi.object({
+    _expand: [Joi.array().items(Joi.string()), Joi.string()],
+    _fields: [Joi.array().items(Joi.string()), Joi.string()],
+});
+
+export const schemaRoleCondition = (role: UserRole, schema: any) => {
+    return Joi.when('role', {
+        is: role,
+        then: schema,
+        otherwise: Joi.forbidden(),
+    });
+};

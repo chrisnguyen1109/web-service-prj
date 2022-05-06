@@ -17,6 +17,9 @@ export const globalErrorHandler = (
 ) => {
     if (ENV === 'development') {
         console.log('-------------------------');
+        console.error(error.name);
+        console.error(error.code);
+        console.error(error.message);
         console.error(error);
         console.log('-------------------------');
     }
@@ -46,6 +49,11 @@ export const globalErrorHandler = (
         }
         case error.code === 11000: {
             error = handleDulicateFieldsError(error);
+            break;
+        }
+        case error.code === 31254: {
+            error = createHttpError(400, error.message);
+            break;
         }
     }
 

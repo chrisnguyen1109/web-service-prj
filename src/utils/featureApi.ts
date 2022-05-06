@@ -1,6 +1,12 @@
 import { DEFAULT_LIMIT, DEFAULT_PAGE, DEFAULT_START_PAGE } from '@/config';
-import { FieldOfModel, PopulateFields } from '@/types';
-import { Model, Document, Query, FilterQuery } from 'mongoose';
+import { FieldOfModel } from '@/types';
+import {
+    Model,
+    Document,
+    Query,
+    FilterQuery,
+    HydratedDocument,
+} from 'mongoose';
 import { omitValueObj } from './omitValueObj';
 
 export class FeatureApi<T extends Document> {
@@ -26,7 +32,6 @@ export class FeatureApi<T extends Document> {
             '_q',
             '_start',
             '_end',
-            '_embed',
             '_expand',
         ];
 
@@ -66,19 +71,29 @@ export class FeatureApi<T extends Document> {
     }
 
     sort(): FeatureApi<T> {
-        if (this.queryString._sort) {
-            const sortFields = this.queryString._sort.split(',').join(' ');
-            this.query.sort(sortFields);
-        } else {
-            this.query.sort('-createdAt');
+        if (typeof this.queryString._sort === 'string') {
+            this.query.sort(this.queryString._sort);
+            return this;
         }
+
+        if (this.queryString._sort instanceof Array) {
+            const sortFields = this.queryString._sort.join(' ');
+            this.query.sort(sortFields);
+            return this;
+        }
+
+        this.query.sort('-createdAt');
 
         return this;
     }
 
     projecting(): FeatureApi<T> {
-        if (this.queryString._fields) {
-            const selectFields = this.queryString._fields.split(',').join(' ');
+        if (typeof this.queryString._fields === 'string') {
+            this.query.select(this.queryString._fields);
+        }
+
+        if (this.queryString._fields instanceof Array) {
+            const selectFields = this.queryString._fields.join(' ');
             this.query.select(selectFields);
         }
 
@@ -97,21 +112,24 @@ export class FeatureApi<T extends Document> {
         return this;
     }
 
-    populate({
-        embedFields,
-        expandFields,
-    }: PopulateFields = {}): FeatureApi<T> {
-        if (this.queryString._embed) {
+    populate(fields: Record<string, string[]>): FeatureApi<T> {
+        if (typeof this.queryString._expand === 'string') {
+            const path = this.queryString._expand;
+
             this.query.populate({
-                path: this.queryString._embed,
-                select: embedFields?.join(' '),
+                path: path,
+                select: fields[path]?.join(' '),
+                strictPopulate: false,
             });
         }
 
-        if (this.queryString._expand) {
-            this.query.populate({
-                path: this.queryString._expand,
-                select: expandFields?.join(' '),
+        if (this.queryString._expand instanceof Array) {
+            this.queryString._expand.forEach(path => {
+                this.query.populate({
+                    path,
+                    select: fields[path]?.join(' '),
+                    strictPopulate: false,
+                });
             });
         }
 
@@ -120,6 +138,59 @@ export class FeatureApi<T extends Document> {
 
     count() {
         return this.queryCount;
+    }
+
+    execute() {
+        return this.query;
+    }
+}
+
+export class FeatureRecordApi<T extends Document> {
+    private query: Query<T | null, T>;
+
+    constructor(
+        private model: Model<T>,
+        private id: string,
+        private queryString: Record<string, any> = {}
+    ) {
+        this.query = this.model.findById(this.id);
+    }
+
+    projecting(): FeatureRecordApi<T> {
+        if (typeof this.queryString._fields === 'string') {
+            this.query.select(this.queryString._fields);
+        }
+
+        if (this.queryString._fields instanceof Array) {
+            const selectFields = this.queryString._fields.join(' ');
+            this.query.select(selectFields);
+        }
+
+        return this;
+    }
+
+    populate(fields: Record<string, string[]>): FeatureRecordApi<T> {
+        if (typeof this.queryString._expand === 'string') {
+            const path = this.queryString._expand;
+
+            this.query.populate({
+                path: path,
+                select: fields[path]?.join(' '),
+                strictPopulate: false,
+            });
+        }
+
+        if (this.queryString._expand instanceof Array) {
+            this.queryString._expand.forEach(path => {
+                this.query.populate({
+                    path,
+                    select: fields[path]?.join(' '),
+                    strictPopulate: false,
+                });
+            });
+        }
+
+        return this;
     }
 
     execute() {
