@@ -1,5 +1,6 @@
-import { AssignmentStatus, IAssignment } from '@/types';
-import { checkSimilarTime, trimmedStringType } from '@/utils';
+import { AssignmentStatus, IAssignment, UserRole } from '@/types';
+import { trimmedStringType } from '@/utils';
+import { endOfDay, startOfDay } from 'date-fns';
 import createHttpError from 'http-errors';
 import mongoose, { Document, Model, Query, Schema } from 'mongoose';
 import { User } from './user';
@@ -70,23 +71,53 @@ assignmentSchema.pre<
 assignmentSchema.pre('save', async function (next) {
     if (!this.isNew) return next();
 
-    const doctor = await User.findById(this.doctor);
+    const patientId = this.patient;
+    const doctorId = this.doctor;
+    const assignmentDate = this.assignmentTime.date;
+    const assignmentTime = this.assignmentTime.time;
 
-    if (!doctor) {
-        throw createHttpError(404, `No doctor with this id: ${this.doctor}`);
+    const matchingPatient = await User.findOne({
+        _id: patientId,
+        role: UserRole.PATIENT,
+    });
+    if (!matchingPatient) {
+        throw createHttpError(404, `No patient with this id: ${patientId}`);
     }
 
-    for (const unavailableTime of doctor.unavailableTime || []) {
-        if (checkSimilarTime(this.assignmentTime, unavailableTime)) {
-            throw createHttpError(400, `This schedule has been existed!`);
+    const matchingDoctor = await User.findOne({
+        _id: doctorId,
+        role: UserRole.DOCTOR,
+    });
+    if (!matchingDoctor) {
+        throw createHttpError(404, `No doctor with this id: ${doctorId}`);
+    }
+
+    const assignment = await Assignment.findOne({
+        doctor: doctorId,
+        'assignmentTime.date': {
+            $gte: startOfDay(assignmentDate),
+            $lt: endOfDay(assignmentDate),
+        },
+        'assignmentTime.time': assignmentTime,
+    });
+    if (assignment) {
+        throw createHttpError(400, `This schedule has been existed!`);
+    }
+
+    await User.findOneAndUpdate(
+        {
+            _id: this.doctor,
+            role: UserRole.DOCTOR,
+        },
+        {
+            $push: {
+                unavailableTime: {
+                    date: assignmentDate,
+                    time: assignmentTime,
+                },
+            },
         }
-    }
-
-    doctor.unavailableTime = (doctor.unavailableTime ?? []).concat(
-        this.assignmentTime
     );
-
-    await doctor.save();
 
     next();
 });

@@ -1,26 +1,32 @@
+import { AssignmentStatus, IAssignment, Leaves } from '@/types';
 import { Joi } from 'celebrate';
-import { objectSchemaQuery, schemaValidMongoId } from './common';
-import validator from 'validator';
-import { AssignmentStatus, IAssignment } from '@/types';
+import {
+    objectSchemaQuery,
+    schemaValidDate,
+    schemaValidMongoId,
+} from './common';
 
-const assignmentFields: (keyof IAssignment)[] = ['status'];
+const assignmentFields: Leaves<IAssignment>[] = ['status'];
 
-export const schemaGetAssignments = objectSchemaQuery(assignmentFields);
+export const schemaGetAssignments = objectSchemaQuery(assignmentFields).keys({
+    'assignmentTime.time': Joi.string().pattern(
+        /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/
+    ),
+    'assignmentTime.date': schemaValidDate,
+    ...['gte', 'gt', 'lte', 'lt', 'ne'].reduce((acc, cur) => {
+        return {
+            ...acc,
+            [`assignmentTime.date_${cur}`]: schemaValidDate,
+        };
+    }, {}),
+});
 
 export const schemaAssignmentCreate = Joi.object({
     patient: schemaValidMongoId('Patient id must be valid Mongo Id'),
     doctor: schemaValidMongoId('Doctor id must be valid Mongo Id'),
     notes: Joi.string(),
     assignmentTime: Joi.object({
-        date: Joi.string()
-            .custom((val, helpers) =>
-                validator.isDate(val, { format: 'dd/MM/yyyy' })
-                    ? val
-                    : helpers.message({
-                          custom: 'Invalid date format',
-                      })
-            )
-            .required(),
+        date: schemaValidDate.required(),
         time: Joi.string()
             .pattern(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/)
             .required(),

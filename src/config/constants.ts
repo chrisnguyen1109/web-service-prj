@@ -9,4 +9,6 @@ export const DEFAULT_PAGE = 1;
 export const DEFAULT_LIMIT = 20;
 export const DEFAULT_START_PAGE = 1;
 export const DATABASE = process.env.DATABASE;
-export const HASH_ROUND = process.env.HASH_ROUND || 10;
+export const HASH_ROUND = process.env.HASH_ROUND;
+export const DATE_FORMAT = 'MM/dd/yyyy';
+export const RESPONSE_MESSAGE = 'Success';

@@ -1,3 +1,4 @@
+import { RESPONSE_MESSAGE } from '@/config';
 import { UserDocument } from '@/models';
 import {
     findAndUpdateUser,
@@ -13,7 +14,7 @@ export const getUsers = catchListAsync<UserDocument>(async (req, res) => {
     const data = await getFilterUser(req.query as Record<string, any>);
 
     res.status(200).json({
-        message: 'Success',
+        message: RESPONSE_MESSAGE,
         data,
     });
 });
@@ -24,7 +25,7 @@ export const getUser = catchRecordAsync<UserDocument>(async (req, res) => {
     const data = await getUserById(id, req.query as Record<string, any>);
 
     res.status(200).json({
-        message: 'Success',
+        message: RESPONSE_MESSAGE,
         data,
     });
 });
@@ -33,7 +34,7 @@ export const createUser = catchRecordAsync<UserDocument>(async (req, res) => {
     const user = await newUser(req.body);
 
     res.status(201).json({
-        message: 'Success',
+        message: RESPONSE_MESSAGE,
         data: {
             record: user as any,
         },
@@ -55,7 +56,7 @@ export const updateUser = catchRecordAsync<UserDocument>(async (req, res) => {
     }
 
     res.status(200).json({
-        message: 'Success',
+        message: RESPONSE_MESSAGE,
         data: {
             record: user,
         },
@@ -68,6 +69,6 @@ export const deleteUser = catchAsync(async (req, res) => {
     await softDeleteUser(id);
 
     res.status(204).json({
-        message: 'Success',
+        message: RESPONSE_MESSAGE,
     });
 });

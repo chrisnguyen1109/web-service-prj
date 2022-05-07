@@ -1,3 +1,4 @@
+import { RESPONSE_MESSAGE } from '@/config';
 import { AssignmentDocument } from '@/models';
 import {
     findAndUpdateAssignment,
@@ -15,7 +16,7 @@ export const getAssignments = catchListAsync<AssignmentDocument>(
         );
 
         res.status(200).json({
-            message: 'Success',
+            message: RESPONSE_MESSAGE,
             data,
         });
     }
@@ -31,7 +32,7 @@ export const getAssignment = catchRecordAsync<AssignmentDocument>(
         );
 
         res.status(200).json({
-            message: 'Success',
+            message: RESPONSE_MESSAGE,
             data,
         });
     }
@@ -42,7 +43,7 @@ export const createAssignment = catchRecordAsync<AssignmentDocument>(
         const assignment = await newAssignment(req.body);
 
         res.status(201).json({
-            message: 'Success',
+            message: RESPONSE_MESSAGE,
             data: {
                 record: assignment,
             },
@@ -60,7 +61,7 @@ export const updateAssignment = catchRecordAsync<AssignmentDocument>(
         });
 
         res.status(200).json({
-            message: 'Success',
+            message: RESPONSE_MESSAGE,
             data: {
                 record: assignment,
             },
@@ -74,6 +75,6 @@ export const deleteAssignment = catchAsync(async (req, res) => {
     await softDeleteAssignment(id);
 
     res.status(204).json({
-        message: 'Success',
+        message: RESPONSE_MESSAGE,
     });
 });

@@ -13,12 +13,11 @@ const userFields: (keyof IUser)[] = [
     'email',
     'fullName',
     'phoneNumber',
-    'role',
     'specialisation',
     'descriptions',
 ];
 
-export const schemaGetUsers = objectSchemaQuery(userFields, {
+export const schemaGetUsers = objectSchemaQuery(userFields).keys({
     role: schemaUserRole,
 });
 

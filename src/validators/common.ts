@@ -1,3 +1,4 @@
+import { DATE_FORMAT } from '@/config';
 import { UserRole } from '@/types';
 import { checkMultipleWords } from '@/utils';
 import { Joi } from 'celebrate';
@@ -51,7 +52,7 @@ export const schemaUserRole = Joi.alternatives().try(
     Joi.string().valid(UserRole.DOCTOR)
 );
 
-export const objectSchemaQuery = (fileds: string[], schemas?: object) =>
+export const objectSchemaQuery = (fileds: string[]) =>
     Joi.object({
         _page: Joi.number().integer().positive(),
         _limit: Joi.number().integer().positive(),
@@ -64,7 +65,6 @@ export const objectSchemaQuery = (fileds: string[], schemas?: object) =>
         ...fileds.reduce((acc, cur) => {
             return { ...acc, [cur]: Joi.string() };
         }, {}),
-        ...schemas,
     }).pattern(new RegExp(`(${fileds.join('|')})+_(gte|gt|lte|lt|ne)+$`), [
         Joi.string(),
         Joi.number(),
@@ -93,3 +93,11 @@ export const schemaValidMongoId = (msg: string) =>
                   })
         )
         .required();
+
+export const schemaValidDate = Joi.string().custom((val, helpers) =>
+    validator.isDate(val, { format: DATE_FORMAT })
+        ? val
+        : helpers.message({
+              custom: 'Invalid date format',
+          })
+);

@@ -1,12 +1,37 @@
 import { Assignment, AssignmentDocument, User } from '@/models';
 import { IAssignment, OmitIsDelete, UserRole } from '@/types';
-import { checkSimilarTime, getFilterData, getRecordData } from '@/utils';
+import { getFilterData, getRecordData } from '@/utils';
+import { endOfDay, startOfDay } from 'date-fns';
 import createHttpError from 'http-errors';
 
 export const getFilterAssignment = (query: Record<string, any>) => {
-    return getFilterData<AssignmentDocument>(Assignment, query, [
+    let objectQuery = {};
+
+    for (const key in query) {
+        if (/^(assignmentTime.date)+_(gte|gt|lte|lt|ne)+$/.test(key)) {
+            objectQuery = {
+                ...objectQuery,
+                'assignmentTime.date': {
+                    [`$${key.split('_')[1]}`]: new Date(query[key]),
+                },
+            };
+        } else if (key === 'assignmentTime.date') {
+            objectQuery = {
+                ...objectQuery,
+                'assignmentTime.date': {
+                    $gte: startOfDay(new Date(query[key])),
+                    $lt: endOfDay(new Date(query[key])),
+                },
+            };
+        } else {
+            objectQuery = { ...objectQuery, [key]: query[key] };
+        }
+    }
+
+    return getFilterData<AssignmentDocument>(Assignment, objectQuery, [
         'status',
         'notes',
+        'assignmentTime.time',
     ]);
 };
 
@@ -28,18 +53,6 @@ export const getAssignmentById = async (
 };
 
 export const newAssignment = async (assignment: OmitIsDelete<IAssignment>) => {
-    const { patient, doctor } = assignment;
-
-    const matchingPatient = await User.findById(patient as string);
-    if (!matchingPatient || matchingPatient.role !== UserRole.PATIENT) {
-        throw createHttpError(404, `No patient with this id: ${patient}`);
-    }
-
-    const matchingDoctor = await User.findById(doctor as string);
-    if (!matchingDoctor || matchingDoctor.role !== UserRole.DOCTOR) {
-        throw createHttpError(404, `No doctor with this id: ${doctor}`);
-    }
-
     return Assignment.create({ ...assignment });
 };
 
@@ -76,19 +89,23 @@ export const softDeleteAssignment = async (id: string) => {
         throw createHttpError(404, `No assignment with this id: ${id}`);
     }
 
-    const doctor = await User.findById(deletedAssignment.doctor);
-    if (!doctor) {
-        throw createHttpError(
-            404,
-            `No doctor with this id: ${deletedAssignment.doctor}`
-        );
-    }
-
-    doctor.unavailableTime = doctor.unavailableTime!.filter(
-        value => !checkSimilarTime(deletedAssignment.assignmentTime, value)
+    await User.findOneAndUpdate(
+        {
+            _id: deletedAssignment.doctor,
+            role: UserRole.DOCTOR,
+        },
+        {
+            $pull: {
+                unavailableTime: {
+                    date: {
+                        $gte: startOfDay(deletedAssignment.assignmentTime.date),
+                        $lt: endOfDay(deletedAssignment.assignmentTime.date),
+                    },
+                    time: deletedAssignment.assignmentTime.time,
+                },
+            },
+        }
     );
-
-    await doctor.save();
 
     return deletedAssignment;
 };

@@ -1,8 +1,8 @@
 import {
     createAssignment,
     deleteAssignment,
-    getAssignments,
     getAssignment,
+    getAssignments,
     updateAssignment,
 } from '@/controllers';
 import { checkAuth, checkRole } from '@/middlewares';
@@ -11,7 +11,7 @@ import {
     schemaAssignmentCreate,
     schemaAssignmentUpdate,
     schemaAuthAuthorization,
-    schemaGetFacilities,
+    schemaGetAssignments,
     schemaRecordQuery,
 } from '@/validators';
 import { celebrate, Segments } from 'celebrate';
@@ -23,7 +23,7 @@ assignmentRouter
     .route('/')
     .get(
         celebrate({
-            [Segments.QUERY]: schemaGetFacilities,
+            [Segments.QUERY]: schemaGetAssignments,
         }),
         getAssignments
     )

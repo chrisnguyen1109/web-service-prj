@@ -1,12 +1,6 @@
 import { DEFAULT_LIMIT, DEFAULT_PAGE, DEFAULT_START_PAGE } from '@/config';
 import { FieldOfModel } from '@/types';
-import {
-    Model,
-    Document,
-    Query,
-    FilterQuery,
-    HydratedDocument,
-} from 'mongoose';
+import { Document, FilterQuery, Model, Query } from 'mongoose';
 import { omitValueObj } from './omitValueObj';
 
 export class FeatureApi<T extends Document> {

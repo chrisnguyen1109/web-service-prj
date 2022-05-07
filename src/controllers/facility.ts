@@ -1,3 +1,4 @@
+import { RESPONSE_MESSAGE } from '@/config';
 import { FacilityDocument } from '@/models';
 import {
     findAndUpdateFacility,
@@ -13,7 +14,7 @@ export const getFacilities = catchListAsync<FacilityDocument>(
         const data = await getFilterFacility(req.query as Record<string, any>);
 
         res.status(200).json({
-            message: 'Success',
+            message: RESPONSE_MESSAGE,
             data,
         });
     }
@@ -29,7 +30,7 @@ export const getFacility = catchRecordAsync<FacilityDocument>(
         );
 
         res.status(200).json({
-            message: 'Success',
+            message: RESPONSE_MESSAGE,
             data,
         });
     }
@@ -40,7 +41,7 @@ export const createFacility = catchRecordAsync<FacilityDocument>(
         const facility = await newFacility(req.body);
 
         res.status(201).json({
-            message: 'Success',
+            message: RESPONSE_MESSAGE,
             data: {
                 record: facility,
             },
@@ -55,7 +56,7 @@ export const updateFacility = catchRecordAsync<FacilityDocument>(
         const facility = await findAndUpdateFacility({ id, body: req.body });
 
         res.status(200).json({
-            message: 'Success',
+            message: RESPONSE_MESSAGE,
             data: {
                 record: facility,
             },
@@ -69,6 +70,6 @@ export const deleteFacility = catchAsync(async (req, res) => {
     await softDeleteFacility(id);
 
     res.status(204).json({
-        message: 'Success',
+        message: RESPONSE_MESSAGE,
     });
 });

@@ -1,5 +1,5 @@
+import { ApiResponse, ReplaceReturnType } from '@/types';
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { ApiResponse, ReplaceReturnType, ServerResponse } from '@/types';
 import { ParamsDictionary } from 'express-serve-static-core';
 import { Document } from 'mongoose';
 
