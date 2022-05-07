@@ -21,7 +21,11 @@ const appLoader = async (app: Express) => {
         })
     );
 
-    app.use(compression());
+    app.use(
+        compression({
+            filter: () => true,
+        })
+    );
 
     app.use('/api/v1', routeLoader());
 
