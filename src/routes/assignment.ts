@@ -12,6 +12,7 @@ import {
     schemaAssignmentUpdate,
     schemaAuthAuthorization,
     schemaGetAssignments,
+    schemaMongoIdParam,
     schemaRecordQuery,
 } from '@/validators';
 import { celebrate, Segments } from 'celebrate';
@@ -42,12 +43,14 @@ assignmentRouter
     .route('/:id')
     .get(
         celebrate({
+            [Segments.PARAMS]: schemaMongoIdParam,
             [Segments.QUERY]: schemaRecordQuery,
         }),
         getAssignment
     )
     .patch(
         celebrate({
+            [Segments.PARAMS]: schemaMongoIdParam,
             [Segments.HEADERS]: schemaAuthAuthorization,
         }),
         checkAuth,
@@ -59,6 +62,7 @@ assignmentRouter
     )
     .delete(
         celebrate({
+            [Segments.PARAMS]: schemaMongoIdParam,
             [Segments.HEADERS]: schemaAuthAuthorization,
         }),
         checkAuth,

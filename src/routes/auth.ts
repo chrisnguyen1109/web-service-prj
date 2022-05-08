@@ -1,8 +1,16 @@
-import { getMe, login, logout, register, updateMe } from '@/controllers';
+import {
+    getMe,
+    login,
+    logout,
+    refreshToken,
+    register,
+    updateMe,
+} from '@/controllers';
 import { checkAuth } from '@/middlewares';
 import {
     schemaAuthAuthorization,
     schemaAuthLogin,
+    schemaAuthRefreshToken,
     schemaAuthRegister,
     schemaAuthUpdate,
 } from '@/validators';
@@ -25,6 +33,14 @@ authRouter.post(
         [Segments.BODY]: schemaAuthLogin,
     }),
     login
+);
+
+authRouter.post(
+    '/refresh-token',
+    celebrate({
+        [Segments.BODY]: schemaAuthRefreshToken,
+    }),
+    refreshToken
 );
 
 authRouter.use(

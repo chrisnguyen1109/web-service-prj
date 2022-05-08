@@ -26,3 +26,9 @@ export const schemaFacilityUpdate = Joi.object({
         validator.isURL(val) ? val : helpers.message({ custom: 'Invalid url' })
     ),
 });
+
+export const schemaGetFacilitiesWithinParams = Joi.object({
+    distance: Joi.number().required(),
+    lat: Joi.number().required(),
+    lng: Joi.number().required(),
+}).required();

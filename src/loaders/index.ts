@@ -5,10 +5,11 @@ import cors from 'cors';
 import express, { Express } from 'express';
 import createHttpError from 'http-errors';
 import connectDB from './database';
+import { connectRedisDB } from './redisDatabase';
 import routeLoader from './routes';
 
 const appLoader = async (app: Express) => {
-    await connectDB();
+    await Promise.all([connectDB(), connectRedisDB()]);
 
     app.enable('trust proxy');
 

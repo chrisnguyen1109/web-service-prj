@@ -2,6 +2,7 @@ import { AssignmentStatus, IAssignment, Leaves } from '@/types';
 import { Joi } from 'celebrate';
 import {
     objectSchemaQuery,
+    schemaFutureDate,
     schemaValidDate,
     schemaValidMongoId,
 } from './common';
@@ -26,7 +27,7 @@ export const schemaAssignmentCreate = Joi.object({
     doctor: schemaValidMongoId('Doctor id must be valid Mongo Id'),
     notes: Joi.string(),
     assignmentTime: Joi.object({
-        date: schemaValidDate.required(),
+        date: schemaFutureDate.required(),
         time: Joi.string()
             .pattern(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/)
             .required(),

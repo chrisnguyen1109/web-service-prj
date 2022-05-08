@@ -1,23 +1,28 @@
 import { RESPONSE_MESSAGE } from '@/config';
+import redisClient from '@/loaders/redisDatabase';
 import {
     checkLogin,
-    generateToken,
+    generateAccessToken,
     updatePassword,
     findAndUpdateUser,
     newUser,
+    generateRefreshToken,
+    verifyRefreshToken,
 } from '@/services';
 import { catchAsync } from '@/utils';
 
 export const register = catchAsync(async (req, res) => {
     const user = await newUser(req.body);
 
-    const accessToken = await generateToken({ id: user._id });
+    const accessToken = await generateAccessToken({ id: user._id });
+    const refreshToken = await generateRefreshToken({ id: user._id });
 
     res.status(201).json({
         message: RESPONSE_MESSAGE,
         data: {
             user,
             accessToken,
+            refreshToken,
         },
     });
 });
@@ -27,13 +32,15 @@ export const login = catchAsync(async (req, res) => {
 
     const user = await checkLogin({ email, password });
 
-    const accessToken = await generateToken({ id: user._id });
+    const accessToken = await generateAccessToken({ id: user._id });
+    const refreshToken = await generateRefreshToken({ id: user._id });
 
     res.status(200).json({
         message: RESPONSE_MESSAGE,
         data: {
             user,
             accessToken,
+            refreshToken,
         },
     });
 });
@@ -61,7 +68,7 @@ export const updateMe = catchAsync(async (req, res) => {
     if (newPassword && password) {
         await updatePassword({ user: req.user!, password, newPassword });
 
-        accessToken = await generateToken({ id: req.user!._id });
+        accessToken = await generateAccessToken({ id: req.user!._id });
     }
 
     res.status(200).json({
@@ -73,8 +80,25 @@ export const updateMe = catchAsync(async (req, res) => {
     });
 });
 
-export const logout = catchAsync(async (_req, res) => {
+export const logout = catchAsync(async (req, res) => {
+    redisClient.del(req.user!._id.toString());
+
     res.status(200).json({
         message: RESPONSE_MESSAGE,
+    });
+});
+
+export const refreshToken = catchAsync(async (req, res) => {
+    const id = await verifyRefreshToken(req.body.refreshToken);
+
+    const accessToken = await generateAccessToken({ id });
+    const refreshToken = await generateRefreshToken({ id });
+
+    res.status(201).json({
+        message: RESPONSE_MESSAGE,
+        data: {
+            accessToken,
+            refreshToken,
+        },
     });
 });

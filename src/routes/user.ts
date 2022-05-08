@@ -10,6 +10,7 @@ import { UserRole } from '@/types';
 import {
     schemaAuthAuthorization,
     schemaGetUsers,
+    schemaMongoIdParam,
     schemaRecordQuery,
     schemaUserCreate,
     schemaUserUpdate,
@@ -43,12 +44,14 @@ userRouter
     .route('/:id')
     .get(
         celebrate({
+            [Segments.PARAMS]: schemaMongoIdParam,
             [Segments.QUERY]: schemaRecordQuery,
         }),
         getUser
     )
     .patch(
         celebrate({
+            [Segments.PARAMS]: schemaMongoIdParam,
             [Segments.HEADERS]: schemaAuthAuthorization,
         }),
         checkAuth,
@@ -60,6 +63,7 @@ userRouter
     )
     .delete(
         celebrate({
+            [Segments.PARAMS]: schemaMongoIdParam,
             [Segments.HEADERS]: schemaAuthAuthorization,
         }),
         checkAuth,

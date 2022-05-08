@@ -62,3 +62,21 @@ export const softDeleteFacility = async (id: string) => {
 
     return deletedFacility;
 };
+
+interface GetFacilitiesWithinProps {
+    distance: number;
+    lat: number;
+    lng: number;
+}
+
+export const getFacilitiesWithinDistance = ({
+    distance,
+    lat,
+    lng,
+}: GetFacilitiesWithinProps) => {
+    const radius = distance / 6378.1;
+
+    return Facility.find({
+        startLocation: { $geoWithin: { $centerSphere: [[lng, lat], radius] } },
+    });
+};

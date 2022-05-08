@@ -8,9 +8,9 @@ import {
     softDeleteUser,
     updatePassword,
 } from '@/services';
-import { catchAsync, catchListAsync, catchRecordAsync } from '@/utils';
+import { catchAsync } from '@/utils';
 
-export const getUsers = catchListAsync<UserDocument>(async (req, res) => {
+export const getUsers = catchAsync<UserDocument[]>(async (req, res) => {
     const data = await getFilterUser(req.query as Record<string, any>);
 
     res.status(200).json({
@@ -19,7 +19,7 @@ export const getUsers = catchListAsync<UserDocument>(async (req, res) => {
     });
 });
 
-export const getUser = catchRecordAsync<UserDocument>(async (req, res) => {
+export const getUser = catchAsync<UserDocument>(async (req, res) => {
     const id = req.params.id;
 
     const data = await getUserById(id, req.query as Record<string, any>);
@@ -30,7 +30,7 @@ export const getUser = catchRecordAsync<UserDocument>(async (req, res) => {
     });
 });
 
-export const createUser = catchRecordAsync<UserDocument>(async (req, res) => {
+export const createUser = catchAsync<UserDocument>(async (req, res) => {
     const user = await newUser(req.body);
 
     res.status(201).json({
@@ -41,7 +41,7 @@ export const createUser = catchRecordAsync<UserDocument>(async (req, res) => {
     });
 });
 
-export const updateUser = catchRecordAsync<UserDocument>(async (req, res) => {
+export const updateUser = catchAsync<UserDocument>(async (req, res) => {
     const id = req.params.id;
     const { password, newPassword, ...rest } = req.body;
 

@@ -2,6 +2,7 @@ import { DATE_FORMAT } from '@/config';
 import { UserRole } from '@/types';
 import { checkMultipleWords } from '@/utils';
 import { Joi } from 'celebrate';
+import { isFuture } from 'date-fns';
 import validator from 'validator';
 
 export const objectSchemaUserCreate = {
@@ -94,10 +95,26 @@ export const schemaValidMongoId = (msg: string) =>
         )
         .required();
 
+export const schemaMongoIdParam = Joi.object({
+    id: schemaValidMongoId('Param id must be valid Mongo Id'),
+}).required();
+
 export const schemaValidDate = Joi.string().custom((val, helpers) =>
     validator.isDate(val, { format: DATE_FORMAT })
         ? val
         : helpers.message({
               custom: 'Invalid date format',
           })
+);
+
+export const schemaFutureDate = Joi.string().custom((val, helpers) =>
+    !validator.isDate(val, { format: DATE_FORMAT })
+        ? helpers.message({
+              custom: 'Invalid date format',
+          })
+        : !isFuture(new Date(val))
+        ? helpers.message({
+              custom: 'The date must be in the future',
+          })
+        : val
 );

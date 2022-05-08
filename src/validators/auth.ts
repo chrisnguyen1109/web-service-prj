@@ -19,3 +19,7 @@ export const schemaAuthAuthorization = Joi.object({
 export const schemaAuthUpdate = Joi.object({
     ...objectSchemaUserUpdate,
 }).with('password', 'newPassword');
+
+export const schemaAuthRefreshToken = Joi.object({
+    refreshToken: Joi.string().required(),
+}).required();

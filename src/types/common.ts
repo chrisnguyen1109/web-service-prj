@@ -79,3 +79,8 @@ export interface UnavailableTime {
     date: Date;
     time: string;
 }
+
+export enum TokenType {
+    ACCESS_TOKEN = 'access_token',
+    REFRESH_TOKEN = 'refresh_token',
+}

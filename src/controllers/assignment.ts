@@ -7,9 +7,9 @@ import {
     newAssignment,
     softDeleteAssignment,
 } from '@/services';
-import { catchAsync, catchListAsync, catchRecordAsync } from '@/utils';
+import { catchAsync } from '@/utils';
 
-export const getAssignments = catchListAsync<AssignmentDocument>(
+export const getAssignments = catchAsync<AssignmentDocument[]>(
     async (req, res) => {
         const data = await getFilterAssignment(
             req.query as Record<string, any>
@@ -22,7 +22,7 @@ export const getAssignments = catchListAsync<AssignmentDocument>(
     }
 );
 
-export const getAssignment = catchRecordAsync<AssignmentDocument>(
+export const getAssignment = catchAsync<AssignmentDocument>(
     async (req, res) => {
         const id = req.params.id;
 
@@ -38,7 +38,7 @@ export const getAssignment = catchRecordAsync<AssignmentDocument>(
     }
 );
 
-export const createAssignment = catchRecordAsync<AssignmentDocument>(
+export const createAssignment = catchAsync<AssignmentDocument>(
     async (req, res) => {
         const assignment = await newAssignment(req.body);
 
@@ -51,7 +51,7 @@ export const createAssignment = catchRecordAsync<AssignmentDocument>(
     }
 );
 
-export const updateAssignment = catchRecordAsync<AssignmentDocument>(
+export const updateAssignment = catchAsync<AssignmentDocument>(
     async (req, res) => {
         const id = req.params.id;
 

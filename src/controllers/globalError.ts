@@ -8,6 +8,7 @@ import { ApiResponse } from '@/types';
 import { isCelebrateError } from 'celebrate';
 import { NextFunction, Request, Response } from 'express';
 import createHttpError from 'http-errors';
+import mongoose from 'mongoose';
 
 export const globalErrorHandler = (
     error: any,
@@ -17,6 +18,7 @@ export const globalErrorHandler = (
 ) => {
     if (ENV === 'development') {
         console.log('-------------------------');
+        console.log('Error 💥💥💥');
         console.error(error.name);
         console.error(error.code);
         console.error(error.message);
@@ -51,7 +53,7 @@ export const globalErrorHandler = (
             error = handleDulicateFieldsError(error);
             break;
         }
-        case error.code === 31254: {
+        case error.name === 'MongoServerError': {
             error = createHttpError(400, error.message);
             break;
         }

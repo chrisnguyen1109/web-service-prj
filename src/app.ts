@@ -39,6 +39,7 @@ process.on('unhandledRejection', error => {
     });
 });
 
+// heroku restart every 24 hours in order to keep app in healthy state, heroky will send the flag SIGTERM so shutdown server to make sure every request in process not hanging out
 process.on('SIGTERM', () => {
     console.log('SIGTERM RECEIVED!');
     server.close(() => {

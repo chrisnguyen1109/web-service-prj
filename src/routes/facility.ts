@@ -2,12 +2,18 @@ import {
     createFacility,
     deleteFacility,
     getFacilities,
+    getFacilitiesWithin,
     getFacility,
     updateFacility,
 } from '@/controllers';
 import { checkAuth, checkRole } from '@/middlewares';
 import { UserRole } from '@/types';
-import { schemaAuthAuthorization, schemaRecordQuery } from '@/validators';
+import {
+    schemaAuthAuthorization,
+    schemaGetFacilitiesWithinParams,
+    schemaMongoIdParam,
+    schemaRecordQuery,
+} from '@/validators';
 import {
     schemaFacilityCreate,
     schemaFacilityUpdate,
@@ -39,15 +45,26 @@ facilityRouter
     );
 
 facilityRouter
+    .route('/facilities-within/:distance/center/lat/:lat/lng/:lng')
+    .get(
+        celebrate({
+            [Segments.PARAMS]: schemaGetFacilitiesWithinParams,
+        }),
+        getFacilitiesWithin
+    );
+
+facilityRouter
     .route('/:id')
     .get(
         celebrate({
+            [Segments.PARAMS]: schemaMongoIdParam,
             [Segments.QUERY]: schemaRecordQuery,
         }),
         getFacility
     )
     .patch(
         celebrate({
+            [Segments.PARAMS]: schemaMongoIdParam,
             [Segments.HEADERS]: schemaAuthAuthorization,
         }),
         checkAuth,
@@ -59,6 +76,7 @@ facilityRouter
     )
     .delete(
         celebrate({
+            [Segments.PARAMS]: schemaMongoIdParam,
             [Segments.HEADERS]: schemaAuthAuthorization,
         }),
         checkAuth,
