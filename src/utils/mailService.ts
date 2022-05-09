@@ -68,7 +68,6 @@ export class MailService {
 
             await transporter.sendMail(mailOptions);
         } catch (error) {
-            console.log(error);
             throw createHttpError(
                 500,
                 'There was an error when sending the email. Try again later!'
