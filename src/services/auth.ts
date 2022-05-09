@@ -3,9 +3,9 @@ import {
     REFRESH_TOKEN_EXPIRE,
     REFRESH_TOKEN_REDIS_EXPIRE,
 } from '@/config';
-import redisClient from '@/loaders/redisDatabase';
+import { redisClient } from '@/loaders';
 import { User, UserDocument } from '@/models';
-import { TokenType } from '@/types';
+import { TokenType, UserRole } from '@/types';
 import { comparePassword } from '@/utils';
 import fs from 'fs';
 import createHttpError from 'http-errors';
@@ -51,6 +51,14 @@ export const updatePassword = async ({
     user.password = newPassword;
 
     await user.save();
+};
+
+export const getUserAssignments = (user: UserDocument) => {
+    return user.role === UserRole.DOCTOR
+        ? user.populate('doctorAssignments')
+        : user.role === UserRole.PATIENT
+        ? user.populate('patientAssignments')
+        : user;
 };
 
 export const generateJWT = async (payload: any, type: TokenType) => {

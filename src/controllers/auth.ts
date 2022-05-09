@@ -1,5 +1,5 @@
 import { RESPONSE_MESSAGE } from '@/config';
-import redisClient from '@/loaders/redisDatabase';
+import { redisClient } from '@/loaders';
 import {
     checkLogin,
     generateAccessToken,
@@ -8,6 +8,7 @@ import {
     newUser,
     generateRefreshToken,
     verifyRefreshToken,
+    getUserAssignments,
 } from '@/services';
 import { catchAsync } from '@/utils';
 
@@ -64,11 +65,13 @@ export const updateMe = catchAsync(async (req, res) => {
     });
 
     let accessToken: string | undefined = undefined;
+    let refreshToken: string | undefined = undefined;
 
     if (newPassword && password) {
         await updatePassword({ user: req.user!, password, newPassword });
 
         accessToken = await generateAccessToken({ id: req.user!._id });
+        refreshToken = await generateRefreshToken({ id: req.user!._id });
     }
 
     res.status(200).json({
@@ -76,6 +79,7 @@ export const updateMe = catchAsync(async (req, res) => {
         data: {
             user: updateUser,
             accessToken,
+            refreshToken,
         },
     });
 });
@@ -99,6 +103,17 @@ export const refreshToken = catchAsync(async (req, res) => {
         data: {
             accessToken,
             refreshToken,
+        },
+    });
+});
+
+export const getMyAssignments = catchAsync(async (req, res) => {
+    const user = await getUserAssignments(req.user!);
+
+    res.status(200).json({
+        message: RESPONSE_MESSAGE,
+        data: {
+            user,
         },
     });
 });

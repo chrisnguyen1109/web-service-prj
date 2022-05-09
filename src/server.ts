@@ -15,7 +15,7 @@ declare global {
 
 const app = express();
 
-require('@/loaders').default(app);
+require('@/loaders').loadApp(app);
 
 process.on('uncaughtException', error => {
     console.log(error.name);

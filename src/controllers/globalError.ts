@@ -8,7 +8,6 @@ import { ApiResponse } from '@/types';
 import { isCelebrateError } from 'celebrate';
 import { NextFunction, Request, Response } from 'express';
 import createHttpError from 'http-errors';
-import mongoose from 'mongoose';
 
 export const globalErrorHandler = (
     error: any,

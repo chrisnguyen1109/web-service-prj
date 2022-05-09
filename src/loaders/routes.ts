@@ -6,7 +6,7 @@ import {
 } from '@/routes';
 import { Router } from 'express';
 
-const routeLoader = () => {
+export const loadRoutes = () => {
     const router = Router();
 
     router.use('/auth', authRouter);
@@ -16,5 +16,3 @@ const routeLoader = () => {
 
     return router;
 };
-
-export default routeLoader;

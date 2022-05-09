@@ -1,5 +1,6 @@
 import {
     getMe,
+    getMyAssignments,
     login,
     logout,
     refreshToken,
@@ -59,5 +60,7 @@ authRouter
         }),
         updateMe
     );
+
+authRouter.get('/me/assignments', getMyAssignments);
 
 authRouter.post('/logout', logout);

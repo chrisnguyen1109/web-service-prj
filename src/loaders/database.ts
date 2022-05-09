@@ -2,7 +2,7 @@ import { DATABASE } from '@/config';
 import createHttpError from 'http-errors';
 import mongoose from 'mongoose';
 
-const connectDB = async () => {
+export const connectDB = async () => {
     if (!DATABASE) {
         throw createHttpError(503, 'Connect database failed!');
     }
@@ -11,5 +11,3 @@ const connectDB = async () => {
 
     console.log('Connect database successfully!');
 };
-
-export default connectDB;
