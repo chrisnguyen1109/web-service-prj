@@ -26,3 +26,4 @@ export const MAILTRAP_USER = process.env.MAILTRAP_USER;
 export const MAILTRAP_PASS = process.env.MAILTRAP_PASS;
 export const SENDGRID_USERNAME = process.env.SENDGRID_USERNAME;
 export const SENDGRID_PASSWORD = process.env.SENDGRID_PASSWORD;
+export const ENV = process.env.NODE_ENV;
