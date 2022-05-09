@@ -5,9 +5,9 @@
     "license": "MIT",
     "scripts": {
         "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json && cp src/config/keys -r build/config/",
-        "start": "SET TZ=Etc/Universal&&node build/server.js",
-        "dev": "SET NODE_ENV=development&&SET TZ=Etc/Universal&&nodemon",
-        "prod": "SET NODE_ENV=production&&SET TZ=Etc/Universal&&nodemon"
+        "start": "node build/server.js",
+        "dev": "SET NODE_ENV=development&&nodemon",
+        "prod": "SET NODE_ENV=production&&nodemon"
     },
     "dependencies": {
         "bcryptjs": "^2.4.3",
