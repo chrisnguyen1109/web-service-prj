@@ -36,7 +36,7 @@ export const createUser = catchAsync<UserDocument>(async (req, res) => {
     res.status(201).json({
         message: RESPONSE_MESSAGE,
         data: {
-            record: user as any,
+            record: user,
         },
     });
 });

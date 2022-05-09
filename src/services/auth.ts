@@ -2,11 +2,18 @@ import {
     ACCESS_TOKEN_EXPIRE,
     REFRESH_TOKEN_EXPIRE,
     REFRESH_TOKEN_REDIS_EXPIRE,
+    RESET_PASSWORD_TOKEN_EXPIRE,
 } from '@/config';
 import { redisClient } from '@/loaders';
 import { User, UserDocument } from '@/models';
 import { TokenType, UserRole } from '@/types';
-import { comparePassword } from '@/utils';
+import {
+    compareBcrypt,
+    generateRandomToken,
+    MailService,
+    redisRefreshTokenKey,
+    redisResetPasswordKey,
+} from '@/utils';
 import fs from 'fs';
 import createHttpError from 'http-errors';
 import jwt from 'jsonwebtoken';
@@ -24,7 +31,7 @@ export const checkLogin = async ({ email, password }: CheckLoginProps) => {
         throw createHttpError(404, 'This email seems to no longer exist!');
     }
 
-    const passwordMatching = await comparePassword(password, user.password);
+    const passwordMatching = await compareBcrypt(password, user.password);
     if (!passwordMatching) {
         throw createHttpError(400, 'Wrong password!');
     }
@@ -43,7 +50,7 @@ export const updatePassword = async ({
     password,
     newPassword,
 }: UpdatePasswordProps) => {
-    const passwordMatching = await comparePassword(password, user.password);
+    const passwordMatching = await compareBcrypt(password, user.password);
     if (!passwordMatching) {
         throw createHttpError(400, 'Wrong password!');
     }
@@ -88,7 +95,7 @@ export const generateRefreshToken = async (payload: any): Promise<string> => {
     const refreshToken = await generateJWT(payload, TokenType.REFRESH_TOKEN);
 
     await redisClient.setEx(
-        payload.id.toString(),
+        redisRefreshTokenKey(payload.id),
         REFRESH_TOKEN_REDIS_EXPIRE,
         refreshToken
     );
@@ -128,11 +135,72 @@ export const decodeToken = async (token: string) => {
 export const verifyRefreshToken = async (refreshToken: string) => {
     const { id } = await decodeJWT(refreshToken, TokenType.REFRESH_TOKEN);
 
-    const token = await redisClient.get(id);
+    const token = await redisClient.get(redisRefreshTokenKey(id));
 
     if (!token || token !== refreshToken) {
         throw createHttpError(401, 'Unauthorized!');
     }
 
     return id;
+};
+
+export const logoutMe = (userId: string) => {
+    return redisClient.del(redisRefreshTokenKey(userId));
+};
+
+export const sendResetPasswordMail = async (email: string, host: string) => {
+    const user = await User.findOne({ email });
+    if (!user) {
+        throw createHttpError(404, 'This email seems to no longer exist!');
+    }
+
+    const { token, hashToken } = await generateRandomToken();
+
+    await redisClient.setEx(
+        redisResetPasswordKey(user._id),
+        RESET_PASSWORD_TOKEN_EXPIRE,
+        hashToken
+    );
+
+    const url = `${host}?token=${token}&userId=${user._id}`;
+
+    return new MailService(user.email, {
+        subject: 'Your password reset token (valid for 5 minutes)',
+        url,
+        fullname: user.fullName,
+    }).sendResetPassword();
+};
+
+interface ResetPasswordWithTokenProps {
+    userId: string;
+    token: string;
+    password: string;
+}
+
+export const resetPasswordWithToken = async ({
+    password,
+    token,
+    userId,
+}: ResetPasswordWithTokenProps) => {
+    const resetToken = await redisClient.get(redisResetPasswordKey(userId));
+    if (!resetToken) {
+        throw createHttpError(404, 'Invalid or expired password reset token');
+    }
+
+    const tokenMatching = await compareBcrypt(token, resetToken);
+    if (!tokenMatching) {
+        throw createHttpError(400, 'Wrong reset password token!');
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+        throw createHttpError(404, 'This user seems to no longer exist!');
+    }
+
+    user.password = password;
+    await user.save();
+
+    await redisClient.del(redisResetPasswordKey(user._id));
+
+    return user;
 };

@@ -8,7 +8,7 @@ import {
 import mongoose, { Document, Model, Query, Schema } from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
-import { DEFAULT_AVATAR, HASH_ROUND } from '@/config';
+import { DEFAULT_AVATAR, BCRYPT_SALT } from '@/config';
 import { Facility } from './facility';
 import createHttpError from 'http-errors';
 
@@ -173,7 +173,7 @@ userSchema.pre('save', async function (next) {
 
     if (!this.isModified('password')) return next();
 
-    const salt = await bcrypt.genSalt(HASH_ROUND ? +HASH_ROUND : undefined);
+    const salt = await bcrypt.genSalt(BCRYPT_SALT ? +BCRYPT_SALT : undefined);
     this.password = await bcrypt.hash(this.password, salt);
     this.passwordModified = new Date();
 

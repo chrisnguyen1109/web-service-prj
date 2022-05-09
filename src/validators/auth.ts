@@ -1,5 +1,9 @@
 import { Joi } from 'celebrate';
-import { objectSchemaUserCreate, objectSchemaUserUpdate } from './common';
+import {
+    objectSchemaUserCreate,
+    objectSchemaUserUpdate,
+    schemaValidMongoId,
+} from './common';
 
 export const schemaAuthRegister = Joi.object({
     ...objectSchemaUserCreate,
@@ -22,4 +26,14 @@ export const schemaAuthUpdate = Joi.object({
 
 export const schemaAuthRefreshToken = Joi.object({
     refreshToken: Joi.string().required(),
+}).required();
+
+export const schemaAuthForgotPassword = Joi.object({
+    email: Joi.string().email().required(),
+}).required();
+
+export const schemaAuthResetPassword = Joi.object({
+    password: Joi.string().min(6).required(),
+    userId: schemaValidMongoId('User id must be valid Mongo Id'),
+    token: Joi.string().required(),
 }).required();

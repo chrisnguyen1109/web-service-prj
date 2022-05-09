@@ -1,18 +1,22 @@
 import {
+    forgotPassword,
     getMe,
     getMyAssignments,
     login,
     logout,
     refreshToken,
     register,
+    resetPassword,
     updateMe,
 } from '@/controllers';
 import { checkAuth } from '@/middlewares';
 import {
     schemaAuthAuthorization,
+    schemaAuthForgotPassword,
     schemaAuthLogin,
     schemaAuthRefreshToken,
     schemaAuthRegister,
+    schemaAuthResetPassword,
     schemaAuthUpdate,
 } from '@/validators';
 import { celebrate, Segments } from 'celebrate';
@@ -42,6 +46,22 @@ authRouter.post(
         [Segments.BODY]: schemaAuthRefreshToken,
     }),
     refreshToken
+);
+
+authRouter.post(
+    '/forgot-password',
+    celebrate({
+        [Segments.BODY]: schemaAuthForgotPassword,
+    }),
+    forgotPassword
+);
+
+authRouter.post(
+    '/reset-password',
+    celebrate({
+        [Segments.BODY]: schemaAuthResetPassword,
+    }),
+    resetPassword
 );
 
 authRouter.use(

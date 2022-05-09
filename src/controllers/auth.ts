@@ -1,14 +1,16 @@
 import { RESPONSE_MESSAGE } from '@/config';
-import { redisClient } from '@/loaders';
 import {
     checkLogin,
-    generateAccessToken,
-    updatePassword,
     findAndUpdateUser,
-    newUser,
+    generateAccessToken,
     generateRefreshToken,
-    verifyRefreshToken,
     getUserAssignments,
+    logoutMe,
+    newUser,
+    resetPasswordWithToken,
+    sendResetPasswordMail,
+    updatePassword,
+    verifyRefreshToken,
 } from '@/services';
 import { catchAsync } from '@/utils';
 
@@ -85,7 +87,7 @@ export const updateMe = catchAsync(async (req, res) => {
 });
 
 export const logout = catchAsync(async (req, res) => {
-    redisClient.del(req.user!._id.toString());
+    await logoutMe(req.user!._id);
 
     res.status(200).json({
         message: RESPONSE_MESSAGE,
@@ -109,6 +111,28 @@ export const refreshToken = catchAsync(async (req, res) => {
 
 export const getMyAssignments = catchAsync(async (req, res) => {
     const user = await getUserAssignments(req.user!);
+
+    res.status(200).json({
+        message: RESPONSE_MESSAGE,
+        data: {
+            user,
+        },
+    });
+});
+
+export const forgotPassword = catchAsync(async (req, res) => {
+    const host = `${req.protocol}://${req.get('host')}/reset-password`;
+    const { email } = req.body;
+
+    await sendResetPasswordMail(email, host);
+
+    res.status(200).json({
+        message: 'Token sent to your email!',
+    });
+});
+
+export const resetPassword = catchAsync(async (req, res) => {
+    const user = await resetPasswordWithToken(req.body);
 
     res.status(200).json({
         message: RESPONSE_MESSAGE,
