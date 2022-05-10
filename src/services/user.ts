@@ -1,6 +1,7 @@
 import { User, UserDocument } from '@/models';
 import { FieldUserUpdate, IUser, OmitIsDelete, UserRole } from '@/types';
 import { getFilterData, getRecordData, omitValueObj } from '@/utils';
+import { startOfDay } from 'date-fns';
 import createHttpError from 'http-errors';
 
 export const getFilterUser = (query: Record<string, any>) => {
@@ -113,4 +114,19 @@ export const softDeleteUser = async (id: string) => {
     }
 
     return deletedUser;
+};
+
+export const removePreviousUnvailbleTime = async () => {
+    return User.updateMany(
+        {},
+        {
+            $pull: {
+                unavailableTime: {
+                    date: {
+                        $lte: startOfDay(new Date()),
+                    },
+                },
+            },
+        }
+    );
 };

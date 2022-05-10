@@ -1,0 +1,241 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "REST API Docs",
+    "description": "REST API Docs for web-service project",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "/api/v1",
+      "description": "Current host"
+    }
+  ],
+  "tags": {
+    "name": "Facility",
+    "description": "The facility managing API"
+  },
+  "paths": {
+    "/facility": {
+      "get": {
+        "summary": "Return a list of the facilities",
+        "tags": [
+          "Facility"
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of the facilities",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Facility"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create new facility",
+        "tags": [
+          "Facility"
+        ],
+        "requestBody": {
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "A facility after creation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Facility"
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    },
+    "/facility/{id}": {
+      "get": {
+        "summary": "Return the facility by id",
+        "tags": [
+          "Facility"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/WithId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A facility that matches this id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Facility"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update the facility by id",
+        "tags": [
+          "Facility"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/WithId"
+          }
+        ],
+        "requestBody": {
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "A facility after the update",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Facility"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove the facility by id",
+        "tags": [
+          "Facility"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/WithId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No data"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Facility": {
+        "type": "object",
+        "required": [
+          "name",
+          "address",
+          "location"
+        ],
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "coordinates": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "image": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "_id": "6275632065deb06b9af8e80b",
+          "name": "facility 1",
+          "address": "Ha Noi",
+          "location": {
+            "type": "object",
+            "properties": {
+              "type": "Point",
+              "coordinates": {
+                "type": "array",
+                "items": [
+                  105.83416,
+                  21.027763
+                ]
+              }
+            }
+          },
+          "image": "https:*res.cloudinary.com/chriscloud1109/image/upload/v1651629584/media/default_gr1p4q.jpg",
+          "createdAt": "2022-05-06T18:04:16.092Z",
+          "updatedAt": "2022-05-06T18:04:16.092Z"
+        }
+      }
+    },
+    "parameters": {
+      "WithId": {
+        "in": "path",
+        "name": "id",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "Mongodb id"
+      }
+    },
+    "responses": {
+      "NotFound": {
+        "description": "No item with this id"
+      },
+      "UnexpectedError": {
+        "description": "Something went wrong"
+      }
+    }
+  }
+}
