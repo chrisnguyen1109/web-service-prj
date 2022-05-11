@@ -1,4 +1,8 @@
-This is a [Web-service](https://web-service-ptit.herokuapp.com) project.
+# Web-service project
+
+### [View demo](https://web-service-ptit.herokuapp.com)
+
+### [Explore the docs >>](https://web-service-ptit.herokuapp.com/docs) (In progress)
 
 ## Getting Started
 
