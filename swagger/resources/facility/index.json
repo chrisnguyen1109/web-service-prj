@@ -1,0 +1,109 @@
+{
+    "get": {
+        "summary": "Return a list of the facilities",
+        "tags": ["facility"],
+        "parameters": [
+            {
+                "$ref": "../../parameters/page.json"
+            },
+            {
+                "$ref": "../../parameters/limit.json"
+            },
+            {
+                "$ref": "../../parameters/start.json"
+            },
+            {
+                "$ref": "../../parameters/end.json"
+            },
+            {
+                "$ref": "../../parameters/search.json"
+            },
+            {
+                "$ref": "../../parameters/fields.json"
+            },
+            {
+                "$ref": "../../parameters/expand.json"
+            },
+            {
+                "$ref": "../../parameters/sort.json"
+            },
+            {
+                "in": "query",
+                "name": "address",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "in": "query",
+                "name": "name",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "in": "query",
+                "name": "address_(gte|gt|lte|lt|ne)",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "in": "query",
+                "name": "name_(gte|gt|lte|lt|ne)",
+                "schema": {
+                    "type": "string"
+                }
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "A list of the facilities",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "../../schemas/facility/response.json"
+                            }
+                        }
+                    }
+                }
+            },
+            "default": {
+                "$ref": "../../responses/unexpected-error.json"
+            }
+        }
+    },
+    "post": {
+        "summary": "Create new facility",
+        "tags": ["facility"],
+        "security": {
+            "BearerAuth": ["admin"]
+        },
+        "requestBody": {
+            "$ref": "../../requests/facility.json"
+        },
+        "responses": {
+            "201": {
+                "description": "Created",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "../../schemas/facility/response.json"
+                        }
+                    }
+                }
+            },
+            "400": {
+                "$ref": "../../responses/validation-error.json"
+            },
+            "401": {
+                "$ref": "../../responses/unauthorized-error.json"
+            },
+            "default": {
+                "$ref": "../../responses/unexpected-error.json"
+            }
+        }
+    }
+}

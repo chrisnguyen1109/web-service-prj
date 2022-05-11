@@ -1,0 +1,9 @@
+{
+    "in": "query",
+    "name": "_end",
+    "schema": {
+        "type": "integer",
+        "minimum": 1
+    },
+    "description": "The _end must be greater than the `_start`."
+}

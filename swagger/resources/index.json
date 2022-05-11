@@ -1,0 +1,23 @@
+{
+    "/facility": {
+        "$ref": "./facility/index.json"
+    },
+    "/facility/{id}": {
+        "parameters": [
+            {
+                "in": "path",
+                "name": "id",
+                "schema": {
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "required": true,
+                "description": "The facility ID"
+            }
+        ],
+        "$ref": "./facility/id.json"
+    },
+    "/facilities-within/{distance}/center/lat/{lat}/lng/{lng}": {
+        "$ref": "./facility/tour-within.json"
+    }
+}

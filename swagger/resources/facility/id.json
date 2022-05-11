@@ -1,19 +1,22 @@
 {
     "get": {
         "summary": "Return the facility by id",
-        "tags": ["Facility"],
+        "tags": ["facility"],
         "parameters": [
             {
-                "$ref": "../../parameters/withid.json"
+                "$ref": "../../parameters/fields.json"
+            },
+            {
+                "$ref": "../../parameters/expand.json"
             }
         ],
         "responses": {
             "200": {
-                "description": "A facility that matches this id",
+                "description": "A facility by id",
                 "content": {
                     "application/json": {
                         "schema": {
-                            "$ref": "../../schemas/facility.json"
+                            "$ref": "../../schemas/facility/response.json"
                         }
                     }
                 }
@@ -21,57 +24,62 @@
             "404": {
                 "$ref": "../../responses/not-found.json"
             },
-            "500": {
+            "default": {
                 "$ref": "../../responses/unexpected-error.json"
             }
         }
     },
     "patch": {
         "summary": "Update the facility by id",
-        "tags": ["Facility"],
-        "parameters": [
-            {
-                "$ref": "../../parameters/withid.json"
-            }
-        ],
+        "tags": ["facility"],
+        "security": {
+            "BearerAuth": ["admin"]
+        },
         "requestBody": {
-            "required": true
+            "$ref": "../../requests/facility.json"
         },
         "responses": {
             "200": {
-                "description": "A facility after the update",
+                "description": "Updated",
                 "content": {
                     "application/json": {
                         "schema": {
-                            "$ref": "../../schemas/facility.json"
+                            "$ref": "../../schemas/facility/response.json"
                         }
                     }
                 }
             },
+            "400": {
+                "$ref": "../../responses/validation-error.json"
+            },
+            "401": {
+                "$ref": "../../responses/unauthorized-error.json"
+            },
             "404": {
                 "$ref": "../../responses/not-found.json"
             },
-            "500": {
+            "default": {
                 "$ref": "../../responses/unexpected-error.json"
             }
         }
     },
     "delete": {
         "summary": "Remove the facility by id",
-        "tags": ["Facility"],
-        "parameters": [
-            {
-                "$ref": "../../parameters/withid.json"
-            }
-        ],
+        "tags": ["facility"],
+        "security": {
+            "BearerAuth": ["admin"]
+        },
         "responses": {
-            "200": {
-                "description": "No data"
+            "204": {
+                "$ref": "../../responses/empty-response.json"
+            },
+            "401": {
+                "$ref": "../../responses/unauthorized-error.json"
             },
             "404": {
                 "$ref": "../../responses/not-found.json"
             },
-            "500": {
+            "default": {
                 "$ref": "../../responses/unexpected-error.json"
             }
         }

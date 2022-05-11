@@ -1,0 +1,7 @@
+{
+    "in": "query",
+    "name": "_sort",
+    "schema": {
+        "type": "string"
+    }
+}

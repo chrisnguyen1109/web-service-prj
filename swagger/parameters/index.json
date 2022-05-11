@@ -1,0 +1,26 @@
+{
+    "page": {
+        "$ref": "./page.json"
+    },
+    "limit": {
+        "$ref": "./limit.json"
+    },
+    "start": {
+        "$ref": "./start.json"
+    },
+    "expand": {
+        "$ref": "./expand.json"
+    },
+    "fields": {
+        "$ref": "./fields.json"
+    },
+    "end": {
+        "$ref": "./end.json"
+    },
+    "search": {
+        "$ref": "./search.json"
+    },
+    "sort": {
+        "$ref": "./sort.json"
+    }
+}

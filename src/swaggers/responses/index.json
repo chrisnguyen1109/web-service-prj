@@ -1,8 +1,0 @@
-{
-    "NotFound": {
-        "$ref": "./not-found.json"
-    },
-    "UnexpectedError": {
-        "$ref": "./unexpected-error.json"
-    }
-}

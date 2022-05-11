@@ -1,0 +1,22 @@
+[
+    {
+        "facility": {
+            "$ref": "./facility.json"
+        }
+    },
+    {
+        "user": {
+            "$ref": "./user.json"
+        }
+    },
+    {
+        "assignment": {
+            "$ref": "./assignment.json"
+        }
+    },
+    {
+        "auth": {
+            "$ref": "./auth.json"
+        }
+    }
+]

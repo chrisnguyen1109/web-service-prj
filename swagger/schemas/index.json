@@ -1,0 +1,8 @@
+{
+    "facilityReq": {
+        "$ref": "./facility/request.json"
+    },
+    "facilityRes": {
+        "$ref": "./facility/response.json"
+    }
+}

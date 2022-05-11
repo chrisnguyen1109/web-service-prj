@@ -1,0 +1,17 @@
+{
+    "NotFound": {
+        "$ref": "./not-found.json"
+    },
+    "UnexpectedError": {
+        "$ref": "./unexpected-error.json"
+    },
+    "UnauthorizedError": {
+        "$ref": "./unauthorized-error.json"
+    },
+    "ValidationError": {
+        "$ref": "./validation-error.json"
+    },
+    "EmptyResponse": {
+        "$ref": "./empty-response.json"
+    }
+}

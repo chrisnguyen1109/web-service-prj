@@ -1,0 +1,41 @@
+{
+    "type": "object",
+    "required": ["name", "address", "location"],
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "address": {
+            "type": "string"
+        },
+        "location": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "enum": ["Point"]
+                },
+                "coordinates": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                }
+            }
+        },
+        "image": {
+            "type": "string",
+            "format": "uri",
+            "default": "https:*res.cloudinary.com/chriscloud1109/image/upload/v1651629584/media/default_gr1p4q.jpg"
+        }
+    },
+    "example": {
+        "name": "facility 1",
+        "address": "Ha Noi",
+        "location": {
+            "type": "Point",
+            "coordinates": [105.83416, 21.027763]
+        },
+        "image": "https:*res.cloudinary.com/chriscloud1109/image/upload/v1651629584/media/default_gr1p4q.jpg"
+    }
+}

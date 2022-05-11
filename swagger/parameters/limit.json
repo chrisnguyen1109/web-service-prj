@@ -1,0 +1,9 @@
+{
+    "in": "query",
+    "name": "_limit",
+    "schema": {
+        "type": "integer",
+        "minimum": 1,
+        "default": 20
+    }
+}

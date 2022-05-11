@@ -1,0 +1,7 @@
+{
+    "in": "query",
+    "name": "_fields",
+    "schema": {
+        "type": "string"
+    }
+}

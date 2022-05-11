@@ -1,5 +1,5 @@
 {
-    "Facility": {
+    "facilityBody": {
         "$ref": "./facility.json"
     }
 }

@@ -1,0 +1,7 @@
+{
+    "in": "query",
+    "name": "_expand",
+    "schema": {
+        "type": "string"
+    }
+}

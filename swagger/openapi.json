@@ -12,8 +12,7 @@
         }
     ],
     "tags": {
-        "name": "Facility",
-        "description": "The facility managing API"
+        "$ref": "./tags/index.json"
     },
     "paths": {
         "$ref": "./resources/index.json"
@@ -22,11 +21,17 @@
         "schemas": {
             "$ref": "./schemas/index.json"
         },
+        "requestBodies": {
+            "$ref": "./requests/index.json"
+        },
         "parameters": {
             "$ref": "./parameters/index.json"
         },
         "responses": {
             "$ref": "./responses/index.json"
+        },
+        "securitySchemes": {
+            "$ref": "./security/index.json"
         }
     }
 }

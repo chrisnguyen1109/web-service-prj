@@ -5,10 +5,7 @@ import cors from 'cors';
 import express, { Express } from 'express';
 import createHttpError from 'http-errors';
 import { connectDB } from './database';
-import { loadJobs } from './jobs';
 import { connectRedisDB } from './redisDatabase';
-import { loadRoutes } from './routes';
-import { loadSwaggerDocs } from './swagger';
 
 export const loadApp = async (app: Express) => {
     const mongoDB = connectDB();
@@ -30,11 +27,11 @@ export const loadApp = async (app: Express) => {
 
     app.use(compression());
 
-    loadJobs();
+    require('./jobs').loadJobs();
 
-    app.use('/api/v1', loadRoutes());
+    require('./routes').loadRoutes(app);
 
-    loadSwaggerDocs(app);
+    require('./swagger').loadSwaggerDocs(app);
 
     app.all('*', (req, _res, next) => {
         next(

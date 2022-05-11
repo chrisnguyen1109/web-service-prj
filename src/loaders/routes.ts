@@ -1,18 +1,6 @@
-import {
-    assignmentRouter,
-    authRouter,
-    facilityRouter,
-    userRouter,
-} from '@/routes';
-import { Router } from 'express';
+import { loadRoutesV1 } from '@/routes';
+import { Express } from 'express';
 
-export const loadRoutes = () => {
-    const router = Router();
-
-    router.use('/auth', authRouter);
-    router.use('/user', userRouter);
-    router.use('/facility', facilityRouter);
-    router.use('/assignment', assignmentRouter);
-
-    return router;
+export const loadRoutes = (app: Express) => {
+    app.use('/api/v1', loadRoutesV1());
 };

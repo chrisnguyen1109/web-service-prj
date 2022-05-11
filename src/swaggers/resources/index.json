@@ -1,8 +1,0 @@
-{
-    "/facility": {
-        "$ref": "./facility/index.json"
-    },
-    "/facility/{id}": {
-        "$ref": "./facility/id.json"
-    }
-}

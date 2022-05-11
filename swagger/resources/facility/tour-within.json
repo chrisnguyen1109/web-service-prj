@@ -1,0 +1,53 @@
+{
+    "get": {
+        "summary": "Return a list of the facilities within distance",
+        "tags": ["facility"],
+        "parameters": [
+            {
+                "in": "path",
+                "name": "distance",
+                "schema": {
+                    "type": "number"
+                },
+                "required": true,
+                "description": "The distance"
+            },
+            {
+                "in": "path",
+                "name": "lat",
+                "schema": {
+                    "type": "number"
+                },
+                "required": true,
+                "description": "The latitude"
+            },
+            {
+                "in": "path",
+                "name": "lng",
+                "schema": {
+                    "type": "number"
+                },
+                "required": true,
+                "description": "The longitude"
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "A list of the facilities within distance",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "../../schemas/facility/response.json"
+                            }
+                        }
+                    }
+                }
+            },
+            "default": {
+                "$ref": "../../responses/unexpected-error.json"
+            }
+        }
+    }
+}

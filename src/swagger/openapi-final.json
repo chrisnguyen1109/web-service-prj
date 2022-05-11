@@ -1,0 +1,542 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "REST API Docs",
+    "description": "REST API Docs for web-service project",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "/api/v1",
+      "description": "Current host"
+    }
+  ],
+  "tags": [
+    {
+      "facility": {
+        "name": "Facility",
+        "description": "Facility Management API"
+      }
+    },
+    {
+      "user": {
+        "name": "User",
+        "description": "User Management API"
+      }
+    },
+    {
+      "assignment": {
+        "name": "Assignment",
+        "description": "Assignment Management API"
+      }
+    },
+    {
+      "auth": {
+        "name": "Auth",
+        "description": "Authentication Management API"
+      }
+    }
+  ],
+  "paths": {
+    "/facility": {
+      "get": {
+        "summary": "Return a list of the facilities",
+        "tags": [
+          "facility"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/start"
+          },
+          {
+            "$ref": "#/components/parameters/end"
+          },
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "$ref": "#/components/parameters/fields"
+          },
+          {
+            "$ref": "#/components/parameters/expand"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "in": "query",
+            "name": "address",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "address_(gte|gt|lte|lt|ne)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "name_(gte|gt|lte|lt|ne)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of the facilities",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/facilityRes"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create new facility",
+        "tags": [
+          "facility"
+        ],
+        "security": {
+          "BearerAuth": [
+            "admin"
+          ]
+        },
+        "requestBody": {
+          "$ref": "#/components/requestBodies/facilityBody"
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/facilityRes"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    },
+    "/facility/{id}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true,
+          "description": "The facility ID"
+        }
+      ],
+      "get": {
+        "summary": "Return the facility by id",
+        "tags": [
+          "facility"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/fields"
+          },
+          {
+            "$ref": "#/components/parameters/expand"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A facility by id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/facilityRes"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update the facility by id",
+        "tags": [
+          "facility"
+        ],
+        "security": {
+          "BearerAuth": [
+            "admin"
+          ]
+        },
+        "requestBody": {
+          "$ref": "#/components/requestBodies/facilityBody"
+        },
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/facilityRes"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove the facility by id",
+        "tags": [
+          "facility"
+        ],
+        "security": {
+          "BearerAuth": [
+            "admin"
+          ]
+        },
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/EmptyResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    },
+    "/facilities-within/{distance}/center/lat/{lat}/lng/{lng}": {
+      "get": {
+        "summary": "Return a list of the facilities within distance",
+        "tags": [
+          "facility"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "distance",
+            "schema": {
+              "type": "number"
+            },
+            "required": true,
+            "description": "The distance"
+          },
+          {
+            "in": "path",
+            "name": "lat",
+            "schema": {
+              "type": "number"
+            },
+            "required": true,
+            "description": "The latitude"
+          },
+          {
+            "in": "path",
+            "name": "lng",
+            "schema": {
+              "type": "number"
+            },
+            "required": true,
+            "description": "The longitude"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of the facilities within distance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/facilityRes"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "facilityReq": {
+        "type": "object",
+        "required": [
+          "name",
+          "address",
+          "location"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "Point"
+                ]
+              },
+              "coordinates": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "image": {
+            "type": "string",
+            "format": "uri",
+            "default": "https:*res.cloudinary.com/chriscloud1109/image/upload/v1651629584/media/default_gr1p4q.jpg"
+          }
+        },
+        "example": {
+          "name": "facility 1",
+          "address": "Ha Noi",
+          "location": {
+            "type": "Point",
+            "coordinates": [
+              105.83416,
+              21.027763
+            ]
+          },
+          "image": "https:*res.cloudinary.com/chriscloud1109/image/upload/v1651629584/media/default_gr1p4q.jpg"
+        }
+      },
+      "facilityRes": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "Point"
+                ]
+              },
+              "coordinates": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "image": {
+            "type": "string",
+            "format": "uri"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "example": {
+          "_id": "6275632065deb06b9af8e80b",
+          "name": "facility 1",
+          "address": "Ha Noi",
+          "location": {
+            "type": "Point",
+            "coordinates": [
+              105.83416,
+              21.027763
+            ]
+          },
+          "image": "https:*res.cloudinary.com/chriscloud1109/image/upload/v1651629584/media/default_gr1p4q.jpg",
+          "createdAt": "2022-05-06T18:04:16.092Z",
+          "updatedAt": "2022-05-06T18:04:16.092Z"
+        }
+      }
+    },
+    "requestBodies": {
+      "facilityBody": {
+        "description": "A request body for Facility",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/facilityReq"
+            }
+          },
+          "application/x-www-form-urlencoded": {
+            "schema": {
+              "$ref": "#/components/schemas/facilityReq"
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "page": {
+        "in": "query",
+        "name": "_page",
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 1
+        }
+      },
+      "limit": {
+        "in": "query",
+        "name": "_limit",
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 20
+        }
+      },
+      "start": {
+        "in": "query",
+        "name": "_start",
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 1
+        }
+      },
+      "expand": {
+        "in": "query",
+        "name": "_expand",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "fields": {
+        "in": "query",
+        "name": "_fields",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "end": {
+        "in": "query",
+        "name": "_end",
+        "schema": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "description": "The _end must be greater than the `_start`."
+      },
+      "search": {
+        "in": "query",
+        "name": "_q",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "sort": {
+        "in": "query",
+        "name": "_sort",
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    "responses": {
+      "NotFound": {
+        "description": "No item with this id"
+      },
+      "UnexpectedError": {
+        "description": "Something went wrong"
+      },
+      "UnauthorizedError": {
+        "description": "Invalid token"
+      },
+      "ValidationError": {
+        "description": "Valition error"
+      },
+      "EmptyResponse": {
+        "description": "The resource was deleted"
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
