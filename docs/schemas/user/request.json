@@ -1,0 +1,86 @@
+{
+    "type": "object",
+    "required": ["fullName", "email", "password", "specialisation", "facility"],
+    "properties": {
+        "fullName": {
+            "type": "string"
+        },
+        "email": {
+            "type": "string",
+            "format": "email"
+        },
+        "password": {
+            "type": "string",
+            "format": "password"
+        },
+        "phoneNumber": {
+            "type": "string"
+        },
+        "avatar": {
+            "type": "string",
+            "format": "uri",
+            "default": "https://res.cloudinary.com/chriscloud1109/image/upload/v1651629584/media/default_gr1p4q.jpg"
+        },
+        "role": {
+            "type": "string",
+            "enum": ["admin", "patient", "doctor"],
+            "default": "patient"
+        },
+        "descriptions": {
+            "type": "string",
+            "description": "The descriptions must be for `role` is 'doctor' only."
+        },
+        "specialisation": {
+            "type": "string",
+            "description": "The specialisation must be for `role` is 'doctor' only."
+        },
+        "unavailableTime": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "date": {
+                        "type": "string",
+                        "format": "Date"
+                    },
+                    "time": {
+                        "type": "string"
+                    }
+                }
+            },
+            "description": "The specialisation must be for `role` is 'doctor' only."
+        },
+        "facility": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The specialisation must be for `role` is 'doctor' only."
+        },
+        "healthInfor": {
+            "type": "object",
+            "properties": {
+                "bmiAndBsa": {
+                    "type": "string"
+                },
+                "bloodPressure": {
+                    "type": "string"
+                },
+                "temprature": {
+                    "type": "string"
+                }
+            },
+            "description": "The specialisation must be for `role` is 'patient' only."
+        }
+    },
+    "example": {
+        "fullName": "Van C",
+        "email": "vanc@gmail.com",
+        "avatar": "https://res.cloudinary.com/chriscloud1109/image/upload/v1651629584/media/default_gr1p4q.jpg",
+        "role": "patient",
+        "password": "123456",
+        "healthInfor": {
+            "bmiAndBsa": "1",
+            "bloodPressure": "2",
+            "temprature": "3"
+        }
+    }
+}

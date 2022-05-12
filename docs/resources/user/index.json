@@ -1,0 +1,169 @@
+{
+    "get": {
+        "summary": "Return a list of the user",
+        "tags": ["User"],
+        "parameters": [
+            {
+                "$ref": "../../parameters/page.json"
+            },
+            {
+                "$ref": "../../parameters/limit.json"
+            },
+            {
+                "$ref": "../../parameters/start.json"
+            },
+            {
+                "$ref": "../../parameters/end.json"
+            },
+            {
+                "$ref": "../../parameters/search.json"
+            },
+            {
+                "$ref": "../../parameters/fields.json"
+            },
+            {
+                "$ref": "../../parameters/expand.json"
+            },
+            {
+                "$ref": "../../parameters/sort.json"
+            },
+            {
+                "in": "query",
+                "name": "email",
+                "schema": {
+                    "type": "string",
+                    "format": "email"
+                }
+            },
+            {
+                "in": "query",
+                "name": "fullName",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "in": "query",
+                "name": "phoneNumber",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "in": "query",
+                "name": "specialisation",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "in": "query",
+                "name": "descriptions",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "in": "query",
+                "name": "role",
+                "schema": {
+                    "type": "string",
+                    "enum": ["admin", "doctor", "patient"]
+                }
+            },
+            {
+                "in": "query",
+                "name": "email_(gte|gt|lte|lt|ne)",
+                "schema": {
+                    "type": "string",
+                    "format": "email"
+                }
+            },
+            {
+                "in": "query",
+                "name": "fullName_(gte|gt|lte|lt|ne)",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "in": "query",
+                "name": "phoneNumber_(gte|gt|lte|lt|ne)",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "in": "query",
+                "name": "email_(gte|gt|lte|lt|ne)",
+                "schema": {
+                    "type": "string",
+                    "format": "email"
+                }
+            },
+            {
+                "in": "query",
+                "name": "specialisation_(gte|gt|lte|lt|ne)",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "in": "query",
+                "name": "descriptions_(gte|gt|lte|lt|ne)",
+                "schema": {
+                    "type": "string"
+                }
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "A list of the user",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "../../schemas/user/response.json"
+                            }
+                        }
+                    }
+                }
+            },
+            "default": {
+                "$ref": "../../responses/unexpected-error.json"
+            }
+        }
+    },
+    "post": {
+        "summary": "Create new user",
+        "tags": ["User"],
+        "security": {
+            "BearerAuth": ["admin"]
+        },
+        "requestBody": {
+            "$ref": "../../requests/user.json"
+        },
+        "responses": {
+            "201": {
+                "description": "Created",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "../../schemas/user/response.json"
+                        }
+                    }
+                }
+            },
+            "400": {
+                "$ref": "../../responses/validation-error.json"
+            },
+            "401": {
+                "$ref": "../../responses/unauthorized-error.json"
+            },
+            "default": {
+                "$ref": "../../responses/unexpected-error.json"
+            }
+        }
+    }
+}

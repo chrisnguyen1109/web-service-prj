@@ -13,25 +13,25 @@
   ],
   "tags": [
     {
-      "facility": {
+      "Facility": {
         "name": "Facility",
         "description": "Facility Management API"
       }
     },
     {
-      "user": {
+      "User": {
         "name": "User",
         "description": "User Management API"
       }
     },
     {
-      "assignment": {
+      "Assignment": {
         "name": "Assignment",
         "description": "Assignment Management API"
       }
     },
     {
-      "auth": {
+      "Auth": {
         "name": "Auth",
         "description": "Authentication Management API"
       }
@@ -42,7 +42,7 @@
       "get": {
         "summary": "Return a list of the facilities",
         "tags": [
-          "facility"
+          "Facility"
         ],
         "parameters": [
           {
@@ -120,7 +120,7 @@
       "post": {
         "summary": "Create new facility",
         "tags": [
-          "facility"
+          "Facility"
         ],
         "security": {
           "BearerAuth": [
@@ -169,7 +169,7 @@
       "get": {
         "summary": "Return the facility by id",
         "tags": [
-          "facility"
+          "Facility"
         ],
         "parameters": [
           {
@@ -201,7 +201,7 @@
       "patch": {
         "summary": "Update the facility by id",
         "tags": [
-          "facility"
+          "Facility"
         ],
         "security": {
           "BearerAuth": [
@@ -239,7 +239,7 @@
       "delete": {
         "summary": "Remove the facility by id",
         "tags": [
-          "facility"
+          "Facility"
         ],
         "security": {
           "BearerAuth": [
@@ -266,7 +266,7 @@
       "get": {
         "summary": "Return a list of the facilities within distance",
         "tags": [
-          "facility"
+          "Facility"
         ],
         "parameters": [
           {
@@ -321,7 +321,7 @@
       "get": {
         "summary": "Return a list of the assignments",
         "tags": [
-          "assignment"
+          "Assignment"
         ],
         "parameters": [
           {
@@ -391,7 +391,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/paths/~1assignment/post/responses/201/content/application~1json/schema"
+                    "$ref": "#/components/schemas/assignmentRes"
                   }
                 }
               }
@@ -405,71 +405,10 @@
       "post": {
         "summary": "Create new assignment",
         "tags": [
-          "assignment"
+          "Assignment"
         ],
         "requestBody": {
-          "description": "A request body for Assignment",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "patient",
-                  "doctor",
-                  "assignmentTime"
-                ],
-                "properties": {
-                  "patient": {
-                    "type": "string",
-                    "format": "uuid"
-                  },
-                  "doctor": {
-                    "type": "string",
-                    "format": "uuid"
-                  },
-                  "notes": {
-                    "type": "string"
-                  },
-                  "status": {
-                    "type": "string",
-                    "enum": [
-                      "pending",
-                      "completed"
-                    ],
-                    "default": "pending"
-                  },
-                  "assignmentTime": {
-                    "type": "object",
-                    "properties": {
-                      "date": {
-                        "type": "string",
-                        "format": "date"
-                      },
-                      "time": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                },
-                "example": {
-                  "patient": "6277ec1d00c9fbcb3a8bb81a",
-                  "doctor": "6277eef600c9fbcb3a8bb824",
-                  "notes": "test notes",
-                  "status": "pending",
-                  "assignmentTime": {
-                    "date": "2022-06-13T00:00:00.000Z",
-                    "time": "13:00"
-                  }
-                }
-              }
-            },
-            "application/x-www-form-urlencoded": {
-              "schema": {
-                "$ref": "#/paths/~1assignment/post/requestBody/content/application~1json/schema"
-              }
-            }
-          }
+          "$ref": "#/components/requestBodies/assignmentBody"
         },
         "responses": {
           "201": {
@@ -477,65 +416,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "_id": {
-                      "type": "string",
-                      "format": "uuid"
-                    },
-                    "patient": {
-                      "type": "string",
-                      "format": "uuid"
-                    },
-                    "doctor": {
-                      "type": "string",
-                      "format": "uuid"
-                    },
-                    "notes": {
-                      "type": "string"
-                    },
-                    "status": {
-                      "type": "string",
-                      "enum": [
-                        "pending",
-                        "completed"
-                      ],
-                      "default": "pending"
-                    },
-                    "assignmentTime": {
-                      "type": "object",
-                      "properties": {
-                        "date": {
-                          "type": "string",
-                          "format": "date"
-                        },
-                        "time": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "createdAt": {
-                      "type": "string",
-                      "format": "date"
-                    },
-                    "updatedAt": {
-                      "type": "string",
-                      "format": "date"
-                    }
-                  },
-                  "example": {
-                    "assignmentTime": {
-                      "date": "2022-06-13T00:00:00.000Z",
-                      "time": "13:00"
-                    },
-                    "_id": "6277effb00c9fbcb3a8bb829",
-                    "patient": "6277ec1d00c9fbcb3a8bb81a",
-                    "doctor": "6277eef600c9fbcb3a8bb824",
-                    "notes": "fwefwewef",
-                    "status": "pending",
-                    "createdAt": "2022-05-08T16:29:47.195Z",
-                    "updatedAt": "2022-05-08T16:29:47.195Z"
-                  }
+                  "$ref": "#/components/schemas/assignmentRes"
                 }
               }
             }
@@ -565,7 +446,7 @@
       "get": {
         "summary": "Return the assignment by id",
         "tags": [
-          "assignment"
+          "Assignment"
         ],
         "parameters": [
           {
@@ -581,7 +462,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/paths/~1assignment/post/responses/201/content/application~1json/schema"
+                  "$ref": "#/components/schemas/assignmentRes"
                 }
               }
             }
@@ -597,7 +478,7 @@
       "patch": {
         "summary": "Update the assignment by id",
         "tags": [
-          "assignment"
+          "Assignment"
         ],
         "security": {
           "BearerAuth": [
@@ -606,7 +487,7 @@
           ]
         },
         "requestBody": {
-          "$ref": "#/paths/~1assignment/post/requestBody"
+          "$ref": "#/components/requestBodies/assignmentBody"
         },
         "responses": {
           "200": {
@@ -614,7 +495,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/paths/~1assignment/post/responses/201/content/application~1json/schema"
+                  "$ref": "#/components/schemas/assignmentRes"
                 }
               }
             }
@@ -636,11 +517,299 @@
       "delete": {
         "summary": "Remove the assignment by id",
         "tags": [
-          "assignment"
+          "Assignment"
         ],
         "responses": {
           "204": {
             "$ref": "#/components/responses/EmptyResponse"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "summary": "Return a list of the user",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/start"
+          },
+          {
+            "$ref": "#/components/parameters/end"
+          },
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "$ref": "#/components/parameters/fields"
+          },
+          {
+            "$ref": "#/components/parameters/expand"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "in": "query",
+            "name": "email",
+            "schema": {
+              "type": "string",
+              "format": "email"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fullName",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "phoneNumber",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "specialisation",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "descriptions",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "role",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "admin",
+                "doctor",
+                "patient"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "email_(gte|gt|lte|lt|ne)",
+            "schema": {
+              "type": "string",
+              "format": "email"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fullName_(gte|gt|lte|lt|ne)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "phoneNumber_(gte|gt|lte|lt|ne)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "email_(gte|gt|lte|lt|ne)",
+            "schema": {
+              "type": "string",
+              "format": "email"
+            }
+          },
+          {
+            "in": "query",
+            "name": "specialisation_(gte|gt|lte|lt|ne)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "descriptions_(gte|gt|lte|lt|ne)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of the user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/userRes"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create new user",
+        "tags": [
+          "User"
+        ],
+        "security": {
+          "BearerAuth": [
+            "admin"
+          ]
+        },
+        "requestBody": {
+          "$ref": "#/components/requestBodies/userBody"
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userRes"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true,
+          "description": "The user ID"
+        }
+      ],
+      "get": {
+        "summary": "Return the user by id",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/fields"
+          },
+          {
+            "$ref": "#/components/parameters/expand"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A user by id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userRes"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update the user by id",
+        "tags": [
+          "User"
+        ],
+        "security": {
+          "BearerAuth": [
+            "admin"
+          ]
+        },
+        "requestBody": {
+          "$ref": "#/components/requestBodies/userBody"
+        },
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userRes"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove the user by id",
+        "tags": [
+          "user"
+        ],
+        "security": {
+          "BearerAuth": [
+            "admin"
+          ]
+        },
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/EmptyResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
@@ -762,6 +931,293 @@
           "createdAt": "2022-05-06T18:04:16.092Z",
           "updatedAt": "2022-05-06T18:04:16.092Z"
         }
+      },
+      "assignmentReq": {
+        "type": "object",
+        "required": [
+          "patient",
+          "doctor",
+          "assignmentTime"
+        ],
+        "properties": {
+          "patient": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "doctor": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "completed"
+            ],
+            "default": "pending"
+          },
+          "assignmentTime": {
+            "type": "object",
+            "properties": {
+              "date": {
+                "type": "string",
+                "format": "date"
+              },
+              "time": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "example": {
+          "patient": "6277ec1d00c9fbcb3a8bb81a",
+          "doctor": "6277eef600c9fbcb3a8bb824",
+          "notes": "test notes",
+          "status": "pending",
+          "assignmentTime": {
+            "date": "2022-06-13T00:00:00.000Z",
+            "time": "13:00"
+          }
+        }
+      },
+      "assignmentRes": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "patient": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "doctor": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "completed"
+            ]
+          },
+          "assignmentTime": {
+            "type": "object",
+            "properties": {
+              "date": {
+                "type": "string",
+                "format": "date"
+              },
+              "time": {
+                "type": "string"
+              }
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "example": {
+          "assignmentTime": {
+            "date": "2022-06-13T00:00:00.000Z",
+            "time": "13:00"
+          },
+          "_id": "6277effb00c9fbcb3a8bb829",
+          "patient": "6277ec1d00c9fbcb3a8bb81a",
+          "doctor": "6277eef600c9fbcb3a8bb824",
+          "notes": "fwefwewef",
+          "status": "pending",
+          "createdAt": "2022-05-08T16:29:47.195Z",
+          "updatedAt": "2022-05-08T16:29:47.195Z"
+        }
+      },
+      "userReq": {
+        "type": "object",
+        "required": [
+          "fullName",
+          "email",
+          "password",
+          "specialisation",
+          "facility"
+        ],
+        "properties": {
+          "fullName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "format": "password"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string",
+            "format": "uri",
+            "default": "https://res.cloudinary.com/chriscloud1109/image/upload/v1651629584/media/default_gr1p4q.jpg"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "admin",
+              "patient",
+              "doctor"
+            ],
+            "default": "patient"
+          },
+          "descriptions": {
+            "type": "string",
+            "description": "The descriptions must be for `role` is 'doctor' only."
+          },
+          "specialisation": {
+            "type": "string",
+            "description": "The specialisation must be for `role` is 'doctor' only."
+          },
+          "unavailableTime": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "format": "Date"
+                },
+                "time": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "The specialisation must be for `role` is 'doctor' only."
+          },
+          "facility": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The specialisation must be for `role` is 'doctor' only."
+          },
+          "healthInfor": {
+            "type": "object",
+            "properties": {
+              "bmiAndBsa": {
+                "type": "string"
+              },
+              "bloodPressure": {
+                "type": "string"
+              },
+              "temprature": {
+                "type": "string"
+              }
+            },
+            "description": "The specialisation must be for `role` is 'patient' only."
+          }
+        },
+        "example": {
+          "fullName": "Van C",
+          "email": "vanc@gmail.com",
+          "avatar": "https://res.cloudinary.com/chriscloud1109/image/upload/v1651629584/media/default_gr1p4q.jpg",
+          "role": "patient",
+          "password": "123456",
+          "healthInfor": {
+            "bmiAndBsa": "1",
+            "bloodPressure": "2",
+            "temprature": "3"
+          }
+        }
+      },
+      "userRes": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "fullName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string",
+            "format": "uri"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "admin",
+              "patient",
+              "doctor"
+            ]
+          },
+          "descriptions": {
+            "type": "string"
+          },
+          "specialisation": {
+            "type": "string"
+          },
+          "unavailableTime": {
+            "type": "object"
+          },
+          "facility": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "healthInfor": {
+            "type": "object",
+            "properties": {
+              "bmiAndBsa": {
+                "type": "string"
+              },
+              "bloodPressure": {
+                "type": "string"
+              },
+              "temprature": {
+                "type": "string"
+              }
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "example": {
+          "_id": "6279395f041ad2609c7c9d67",
+          "fullName": "Van C",
+          "email": "vanc@gmail.com",
+          "avatar": "https://res.cloudinary.com/chriscloud1109/image/upload/v1651629584/media/default_gr1p4q.jpg",
+          "role": "patient",
+          "createdAt": "2022-05-09T15:55:11.421Z",
+          "updatedAt": "2022-05-11T18:00:00.016Z",
+          "healthInfor": {
+            "bmiAndBsa": "1",
+            "bloodPressure": "2",
+            "temprature": "3"
+          }
+        }
       }
     },
     "requestBodies": {
@@ -777,6 +1233,38 @@
           "application/x-www-form-urlencoded": {
             "schema": {
               "$ref": "#/components/schemas/facilityReq"
+            }
+          }
+        }
+      },
+      "assignmentBody": {
+        "description": "A request body for Assignment",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/assignmentReq"
+            }
+          },
+          "application/x-www-form-urlencoded": {
+            "schema": {
+              "$ref": "#/components/schemas/assignmentReq"
+            }
+          }
+        }
+      },
+      "userBody": {
+        "description": "A request body for User",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/userReq"
+            }
+          },
+          "application/x-www-form-urlencoded": {
+            "schema": {
+              "$ref": "#/components/schemas/userReq"
             }
           }
         }

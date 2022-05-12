@@ -37,5 +37,23 @@
             }
         ],
         "$ref": "./assignment/id.json"
+    },
+    "/user": {
+        "$ref": "./user/index.json"
+    },
+    "/user/{id}": {
+        "parameters": [
+            {
+                "in": "path",
+                "name": "id",
+                "schema": {
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "required": true,
+                "description": "The user ID"
+            }
+        ],
+        "$ref": "./user/id.json"
     }
 }

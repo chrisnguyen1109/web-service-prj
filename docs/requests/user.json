@@ -1,0 +1,16 @@
+{
+    "description": "A request body for User",
+    "required": true,
+    "content": {
+        "application/json": {
+            "schema": {
+                "$ref": "../schemas/user/request.json"
+            }
+        },
+        "application/x-www-form-urlencoded": {
+            "schema": {
+                "$ref": "../schemas/user/request.json"
+            }
+        }
+    }
+}

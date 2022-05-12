@@ -18,8 +18,7 @@
         },
         "status": {
             "type": "string",
-            "enum": ["pending", "completed"],
-            "default": "pending"
+            "enum": ["pending", "completed"]
         },
         "assignmentTime": {
             "type": "object",

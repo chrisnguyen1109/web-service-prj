@@ -1,5 +1,11 @@
 {
     "facilityBody": {
         "$ref": "./facility.json"
+    },
+    "assignmentBody": {
+        "$ref": "./assignment.json"
+    },
+    "userBody": {
+        "$ref": "./user.json"
     }
 }

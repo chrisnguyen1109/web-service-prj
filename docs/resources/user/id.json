@@ -1,0 +1,87 @@
+{
+    "get": {
+        "summary": "Return the user by id",
+        "tags": ["User"],
+        "parameters": [
+            {
+                "$ref": "../../parameters/fields.json"
+            },
+            {
+                "$ref": "../../parameters/expand.json"
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "A user by id",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "../../schemas/user/response.json"
+                        }
+                    }
+                }
+            },
+            "404": {
+                "$ref": "../../responses/not-found.json"
+            },
+            "default": {
+                "$ref": "../../responses/unexpected-error.json"
+            }
+        }
+    },
+    "patch": {
+        "summary": "Update the user by id",
+        "tags": ["User"],
+        "security": {
+            "BearerAuth": ["admin"]
+        },
+        "requestBody": {
+            "$ref": "../../requests/user.json"
+        },
+        "responses": {
+            "200": {
+                "description": "Updated",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "../../schemas/user/response.json"
+                        }
+                    }
+                }
+            },
+            "400": {
+                "$ref": "../../responses/validation-error.json"
+            },
+            "401": {
+                "$ref": "../../responses/unauthorized-error.json"
+            },
+            "404": {
+                "$ref": "../../responses/not-found.json"
+            },
+            "default": {
+                "$ref": "../../responses/unexpected-error.json"
+            }
+        }
+    },
+    "delete": {
+        "summary": "Remove the user by id",
+        "tags": ["user"],
+        "security": {
+            "BearerAuth": ["admin"]
+        },
+        "responses": {
+            "204": {
+                "$ref": "../../responses/empty-response.json"
+            },
+            "401": {
+                "$ref": "../../responses/unauthorized-error.json"
+            },
+            "404": {
+                "$ref": "../../responses/not-found.json"
+            },
+            "default": {
+                "$ref": "../../responses/unexpected-error.json"
+            }
+        }
+    }
+}

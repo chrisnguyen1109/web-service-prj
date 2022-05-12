@@ -4,5 +4,17 @@
     },
     "facilityRes": {
         "$ref": "./facility/response.json"
+    },
+    "assignmentReq": {
+        "$ref": "./assignment/request.json"
+    },
+    "assignmentRes": {
+        "$ref": "./assignment/response.json"
+    },
+    "userReq": {
+        "$ref": "./user/request.json"
+    },
+    "userRes": {
+        "$ref": "./user/response.json"
     }
 }

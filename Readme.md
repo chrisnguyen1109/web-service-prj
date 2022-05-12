@@ -2,7 +2,7 @@
 
 ### [View demo](https://web-service-ptit.herokuapp.com)
 
-### [Explore the docs >>](https://web-service-ptit.herokuapp.com/docs) (In progress)
+### [Explore the API docs](https://web-service-ptit.herokuapp.com/docs) (In progress)
 
 ## Getting Started
 
