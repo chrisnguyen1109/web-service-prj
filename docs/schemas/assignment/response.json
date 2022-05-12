@@ -1,0 +1,58 @@
+{
+    "type": "object",
+    "properties": {
+        "_id": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "patient": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "doctor": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "notes": {
+            "type": "string"
+        },
+        "status": {
+            "type": "string",
+            "enum": ["pending", "completed"],
+            "default": "pending"
+        },
+        "assignmentTime": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "time": {
+                    "type": "string"
+                }
+            }
+        },
+        "createdAt": {
+            "type": "string",
+            "format": "date"
+        },
+        "updatedAt": {
+            "type": "string",
+            "format": "date"
+        }
+    },
+    "example": {
+        "assignmentTime": {
+            "date": "2022-06-13T00:00:00.000Z",
+            "time": "13:00"
+        },
+        "_id": "6277effb00c9fbcb3a8bb829",
+        "patient": "6277ec1d00c9fbcb3a8bb81a",
+        "doctor": "6277eef600c9fbcb3a8bb824",
+        "notes": "fwefwewef",
+        "status": "pending",
+        "createdAt": "2022-05-08T16:29:47.195Z",
+        "updatedAt": "2022-05-08T16:29:47.195Z"
+    }
+}

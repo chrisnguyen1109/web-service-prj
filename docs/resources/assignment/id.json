@@ -1,0 +1,81 @@
+{
+    "get": {
+        "summary": "Return the assignment by id",
+        "tags": ["Assignment"],
+        "parameters": [
+            {
+                "$ref": "../../parameters/fields.json"
+            },
+            {
+                "$ref": "../../parameters/expand.json"
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "A assignment by id",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "../../schemas/assignment/response.json"
+                        }
+                    }
+                }
+            },
+            "404": {
+                "$ref": "../../responses/not-found.json"
+            },
+            "default": {
+                "$ref": "../../responses/unexpected-error.json"
+            }
+        }
+    },
+    "patch": {
+        "summary": "Update the assignment by id",
+        "tags": ["Assignment"],
+        "security": {
+            "BearerAuth": ["admin", "doctor"]
+        },
+        "requestBody": {
+            "$ref": "../../requests/assignment.json"
+        },
+        "responses": {
+            "200": {
+                "description": "Updated",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "../../schemas/assignment/response.json"
+                        }
+                    }
+                }
+            },
+            "400": {
+                "$ref": "../../responses/validation-error.json"
+            },
+            "401": {
+                "$ref": "../../responses/unauthorized-error.json"
+            },
+            "404": {
+                "$ref": "../../responses/not-found.json"
+            },
+            "default": {
+                "$ref": "../../responses/unexpected-error.json"
+            }
+        }
+    },
+    "delete": {
+        "summary": "Remove the assignment by id",
+        "tags": ["Assignment"],
+        "responses": {
+            "204": {
+                "$ref": "../../responses/empty-response.json"
+            },
+            "404": {
+                "$ref": "../../responses/not-found.json"
+            },
+            "default": {
+                "$ref": "../../responses/unexpected-error.json"
+            }
+        }
+    }
+}

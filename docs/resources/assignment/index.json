@@ -1,7 +1,7 @@
 {
     "get": {
-        "summary": "Return a list of the facilities",
-        "tags": ["facility"],
+        "summary": "Return a list of the assignments",
+        "tags": ["Assignment"],
         "parameters": [
             {
                 "$ref": "../../parameters/page.json"
@@ -29,42 +29,45 @@
             },
             {
                 "in": "query",
-                "name": "address",
+                "name": "status",
+                "schema": {
+                    "type": "string",
+                    "enum": ["pending", "completed"]
+                }
+            },
+            {
+                "in": "query",
+                "name": "assignmentTime.time",
                 "schema": {
                     "type": "string"
                 }
             },
             {
                 "in": "query",
-                "name": "name",
+                "name": "assignmentTime.date",
                 "schema": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date"
                 }
             },
             {
                 "in": "query",
-                "name": "address_(gte|gt|lte|lt|ne)",
+                "name": "assignmentTime.date_(gte|gt|lte|lt|ne)",
                 "schema": {
-                    "type": "string"
-                }
-            },
-            {
-                "in": "query",
-                "name": "name_(gte|gt|lte|lt|ne)",
-                "schema": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "date"
                 }
             }
         ],
         "responses": {
             "200": {
-                "description": "A list of the facilities",
+                "description": "A list of the assignments",
                 "content": {
                     "application/json": {
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "../../schemas/facility/response.json"
+                                "$ref": "../../schemas/assignment/response.json"
                             }
                         }
                     }
@@ -76,13 +79,10 @@
         }
     },
     "post": {
-        "summary": "Create new facility",
-        "tags": ["facility"],
-        "security": {
-            "BearerAuth": ["admin"]
-        },
+        "summary": "Create new assignment",
+        "tags": ["Assignment"],
         "requestBody": {
-            "$ref": "../../requests/facility.json"
+            "$ref": "../../requests/assignment.json"
         },
         "responses": {
             "201": {
@@ -90,16 +90,13 @@
                 "content": {
                     "application/json": {
                         "schema": {
-                            "$ref": "../../schemas/facility/response.json"
+                            "$ref": "../../schemas/assignment/response.json"
                         }
                     }
                 }
             },
             "400": {
                 "$ref": "../../responses/validation-error.json"
-            },
-            "401": {
-                "$ref": "../../responses/unauthorized-error.json"
             },
             "default": {
                 "$ref": "../../responses/unexpected-error.json"

@@ -1,7 +1,7 @@
 {
     "get": {
         "summary": "Return the facility by id",
-        "tags": ["facility"],
+        "tags": ["Facility"],
         "parameters": [
             {
                 "$ref": "../../parameters/fields.json"
@@ -31,7 +31,7 @@
     },
     "patch": {
         "summary": "Update the facility by id",
-        "tags": ["facility"],
+        "tags": ["Facility"],
         "security": {
             "BearerAuth": ["admin"]
         },
@@ -65,7 +65,7 @@
     },
     "delete": {
         "summary": "Remove the facility by id",
-        "tags": ["facility"],
+        "tags": ["Facility"],
         "security": {
             "BearerAuth": ["admin"]
         },

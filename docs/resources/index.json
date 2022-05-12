@@ -19,5 +19,23 @@
     },
     "/facilities-within/{distance}/center/lat/{lat}/lng/{lng}": {
         "$ref": "./facility/tour-within.json"
+    },
+    "/assignment": {
+        "$ref": "./assignment/index.json"
+    },
+    "/assignment/{id}": {
+        "parameters": [
+            {
+                "in": "path",
+                "name": "id",
+                "schema": {
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "required": true,
+                "description": "The assignment ID"
+            }
+        ],
+        "$ref": "./assignment/id.json"
     }
 }

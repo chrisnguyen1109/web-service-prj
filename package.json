@@ -6,7 +6,7 @@
     "scripts": {
         "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json && cp src/config/keys -r build/config/",
         "start": "node build/server.js",
-        "build:swagger": "swagger-cli bundle ./swagger/openapi.json --outfile ./src/swagger/openapi-final.json --type json",
+        "build:swagger": "swagger-cli bundle ./docs/openapi.json --outfile ./src/docs/openapi.json --type json",
         "dev": "SET NODE_ENV=development&&nodemon",
         "prod": "SET NODE_ENV=production&&nodemon"
     },

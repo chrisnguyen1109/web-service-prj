@@ -1,21 +1,21 @@
 [
     {
-        "facility": {
+        "Facility": {
             "$ref": "./facility.json"
         }
     },
     {
-        "user": {
+        "User": {
             "$ref": "./user.json"
         }
     },
     {
-        "assignment": {
+        "Assignment": {
             "$ref": "./assignment.json"
         }
     },
     {
-        "auth": {
+        "Auth": {
             "$ref": "./auth.json"
         }
     }
