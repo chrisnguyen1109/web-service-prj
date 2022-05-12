@@ -65,7 +65,7 @@
     },
     "delete": {
         "summary": "Remove the user by id",
-        "tags": ["user"],
+        "tags": ["User"],
         "security": {
             "BearerAuth": ["admin"]
         },
