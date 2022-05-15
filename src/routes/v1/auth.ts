@@ -3,7 +3,6 @@ import {
     getMe,
     getMyAssignments,
     login,
-    loginOAuth,
     logout,
     refreshToken,
     register,
@@ -40,7 +39,8 @@ authRouter.post(
     celebrate({
         [Segments.BODY]: schemaAuthLogin,
     }),
-    login
+    passport.authenticate('local', { session: false }),
+    login(AuthType.LOCAL)
 );
 
 authRouter.get(
@@ -48,14 +48,14 @@ authRouter.get(
     passport.authenticate('facebook', { scope: ['email'] })
 );
 
-authRouter.get('/login-facebook/callback', loginOAuth(AuthType.FACEBOOK));
+authRouter.get('/login-facebook/callback', login(AuthType.FACEBOOK));
 
 authRouter.get(
     '/login-google',
     passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
-authRouter.get('/login-google/callback', loginOAuth(AuthType.GOOGLE));
+authRouter.get('/login-google/callback', login(AuthType.GOOGLE));
 
 authRouter.post(
     '/refresh-token',

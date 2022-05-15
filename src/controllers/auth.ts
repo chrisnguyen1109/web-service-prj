@@ -1,7 +1,5 @@
 import { RESPONSE_MESSAGE } from '@/config';
 import {
-    checkLogin,
-    findAndCreateOauthUser,
     findAndUpdateUser,
     generateAccessToken,
     generateRefreshToken,
@@ -34,28 +32,12 @@ export const register = catchAsync(async (req, res) => {
     });
 });
 
-export const login = catchAsync(async (req, res) => {
-    const { email, password } = req.body;
-
-    const user = await checkLogin({ email, password });
-
-    const accessToken = await generateAccessToken({ id: user._id });
-    const refreshToken = await generateRefreshToken({ id: user._id });
-
-    res.status(OK).json({
-        message: RESPONSE_MESSAGE,
-        data: {
-            user,
-            accessToken,
-            refreshToken,
-        },
-    });
-});
-
-export const loginOAuth = (authType: Exclude<AuthType, AuthType.LOCAL>) =>
+export const login = (authType: AuthType) =>
     catchAsync(async (req, res, next) => {
-        passport.authenticate(authType, async (_error, passportUser) => {
-            const user = await findAndCreateOauthUser(passportUser);
+        passport.authenticate(authType, async (error, user) => {
+            if (error) {
+                return next(error);
+            }
 
             const accessToken = await generateAccessToken({ id: user?._id });
             const refreshToken = await generateRefreshToken({ id: user?._id });

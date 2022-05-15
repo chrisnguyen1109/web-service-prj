@@ -4,12 +4,33 @@ import {
     GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET,
 } from '@/config';
+import { User } from '@/models';
+import { checkLogin, newUser } from '@/services';
 import { AuthType } from '@/types';
 import passport from 'passport';
 import { Strategy as FacebookStrategy } from 'passport-facebook';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import { Strategy as LocalStrategy } from 'passport-local';
 
 export const loadPassports = () => {
+    passport.use(
+        new LocalStrategy(
+            {
+                usernameField: 'email',
+                passwordField: 'password',
+            },
+            async (email, password, done) => {
+                try {
+                    const user = await checkLogin({ email, password });
+
+                    done(null, user);
+                } catch (error) {
+                    done(error);
+                }
+            }
+        )
+    );
+
     passport.use(
         new FacebookStrategy(
             {
@@ -18,7 +39,7 @@ export const loadPassports = () => {
                 callbackURL: '/api/v1/auth/login-facebook/callback',
                 profileFields: ['id', 'emails', 'displayName', 'photos'],
             },
-            async (accessToken, refreshToken, profile, cb) => {
+            async (_accessToken, _refreshToken, profile, cb) => {
                 try {
                     const {
                         id,
@@ -29,13 +50,19 @@ export const loadPassports = () => {
                         },
                     } = profile._json;
 
-                    cb(null, {
-                        facebookId: id,
-                        email,
-                        fullName: name,
-                        avatar: url,
-                        authType: AuthType.FACEBOOK,
-                    });
+                    let user = await User.findOne({ email });
+
+                    if (!user) {
+                        user = await newUser({
+                            facebookId: id,
+                            email,
+                            fullName: name,
+                            avatar: url,
+                            authType: AuthType.FACEBOOK,
+                        } as any);
+                    }
+
+                    cb(null, user);
                 } catch (error) {
                     cb(error);
                 }
@@ -54,13 +81,19 @@ export const loadPassports = () => {
                 try {
                     const { sub, name, picture, email } = profile._json;
 
-                    cb(null, {
-                        googleId: sub,
-                        email,
-                        fullName: name,
-                        avatar: picture,
-                        authType: AuthType.GOOGLE,
-                    });
+                    let user = await User.findOne({ email });
+
+                    if (!user) {
+                        user = await newUser({
+                            googleId: sub,
+                            email,
+                            fullName: name,
+                            avatar: picture,
+                            authType: AuthType.GOOGLE,
+                        } as any);
+                    }
+
+                    cb(null, user);
                 } catch (error) {
                     cb(error as any);
                 }

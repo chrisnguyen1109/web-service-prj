@@ -6,7 +6,7 @@ import {
 } from '@/config';
 import { redisClient } from '@/loaders';
 import { User, UserDocument } from '@/models';
-import { IUser, OmitIsDelete, TokenType, UserRole } from '@/types';
+import { TokenType, UserRole } from '@/types';
 import {
     compareBcrypt,
     generateRandomToken,
@@ -20,7 +20,6 @@ import { BAD_REQUEST, NOT_FOUND, UNAUTHORIZED } from 'http-status';
 import jwt from 'jsonwebtoken';
 import path from 'path';
 import { promisify } from 'util';
-import { newUser } from './user';
 
 interface CheckLoginProps {
     email: string;
@@ -217,22 +216,4 @@ export const resetPasswordWithToken = async ({
     await redisClient.del(redisResetPasswordKey(user._id));
 
     return user;
-};
-
-export const findAndCreateOauthUser = async (
-    passportUser: OmitIsDelete<IUser>
-) => {
-    if (!passportUser) {
-        throw createHttpError(
-            BAD_REQUEST,
-            'An error occurred trying to log in with this service!'
-        );
-    }
-
-    const user = await User.findOne({ email: passportUser.email });
-    if (user) {
-        return user;
-    }
-
-    return newUser(passportUser);
 };
