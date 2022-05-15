@@ -3,6 +3,7 @@ import { IAssignment, OmitIsDelete, UserRole } from '@/types';
 import { getFilterData, getRecordData } from '@/utils';
 import { endOfDay, startOfDay } from 'date-fns';
 import createHttpError from 'http-errors';
+import { NOT_FOUND } from 'http-status';
 
 export const getFilterAssignment = (query: Record<string, any>) => {
     let objectQuery = {};
@@ -46,7 +47,7 @@ export const getAssignmentById = async (
     );
 
     if (!assignment) {
-        throw createHttpError(404, `No assignment with this id: ${id}`);
+        throw createHttpError(NOT_FOUND, `No assignment with this id: ${id}`);
     }
 
     return assignment;
@@ -74,7 +75,7 @@ export const findAndUpdateAssignment = async ({
     );
 
     if (!updateAssignment) {
-        throw createHttpError(404, `No assignment with this id: ${id}`);
+        throw createHttpError(NOT_FOUND, `No assignment with this id: ${id}`);
     }
 
     return updateAssignment;
@@ -86,7 +87,7 @@ export const softDeleteAssignment = async (id: string) => {
     });
 
     if (!deletedAssignment) {
-        throw createHttpError(404, `No assignment with this id: ${id}`);
+        throw createHttpError(NOT_FOUND, `No assignment with this id: ${id}`);
     }
 
     await User.findOneAndUpdate(

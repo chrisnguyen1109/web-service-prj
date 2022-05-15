@@ -8,6 +8,7 @@ import {
     softDeleteAssignment,
 } from '@/services';
 import { catchAsync } from '@/utils';
+import { CREATED, NO_CONTENT, OK } from 'http-status';
 
 export const getAssignments = catchAsync<AssignmentDocument[]>(
     async (req, res) => {
@@ -15,7 +16,7 @@ export const getAssignments = catchAsync<AssignmentDocument[]>(
             req.query as Record<string, any>
         );
 
-        res.status(200).json({
+        res.status(OK).json({
             message: RESPONSE_MESSAGE,
             data,
         });
@@ -31,7 +32,7 @@ export const getAssignment = catchAsync<AssignmentDocument>(
             req.query as Record<string, any>
         );
 
-        res.status(200).json({
+        res.status(OK).json({
             message: RESPONSE_MESSAGE,
             data,
         });
@@ -42,7 +43,7 @@ export const createAssignment = catchAsync<AssignmentDocument>(
     async (req, res) => {
         const assignment = await newAssignment(req.body);
 
-        res.status(201).json({
+        res.status(CREATED).json({
             message: RESPONSE_MESSAGE,
             data: {
                 record: assignment,
@@ -60,7 +61,7 @@ export const updateAssignment = catchAsync<AssignmentDocument>(
             body: req.body,
         });
 
-        res.status(200).json({
+        res.status(OK).json({
             message: RESPONSE_MESSAGE,
             data: {
                 record: assignment,
@@ -74,7 +75,7 @@ export const deleteAssignment = catchAsync(async (req, res) => {
 
     await softDeleteAssignment(id);
 
-    res.status(204).json({
+    res.status(NO_CONTENT).json({
         message: RESPONSE_MESSAGE,
     });
 });

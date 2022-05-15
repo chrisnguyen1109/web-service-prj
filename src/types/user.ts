@@ -6,6 +6,12 @@ export enum UserRole {
     ADMIN = 'admin',
 }
 
+export enum AuthType {
+    LOCAL = 'local',
+    GOOGLE = 'google',
+    FACEBOOK = 'facebook',
+}
+
 export interface HealthInfor {
     bmiAndBsa: string;
     bloodPressure: string;
@@ -24,4 +30,7 @@ export interface IUser extends IsDelete {
     unavailableTime?: UnavailableTime[];
     facility?: string;
     healthInfor?: HealthInfor;
+    authType: AuthType;
+    googleId?: string;
+    facebookId?: string;
 }

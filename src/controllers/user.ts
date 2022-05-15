@@ -9,11 +9,12 @@ import {
     updatePassword,
 } from '@/services';
 import { catchAsync } from '@/utils';
+import { CREATED, NO_CONTENT, OK } from 'http-status';
 
 export const getUsers = catchAsync<UserDocument[]>(async (req, res) => {
     const data = await getFilterUser(req.query as Record<string, any>);
 
-    res.status(200).json({
+    res.status(OK).json({
         message: RESPONSE_MESSAGE,
         data,
     });
@@ -24,7 +25,7 @@ export const getUser = catchAsync<UserDocument>(async (req, res) => {
 
     const data = await getUserById(id, req.query as Record<string, any>);
 
-    res.status(200).json({
+    res.status(OK).json({
         message: RESPONSE_MESSAGE,
         data,
     });
@@ -33,7 +34,7 @@ export const getUser = catchAsync<UserDocument>(async (req, res) => {
 export const createUser = catchAsync<UserDocument>(async (req, res) => {
     const user = await newUser(req.body);
 
-    res.status(201).json({
+    res.status(CREATED).json({
         message: RESPONSE_MESSAGE,
         data: {
             record: user,
@@ -55,7 +56,7 @@ export const updateUser = catchAsync<UserDocument>(async (req, res) => {
         await updatePassword({ user, password, newPassword });
     }
 
-    res.status(200).json({
+    res.status(OK).json({
         message: RESPONSE_MESSAGE,
         data: {
             record: user,
@@ -68,7 +69,7 @@ export const deleteUser = catchAsync(async (req, res) => {
 
     await softDeleteUser(id);
 
-    res.status(204).json({
+    res.status(NO_CONTENT).json({
         message: RESPONSE_MESSAGE,
     });
 });

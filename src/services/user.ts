@@ -3,6 +3,7 @@ import { FieldUserUpdate, IUser, OmitIsDelete, UserRole } from '@/types';
 import { getFilterData, getRecordData, omitValueObj } from '@/utils';
 import { startOfDay } from 'date-fns';
 import createHttpError from 'http-errors';
+import { FORBIDDEN, NOT_FOUND } from 'http-status';
 
 export const getFilterUser = (query: Record<string, any>) => {
     return getFilterData<UserDocument>(User, query, [
@@ -19,7 +20,7 @@ export const getUserById = async (id: string, query: Record<string, any>) => {
     const user = await getRecordData<UserDocument>(User, id, query);
 
     if (!user) {
-        throw createHttpError(404, `No user with this id: ${id}`);
+        throw createHttpError(NOT_FOUND, `No user with this id: ${id}`);
     }
 
     return user;
@@ -44,7 +45,7 @@ export const findAndUpdateUser = async ({
     const matchingUser = await User.findById(id);
 
     if (!matchingUser) {
-        throw createHttpError(404, `No user with this id: ${id}`);
+        throw createHttpError(NOT_FOUND, `No user with this id: ${id}`);
     }
 
     if (
@@ -52,7 +53,7 @@ export const findAndUpdateUser = async ({
         matchingUser.role !== UserRole.PATIENT
     ) {
         throw createHttpError(
-            403,
+            FORBIDDEN,
             'You do not have permission to perform this action!'
         );
     }
@@ -91,7 +92,7 @@ export const findAndUpdateUser = async ({
     );
 
     if (!updateUser) {
-        throw createHttpError(404, `No user with this id: ${id}`);
+        throw createHttpError(NOT_FOUND, `No user with this id: ${id}`);
     }
 
     return updateUser;
@@ -108,7 +109,7 @@ export const softDeleteUser = async (id: string) => {
 
     if (!deletedUser) {
         throw createHttpError(
-            404,
+            NOT_FOUND,
             `No user with this id: ${id} or this user is an admin!`
         );
     }

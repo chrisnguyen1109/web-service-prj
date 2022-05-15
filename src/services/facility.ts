@@ -2,6 +2,7 @@ import { Facility, FacilityDocument } from '@/models';
 import { IFacility, OmitIsDelete } from '@/types';
 import { getFilterData, getRecordData } from '@/utils';
 import createHttpError from 'http-errors';
+import { NOT_FOUND } from 'http-status';
 
 export const getFilterFacility = (query: Record<string, any>) => {
     return getFilterData<FacilityDocument>(Facility, query, [
@@ -17,7 +18,7 @@ export const getFacilityById = async (
     const facility = await getRecordData<FacilityDocument>(Facility, id, query);
 
     if (!facility) {
-        throw createHttpError(404, `No facility with this id: ${id}`);
+        throw createHttpError(NOT_FOUND, `No facility with this id: ${id}`);
     }
 
     return facility;
@@ -45,7 +46,7 @@ export const findAndUpdateFacility = async ({
     );
 
     if (!updateFacility) {
-        throw createHttpError(404, `No facility with this id: ${id}`);
+        throw createHttpError(NOT_FOUND, `No facility with this id: ${id}`);
     }
 
     return updateFacility;
@@ -57,7 +58,7 @@ export const softDeleteFacility = async (id: string) => {
     });
 
     if (!deletedFacility) {
-        throw createHttpError(404, `No facility with this id: ${id}`);
+        throw createHttpError(NOT_FOUND, `No facility with this id: ${id}`);
     }
 
     return deletedFacility;

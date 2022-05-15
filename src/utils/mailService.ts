@@ -14,6 +14,7 @@ import path from 'path';
 import ejs from 'ejs';
 import createHttpError from 'http-errors';
 import { htmlToText } from 'html-to-text';
+import { INTERNAL_SERVER_ERROR } from 'http-status';
 
 interface MailData {
     subject: string;
@@ -69,7 +70,7 @@ export class MailService {
             await transporter.sendMail(mailOptions);
         } catch (error) {
             throw createHttpError(
-                500,
+                INTERNAL_SERVER_ERROR,
                 'There was an error when sending the email. Try again later!'
             );
         }

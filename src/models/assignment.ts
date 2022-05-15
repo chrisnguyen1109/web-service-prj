@@ -2,6 +2,7 @@ import { AssignmentStatus, IAssignment, UserRole } from '@/types';
 import { trimmedStringType } from '@/utils';
 import { endOfDay, startOfDay } from 'date-fns';
 import createHttpError from 'http-errors';
+import { BAD_REQUEST, NOT_FOUND } from 'http-status';
 import mongoose, { Document, Model, Query, Schema } from 'mongoose';
 import { User } from './user';
 
@@ -81,7 +82,10 @@ assignmentSchema.pre('save', async function (next) {
         role: UserRole.PATIENT,
     });
     if (!matchingPatient) {
-        throw createHttpError(404, `No patient with this id: ${patientId}`);
+        throw createHttpError(
+            NOT_FOUND,
+            `No patient with this id: ${patientId}`
+        );
     }
 
     const matchingDoctor = await User.findOne({
@@ -89,7 +93,7 @@ assignmentSchema.pre('save', async function (next) {
         role: UserRole.DOCTOR,
     });
     if (!matchingDoctor) {
-        throw createHttpError(404, `No doctor with this id: ${doctorId}`);
+        throw createHttpError(NOT_FOUND, `No doctor with this id: ${doctorId}`);
     }
 
     const assignment = await Assignment.findOne({
@@ -101,7 +105,7 @@ assignmentSchema.pre('save', async function (next) {
         'assignmentTime.time': assignmentTime,
     });
     if (assignment) {
-        throw createHttpError(400, `This schedule has been existed!`);
+        throw createHttpError(BAD_REQUEST, `This schedule has been existed!`);
     }
 
     await User.findOneAndUpdate(

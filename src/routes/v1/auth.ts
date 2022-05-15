@@ -3,6 +3,7 @@ import {
     getMe,
     getMyAssignments,
     login,
+    loginOAuth,
     logout,
     refreshToken,
     register,
@@ -10,6 +11,7 @@ import {
     updateMe,
 } from '@/controllers';
 import { checkAuth } from '@/middlewares';
+import { AuthType } from '@/types';
 import {
     schemaAuthAuthorization,
     schemaAuthForgotPassword,
@@ -21,6 +23,7 @@ import {
 } from '@/validators';
 import { celebrate, Segments } from 'celebrate';
 import { Router } from 'express';
+import passport from 'passport';
 
 export const authRouter = Router();
 
@@ -39,6 +42,20 @@ authRouter.post(
     }),
     login
 );
+
+authRouter.get(
+    '/login-facebook',
+    passport.authenticate('facebook', { scope: ['email'] })
+);
+
+authRouter.get('/login-facebook/callback', loginOAuth(AuthType.FACEBOOK));
+
+authRouter.get(
+    '/login-google',
+    passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+
+authRouter.get('/login-google/callback', loginOAuth(AuthType.GOOGLE));
 
 authRouter.post(
     '/refresh-token',

@@ -6,7 +6,7 @@ import {
 } from '@/config';
 import { redisClient } from '@/loaders';
 import { User, UserDocument } from '@/models';
-import { TokenType, UserRole } from '@/types';
+import { IUser, OmitIsDelete, TokenType, UserRole } from '@/types';
 import {
     compareBcrypt,
     generateRandomToken,
@@ -16,9 +16,11 @@ import {
 } from '@/utils';
 import fs from 'fs';
 import createHttpError from 'http-errors';
+import { BAD_REQUEST, NOT_FOUND, UNAUTHORIZED } from 'http-status';
 import jwt from 'jsonwebtoken';
 import path from 'path';
 import { promisify } from 'util';
+import { newUser } from './user';
 
 interface CheckLoginProps {
     email: string;
@@ -28,12 +30,15 @@ interface CheckLoginProps {
 export const checkLogin = async ({ email, password }: CheckLoginProps) => {
     const user = await User.findOne({ email });
     if (!user) {
-        throw createHttpError(404, 'This email seems to no longer exist!');
+        throw createHttpError(
+            NOT_FOUND,
+            'This email seems to no longer exist!'
+        );
     }
 
     const passwordMatching = await compareBcrypt(password, user.password);
     if (!passwordMatching) {
-        throw createHttpError(400, 'Wrong password!');
+        throw createHttpError(BAD_REQUEST, 'Wrong password!');
     }
 
     return user;
@@ -52,7 +57,7 @@ export const updatePassword = async ({
 }: UpdatePasswordProps) => {
     const passwordMatching = await compareBcrypt(password, user.password);
     if (!passwordMatching) {
-        throw createHttpError(400, 'Wrong password!');
+        throw createHttpError(BAD_REQUEST, 'Wrong password!');
     }
 
     user.password = newPassword;
@@ -119,12 +124,15 @@ export const decodeToken = async (token: string) => {
 
     const user = await User.findById(id);
     if (!user) {
-        throw createHttpError(404, 'This email seems to no longer exist!');
+        throw createHttpError(
+            NOT_FOUND,
+            'This email seems to no longer exist!'
+        );
     }
 
     if (user.checkPasswordModified(iat)) {
         throw createHttpError(
-            401,
+            UNAUTHORIZED,
             'User recently changed password! Please log in again'
         );
     }
@@ -138,7 +146,7 @@ export const verifyRefreshToken = async (refreshToken: string) => {
     const token = await redisClient.get(redisRefreshTokenKey(id));
 
     if (!token || token !== refreshToken) {
-        throw createHttpError(401, 'Unauthorized!');
+        throw createHttpError(UNAUTHORIZED, 'Unauthorized!');
     }
 
     return id;
@@ -151,7 +159,10 @@ export const logoutMe = (userId: string) => {
 export const sendResetPasswordMail = async (email: string, host: string) => {
     const user = await User.findOne({ email });
     if (!user) {
-        throw createHttpError(404, 'This email seems to no longer exist!');
+        throw createHttpError(
+            NOT_FOUND,
+            'This email seems to no longer exist!'
+        );
     }
 
     const { token, hashToken } = await generateRandomToken();
@@ -184,17 +195,20 @@ export const resetPasswordWithToken = async ({
 }: ResetPasswordWithTokenProps) => {
     const resetToken = await redisClient.get(redisResetPasswordKey(userId));
     if (!resetToken) {
-        throw createHttpError(404, 'Invalid or expired password reset token');
+        throw createHttpError(
+            NOT_FOUND,
+            'Invalid or expired password reset token'
+        );
     }
 
     const tokenMatching = await compareBcrypt(token, resetToken);
     if (!tokenMatching) {
-        throw createHttpError(400, 'Wrong reset password token!');
+        throw createHttpError(BAD_REQUEST, 'Wrong reset password token!');
     }
 
     const user = await User.findById(userId);
     if (!user) {
-        throw createHttpError(404, 'This user seems to no longer exist!');
+        throw createHttpError(NOT_FOUND, 'This user seems to no longer exist!');
     }
 
     user.password = password;
@@ -203,4 +217,22 @@ export const resetPasswordWithToken = async ({
     await redisClient.del(redisResetPasswordKey(user._id));
 
     return user;
+};
+
+export const findAndCreateOauthUser = async (
+    passportUser: OmitIsDelete<IUser>
+) => {
+    if (!passportUser) {
+        throw createHttpError(
+            BAD_REQUEST,
+            'An error occurred trying to log in with this service!'
+        );
+    }
+
+    const user = await User.findOne({ email: passportUser.email });
+    if (user) {
+        return user;
+    }
+
+    return newUser(passportUser);
 };

@@ -4,6 +4,7 @@ import compression from 'compression';
 import cors from 'cors';
 import express, { Express } from 'express';
 import createHttpError from 'http-errors';
+import { NOT_FOUND } from 'http-status';
 import { connectDB } from './database';
 import { connectRedisDB } from './redisDatabase';
 
@@ -29,13 +30,18 @@ export const loadApp = async (app: Express) => {
 
     require('./jobs').loadJobs();
 
+    require('./passport').loadPassports();
+
     require('./routes').loadRoutes(app);
 
     require('./swagger').loadSwaggerDocs(app);
 
     app.all('*', (req, _res, next) => {
         next(
-            createHttpError(404, `Can't find ${req.originalUrl} on this server`)
+            createHttpError(
+                NOT_FOUND,
+                `Can't find ${req.originalUrl} on this server`
+            )
         );
     });
 

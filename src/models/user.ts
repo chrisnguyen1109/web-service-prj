@@ -1,4 +1,4 @@
-import { IUser, UserRole } from '@/types';
+import { AuthType, IUser, UserRole } from '@/types';
 import {
     checkMultipleWords,
     groupByDate,
@@ -11,6 +11,7 @@ import bcrypt from 'bcryptjs';
 import { DEFAULT_AVATAR, BCRYPT_SALT } from '@/config';
 import { Facility } from './facility';
 import createHttpError from 'http-errors';
+import { NOT_FOUND } from 'http-status';
 
 export interface UserDocument extends IUser, Document {
     checkPasswordModified: (jwtIat: number) => boolean;
@@ -36,7 +37,12 @@ const userSchema: Schema<UserDocument, UserModel> = new Schema(
         },
         password: {
             ...trimmedStringType,
-            required: [true, 'Password field must be required!'],
+            required: [
+                function (this: UserDocument) {
+                    return this.authType === AuthType.LOCAL;
+                },
+                'Password field must be required!',
+            ],
             minlength: [
                 6,
                 'Password must have more or equal than 6 characters!',
@@ -63,6 +69,22 @@ const userSchema: Schema<UserDocument, UserModel> = new Schema(
         },
         passwordModified: {
             type: Date,
+        },
+        authType: {
+            type: String,
+            enum: {
+                values: Object.values(AuthType),
+                message: `Type of auth is either: ${Object.values(
+                    AuthType
+                ).join(', ')}`,
+            },
+            default: AuthType.LOCAL,
+        },
+        googleId: {
+            ...trimmedStringType,
+        },
+        facebookId: {
+            ...trimmedStringType,
         },
         descriptions: {
             ...trimmedStringType,
@@ -165,7 +187,7 @@ userSchema.pre('save', async function (next) {
 
         if (!facility) {
             throw createHttpError(
-                404,
+                NOT_FOUND,
                 `No facility with this id: ${this.facility}`
             );
         }

@@ -8,6 +8,7 @@ import { ApiResponse } from '@/types';
 import { isCelebrateError } from 'celebrate';
 import { NextFunction, Request, Response } from 'express';
 import createHttpError from 'http-errors';
+import { BAD_REQUEST, INTERNAL_SERVER_ERROR, UNAUTHORIZED } from 'http-status';
 
 export const globalErrorHandler = (
     error: any,
@@ -41,11 +42,11 @@ export const globalErrorHandler = (
             break;
         }
         case error.name === 'JsonWebTokenError': {
-            error = createHttpError(401, 'Invalid token!');
+            error = createHttpError(UNAUTHORIZED, 'Invalid token!');
             break;
         }
         case error.name === 'TokenExpiredError': {
-            error = createHttpError(401, 'Token has been expired!');
+            error = createHttpError(UNAUTHORIZED, 'Token has been expired!');
             break;
         }
         case error.code === 11000: {
@@ -53,7 +54,7 @@ export const globalErrorHandler = (
             break;
         }
         case error.name === 'MongoServerError': {
-            error = createHttpError(400, error.message);
+            error = createHttpError(BAD_REQUEST, error.message);
             break;
         }
     }
@@ -61,6 +62,8 @@ export const globalErrorHandler = (
     if (error instanceof createHttpError.HttpError) {
         res.status(error.statusCode).json({ message: error.message });
     } else {
-        res.status(500).json({ message: 'Something went wrong!' });
+        res.status(INTERNAL_SERVER_ERROR).json({
+            message: 'Something went wrong!',
+        });
     }
 };

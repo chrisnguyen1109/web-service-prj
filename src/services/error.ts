@@ -1,9 +1,10 @@
 import createHttpError from 'http-errors';
+import { BAD_REQUEST } from 'http-status';
 
 export const handleCastError = (error: any) => {
     const message = `Invalid ${error.path}: ${error.value}`;
 
-    return createHttpError(400, message);
+    return createHttpError(BAD_REQUEST, message);
 };
 
 export const handleDulicateFieldsError = (error: any) => {
@@ -11,7 +12,7 @@ export const handleDulicateFieldsError = (error: any) => {
 
     const message = `Dulicate field for value: '${value}'.Please use another value!`;
 
-    return createHttpError(400, message);
+    return createHttpError(BAD_REQUEST, message);
 };
 
 export const handleValidationError = (error: any) => {
@@ -21,5 +22,5 @@ export const handleValidationError = (error: any) => {
     const errors = error.message.slice(errorsIndex + excludeMessage.length);
     const message = `Invalid input:${errors}`;
 
-    return createHttpError(400, message);
+    return createHttpError(BAD_REQUEST, message);
 };

@@ -4,3 +4,4 @@ export * from './routes';
 export * from './app';
 export * from './swagger';
 export * from './jobs';
+export * from './passport';
