@@ -21,11 +21,12 @@
         "eslint-comments",
         "promise",
         "import",
-        "prettier",
         "unused-imports", 
-        "simple-import-sort"
+        "simple-import-sort",
+        "prettier"
     ],
     "rules": {
+        "prettier/prettier": ["error", { "endOfLine": "auto" }],
         "eslint-comments/disable-enable-pair": ["error", {"allowWholeFile": true}],
         "import/prefer-default-export": "off",
         "no-console": "off",

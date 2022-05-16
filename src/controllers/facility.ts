@@ -24,7 +24,7 @@ export const getFacilities = catchAsync<FacilityDocument[]>(
 );
 
 export const getFacility = catchAsync<FacilityDocument>(async (req, res) => {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const data = await getFacilityById(id, req.query as Record<string, any>);
 
@@ -46,7 +46,7 @@ export const createFacility = catchAsync<FacilityDocument>(async (req, res) => {
 });
 
 export const updateFacility = catchAsync<FacilityDocument>(async (req, res) => {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const facility = await findAndUpdateFacility({ id, body: req.body });
 
@@ -59,7 +59,7 @@ export const updateFacility = catchAsync<FacilityDocument>(async (req, res) => {
 });
 
 export const deleteFacility = catchAsync(async (req, res) => {
-    const {id} = req.params;
+    const { id } = req.params;
 
     await softDeleteFacility(id);
 

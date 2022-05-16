@@ -5,10 +5,8 @@ import { Facility, FacilityDocument } from '@/models';
 import { IFacility, OmitIsDelete } from '@/types';
 import { getFilterData, getRecordData } from '@/utils';
 
-export const getFilterFacility = (query: Record<string, any>) => getFilterData<FacilityDocument>(Facility, query, [
-        'name',
-        'address',
-    ]);
+export const getFilterFacility = (query: Record<string, any>) =>
+    getFilterData<FacilityDocument>(Facility, query, ['name', 'address']);
 
 export const getFacilityById = async (
     id: string,
@@ -23,7 +21,8 @@ export const getFacilityById = async (
     return facility;
 };
 
-export const newFacility = (facility: OmitIsDelete<IFacility>) => Facility.create({ ...facility });
+export const newFacility = (facility: OmitIsDelete<IFacility>) =>
+    Facility.create({ ...facility });
 
 interface FindAndUpdateFacilityProps {
     id: string;

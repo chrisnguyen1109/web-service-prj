@@ -6,7 +6,8 @@ import { User, UserDocument } from '@/models';
 import { FieldUserUpdate, IUser, OmitIsDelete, UserRole } from '@/types';
 import { getFilterData, getRecordData, omitValueObj } from '@/utils';
 
-export const getFilterUser = (query: Record<string, any>) => getFilterData<UserDocument>(User, query, [
+export const getFilterUser = (query: Record<string, any>) =>
+    getFilterData<UserDocument>(User, query, [
         'email',
         'fullName',
         'phoneNumber',
@@ -116,7 +117,8 @@ export const softDeleteUser = async (id: string) => {
     return deletedUser;
 };
 
-export const removePreviousUnvailbleTime = async () => User.updateMany(
+export const removePreviousUnvailbleTime = async () =>
+    User.updateMany(
         {},
         {
             $pull: {

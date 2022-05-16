@@ -26,7 +26,7 @@ export const getAssignments = catchAsync<AssignmentDocument[]>(
 
 export const getAssignment = catchAsync<AssignmentDocument>(
     async (req, res) => {
-        const {id} = req.params;
+        const { id } = req.params;
 
         const data = await getAssignmentById(
             id,
@@ -55,7 +55,7 @@ export const createAssignment = catchAsync<AssignmentDocument>(
 
 export const updateAssignment = catchAsync<AssignmentDocument>(
     async (req, res) => {
-        const {id} = req.params;
+        const { id } = req.params;
 
         const assignment = await findAndUpdateAssignment({
             id,
@@ -72,7 +72,7 @@ export const updateAssignment = catchAsync<AssignmentDocument>(
 );
 
 export const deleteAssignment = catchAsync(async (req, res) => {
-    const {id} = req.params;
+    const { id } = req.params;
 
     await softDeleteAssignment(id);
 
