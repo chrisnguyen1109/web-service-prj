@@ -1,5 +1,7 @@
-import { AssignmentStatus, IAssignment, Leaves } from '@/types';
 import { Joi } from 'celebrate';
+
+import { AssignmentStatus, IAssignment, Leaves } from '@/types';
+
 import {
     objectSchemaQuery,
     schemaFutureDate,
@@ -14,12 +16,13 @@ export const schemaGetAssignments = objectSchemaQuery(assignmentFields).keys({
         /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/
     ),
     'assignmentTime.date': schemaValidDate,
-    ...['gte', 'gt', 'lte', 'lt', 'ne'].reduce((acc, cur) => {
-        return {
+    ...['gte', 'gt', 'lte', 'lt', 'ne'].reduce(
+        (acc, cur) => ({
             ...acc,
             [`assignmentTime.date_${cur}`]: schemaValidDate,
-        };
-    }, {}),
+        }),
+        {}
+    ),
 });
 
 export const schemaAssignmentCreate = Joi.object({

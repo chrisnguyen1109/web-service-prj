@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 export const PORT = process.env.PORT || 3000;
 
 export const ENV = process.env.NODE_ENV;
@@ -9,9 +10,10 @@ export const REDIS_URL = process.env.REDIS_URL;
 export const ACCESS_TOKEN_EXPIRE = process.env.ACCESS_TOKEN_EXPIRE || '1d';
 export const REFRESH_TOKEN_EXPIRE = process.env.REFRESH_TOKEN_EXPIRE || '1d';
 export const REFRESH_TOKEN_REDIS_EXPIRE =
-    parseInt(process.env.REFRESH_TOKEN_EXPIRE || '1d') * 60 * 60 * 24;
+    parseInt(process.env.REFRESH_TOKEN_EXPIRE || '1d', 10) * 60 * 60 * 24;
 export const RESET_PASSWORD_TOKEN_EXPIRE = parseInt(
-    process.env.RESET_PASSWORD_TOKEN_EXPIRE || '300'
+    process.env.RESET_PASSWORD_TOKEN_EXPIRE || '300',
+    10
 );
 export const BCRYPT_SALT = process.env.BCRYPT_SALT;
 
@@ -37,7 +39,7 @@ export const DEFAULT_START_PAGE = 1;
 export const EMAIL_FROM = process.env.EMAIL_FROM || '';
 
 export const MAILTRAP_HOST = process.env.MAILTRAP_HOST;
-export const MAILTRAP_PORT = parseInt(process.env.MAILTRAP_PORT!);
+export const MAILTRAP_PORT = parseInt(process.env.MAILTRAP_PORT!, 10);
 export const MAILTRAP_USER = process.env.MAILTRAP_USER;
 export const MAILTRAP_PASS = process.env.MAILTRAP_PASS;
 

@@ -1,3 +1,8 @@
+import { isCelebrateError } from 'celebrate';
+import { NextFunction, Request, Response } from 'express';
+import createHttpError from 'http-errors';
+import { BAD_REQUEST, INTERNAL_SERVER_ERROR, UNAUTHORIZED } from 'http-status';
+
 import { ENV } from '@/config';
 import {
     handleCastError,
@@ -5,10 +10,6 @@ import {
     handleValidationError,
 } from '@/services';
 import { ApiResponse } from '@/types';
-import { isCelebrateError } from 'celebrate';
-import { NextFunction, Request, Response } from 'express';
-import createHttpError from 'http-errors';
-import { BAD_REQUEST, INTERNAL_SERVER_ERROR, UNAUTHORIZED } from 'http-status';
 
 export const globalErrorHandler = (
     error: any,
@@ -30,40 +31,45 @@ export const globalErrorHandler = (
         return next(error);
     }
 
-    const errorClone = Object.create(error);
+    let resError = Object.create(error);
 
     switch (true) {
         case error.name === 'CastError': {
-            error = handleCastError(errorClone);
+            resError = handleCastError(error);
             break;
         }
         case error.name === 'ValidationError': {
-            error = handleValidationError(errorClone);
+            resError = handleValidationError(error);
             break;
         }
         case error.name === 'JsonWebTokenError': {
-            error = createHttpError(UNAUTHORIZED, 'Invalid token!');
+            resError = createHttpError(UNAUTHORIZED, 'Invalid token!');
             break;
         }
         case error.name === 'TokenExpiredError': {
-            error = createHttpError(UNAUTHORIZED, 'Token has been expired!');
+            resError = createHttpError(UNAUTHORIZED, 'Token has been expired!');
             break;
         }
         case error.code === 11000: {
-            error = handleDulicateFieldsError(error);
+            resError = handleDulicateFieldsError(error);
             break;
         }
         case error.name === 'MongoServerError': {
-            error = createHttpError(BAD_REQUEST, error.message);
+            resError = createHttpError(BAD_REQUEST, error.message);
+            break;
+        }
+        default: {
             break;
         }
     }
 
-    if (error instanceof createHttpError.HttpError) {
-        res.status(error.statusCode).json({ message: error.message });
-    } else {
-        res.status(INTERNAL_SERVER_ERROR).json({
-            message: 'Something went wrong!',
-        });
+    if (resError instanceof createHttpError.HttpError) {
+        return res
+            .status(resError.statusCode)
+            .json({ message: resError.message });
     }
+
+    return res.status(INTERNAL_SERVER_ERROR).json({
+        message: 'Something went wrong!',
+    });
 };

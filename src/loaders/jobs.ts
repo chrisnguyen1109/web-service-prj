@@ -1,5 +1,6 @@
-import { removePreviousUnvailbleTime } from '@/services';
 import { CronJob } from 'cron';
+
+import { removePreviousUnvailbleTime } from '@/services';
 
 export const loadJobs = () => {
     // remove the previously unavailable time of doctor every 1am

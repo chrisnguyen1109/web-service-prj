@@ -1,3 +1,6 @@
+import { celebrate, Segments } from 'celebrate';
+import { Router } from 'express';
+
 import {
     createAssignment,
     deleteAssignment,
@@ -15,8 +18,6 @@ import {
     schemaMongoIdParam,
     schemaRecordQuery,
 } from '@/validators';
-import { celebrate, Segments } from 'celebrate';
-import { Router } from 'express';
 
 export const assignmentRouter = Router();
 

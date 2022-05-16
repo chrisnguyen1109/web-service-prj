@@ -1,3 +1,5 @@
+import { CREATED, NO_CONTENT, OK } from 'http-status';
+
 import { RESPONSE_MESSAGE } from '@/config';
 import { AssignmentDocument } from '@/models';
 import {
@@ -8,7 +10,6 @@ import {
     softDeleteAssignment,
 } from '@/services';
 import { catchAsync } from '@/utils';
-import { CREATED, NO_CONTENT, OK } from 'http-status';
 
 export const getAssignments = catchAsync<AssignmentDocument[]>(
     async (req, res) => {
@@ -25,7 +26,7 @@ export const getAssignments = catchAsync<AssignmentDocument[]>(
 
 export const getAssignment = catchAsync<AssignmentDocument>(
     async (req, res) => {
-        const id = req.params.id;
+        const {id} = req.params;
 
         const data = await getAssignmentById(
             id,
@@ -54,7 +55,7 @@ export const createAssignment = catchAsync<AssignmentDocument>(
 
 export const updateAssignment = catchAsync<AssignmentDocument>(
     async (req, res) => {
-        const id = req.params.id;
+        const {id} = req.params;
 
         const assignment = await findAndUpdateAssignment({
             id,
@@ -71,7 +72,7 @@ export const updateAssignment = catchAsync<AssignmentDocument>(
 );
 
 export const deleteAssignment = catchAsync(async (req, res) => {
-    const id = req.params.id;
+    const {id} = req.params;
 
     await softDeleteAssignment(id);
 

@@ -1,6 +1,9 @@
+import { Document, Model } from 'mongoose';
+
 import { FieldOfModel, ServerResponse } from '@/types';
-import { Model, Document } from 'mongoose';
-import { FeatureApi, FeatureRecordApi } from './featureApi';
+
+import { FeatureApi } from './featureApi';
+import { FeatureRecordApi } from './featureRecordApi';
 import { getPagination } from './getPagination';
 
 export const getFilterData = async <T extends Document>(

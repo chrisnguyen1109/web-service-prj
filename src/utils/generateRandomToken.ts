@@ -1,5 +1,6 @@
-import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
+
 import { BCRYPT_SALT } from '@/config';
 
 export const generateRandomToken = async () => {

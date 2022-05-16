@@ -1,12 +1,13 @@
-import { DEFAULT_FACILITY_IMAGE } from '@/config';
-import { IFacility } from '@/types';
-import { trimmedStringType } from '@/utils';
 import mongoose, { Document, Model, Query, Schema } from 'mongoose';
 import validator from 'validator';
 
+import { DEFAULT_FACILITY_IMAGE } from '@/config';
+import { IFacility } from '@/types';
+import { omitValueObj, trimmedStringType } from '@/utils';
+
 export interface FacilityDocument extends IFacility, Document {}
 
-interface FacilityModel extends Model<FacilityDocument> {}
+type FacilityModel = Model<FacilityDocument>;
 
 const facilitySchema: Schema<FacilityDocument, FacilityModel> = new Schema(
     {
@@ -42,9 +43,9 @@ const facilitySchema: Schema<FacilityDocument, FacilityModel> = new Schema(
         toJSON: {
             virtuals: true,
             transform(_doc, ret) {
-                delete ret.__v;
-                delete ret.isDelete;
-                return ret;
+                const response = omitValueObj(ret, ['__v', 'isDelete']);
+
+                return response;
             },
         },
         toObject: { virtuals: true },

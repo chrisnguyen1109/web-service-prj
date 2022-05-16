@@ -1,10 +1,11 @@
-import { UserRole } from '@/types';
-import { catchAsync } from '@/utils';
 import createHttpError from 'http-errors';
 import { FORBIDDEN } from 'http-status';
 
-export const checkRole = (roles: UserRole[]) => {
-    return catchAsync(async (req, _res, next) => {
+import { UserRole } from '@/types';
+import { catchAsync } from '@/utils';
+
+export const checkRole = (roles: UserRole[]) =>
+    catchAsync(async (req, _res, next) => {
         if (!roles.includes(req.user!.role)) {
             throw createHttpError(
                 FORBIDDEN,
@@ -14,4 +15,3 @@ export const checkRole = (roles: UserRole[]) => {
 
         next();
     });
-};

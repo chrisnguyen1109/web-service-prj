@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import { assignmentRouter } from './assignment';
 import { authRouter } from './auth';
 import { facilityRouter } from './facility';

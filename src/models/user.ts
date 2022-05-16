@@ -1,3 +1,10 @@
+import bcrypt from 'bcryptjs';
+import createHttpError from 'http-errors';
+import { NOT_FOUND } from 'http-status';
+import mongoose, { Document, Model, Query, Schema } from 'mongoose';
+import validator from 'validator';
+
+import { BCRYPT_SALT, DEFAULT_AVATAR } from '@/config';
 import { AuthType, IUser, UserRole } from '@/types';
 import {
     checkMultipleWords,
@@ -5,19 +12,14 @@ import {
     omitValueObj,
     trimmedStringType,
 } from '@/utils';
-import mongoose, { Document, Model, Query, Schema } from 'mongoose';
-import validator from 'validator';
-import bcrypt from 'bcryptjs';
-import { DEFAULT_AVATAR, BCRYPT_SALT } from '@/config';
+
 import { Facility } from './facility';
-import createHttpError from 'http-errors';
-import { NOT_FOUND } from 'http-status';
 
 export interface UserDocument extends IUser, Document {
     checkPasswordModified: (jwtIat: number) => boolean;
 }
 
-interface UserModel extends Model<UserDocument> {}
+type UserModel = Model<UserDocument>;
 
 const userSchema: Schema<UserDocument, UserModel> = new Schema(
     {
@@ -199,13 +201,13 @@ userSchema.pre('save', async function (next) {
     this.password = await bcrypt.hash(this.password, salt);
     this.passwordModified = new Date();
 
-    next();
+    return next();
 });
 
 userSchema.methods.checkPasswordModified = function (jwtIat: number) {
     if (this.passwordModified) {
         return (
-            parseInt((this.passwordModified.getTime() / 1000).toString()) >
+            parseInt((this.passwordModified.getTime() / 1000).toString(), 10) >
             jwtIat
         );
     }

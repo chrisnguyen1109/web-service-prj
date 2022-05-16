@@ -1,3 +1,10 @@
+import fs from 'fs';
+import createHttpError from 'http-errors';
+import { BAD_REQUEST, NOT_FOUND, UNAUTHORIZED } from 'http-status';
+import jwt from 'jsonwebtoken';
+import path from 'path';
+import { promisify } from 'util';
+
 import {
     ACCESS_TOKEN_EXPIRE,
     REFRESH_TOKEN_EXPIRE,
@@ -14,12 +21,6 @@ import {
     redisRefreshTokenKey,
     redisResetPasswordKey,
 } from '@/utils';
-import fs from 'fs';
-import createHttpError from 'http-errors';
-import { BAD_REQUEST, NOT_FOUND, UNAUTHORIZED } from 'http-status';
-import jwt from 'jsonwebtoken';
-import path from 'path';
-import { promisify } from 'util';
 
 interface CheckLoginProps {
     email: string;
@@ -59,17 +60,24 @@ export const updatePassword = async ({
         throw createHttpError(BAD_REQUEST, 'Wrong password!');
     }
 
+    // eslint-disable-next-line no-param-reassign
     user.password = newPassword;
 
     await user.save();
 };
 
 export const getUserAssignments = (user: UserDocument) => {
-    return user.role === UserRole.DOCTOR
-        ? user.populate('doctorAssignments')
-        : user.role === UserRole.PATIENT
-        ? user.populate('patientAssignments')
-        : user;
+    switch (user.role) {
+        case UserRole.DOCTOR: {
+            return user.populate('doctorAssignments');
+        }
+        case UserRole.PATIENT: {
+            return user.populate('patientAssignments');
+        }
+        default: {
+            return user;
+        }
+    }
 };
 
 export const generateJWT = async (payload: any, type: TokenType) => {
@@ -91,9 +99,8 @@ export const generateJWT = async (payload: any, type: TokenType) => {
     });
 };
 
-export const generateAccessToken = async (payload: any): Promise<string> => {
-    return generateJWT(payload, TokenType.ACCESS_TOKEN);
-};
+export const generateAccessToken = async (payload: any): Promise<string> =>
+    generateJWT(payload, TokenType.ACCESS_TOKEN);
 
 export const generateRefreshToken = async (payload: any): Promise<string> => {
     const refreshToken = await generateJWT(payload, TokenType.REFRESH_TOKEN);
@@ -151,9 +158,8 @@ export const verifyRefreshToken = async (refreshToken: string) => {
     return id;
 };
 
-export const logoutMe = (userId: string) => {
-    return redisClient.del(redisRefreshTokenKey(userId));
-};
+export const logoutMe = (userId: string) =>
+    redisClient.del(redisRefreshTokenKey(userId));
 
 export const sendResetPasswordMail = async (email: string, host: string) => {
     const user = await User.findOne({ email });

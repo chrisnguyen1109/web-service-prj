@@ -1,12 +1,12 @@
-import { User, UserDocument } from '@/models';
-import { FieldUserUpdate, IUser, OmitIsDelete, UserRole } from '@/types';
-import { getFilterData, getRecordData, omitValueObj } from '@/utils';
 import { startOfDay } from 'date-fns';
 import createHttpError from 'http-errors';
 import { FORBIDDEN, NOT_FOUND } from 'http-status';
 
-export const getFilterUser = (query: Record<string, any>) => {
-    return getFilterData<UserDocument>(User, query, [
+import { User, UserDocument } from '@/models';
+import { FieldUserUpdate, IUser, OmitIsDelete, UserRole } from '@/types';
+import { getFilterData, getRecordData, omitValueObj } from '@/utils';
+
+export const getFilterUser = (query: Record<string, any>) => getFilterData<UserDocument>(User, query, [
         'email',
         'fullName',
         'phoneNumber',
@@ -14,7 +14,6 @@ export const getFilterUser = (query: Record<string, any>) => {
         'specialisation',
         'descriptions',
     ]);
-};
 
 export const getUserById = async (id: string, query: Record<string, any>) => {
     const user = await getRecordData<UserDocument>(User, id, query);
@@ -117,8 +116,7 @@ export const softDeleteUser = async (id: string) => {
     return deletedUser;
 };
 
-export const removePreviousUnvailbleTime = async () => {
-    return User.updateMany(
+export const removePreviousUnvailbleTime = async () => User.updateMany(
         {},
         {
             $pull: {
@@ -130,4 +128,3 @@ export const removePreviousUnvailbleTime = async () => {
             },
         }
     );
-};

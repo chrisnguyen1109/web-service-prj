@@ -1,3 +1,8 @@
+import passport from 'passport';
+import { Strategy as FacebookStrategy } from 'passport-facebook';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import { Strategy as LocalStrategy } from 'passport-local';
+
 import {
     FACEBOOK_APP_ID,
     FACEBOOK_APP_SECRET,
@@ -7,10 +12,6 @@ import {
 import { User } from '@/models';
 import { checkLogin, newUser } from '@/services';
 import { AuthType } from '@/types';
-import passport from 'passport';
-import { Strategy as FacebookStrategy } from 'passport-facebook';
-import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import { Strategy as LocalStrategy } from 'passport-local';
 
 export const loadPassports = () => {
     passport.use(

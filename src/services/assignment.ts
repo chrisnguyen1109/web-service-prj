@@ -1,35 +1,36 @@
-import { Assignment, AssignmentDocument, User } from '@/models';
-import { IAssignment, OmitIsDelete, UserRole } from '@/types';
-import { getFilterData, getRecordData } from '@/utils';
 import { endOfDay, startOfDay } from 'date-fns';
 import createHttpError from 'http-errors';
 import { NOT_FOUND } from 'http-status';
 
-export const getFilterAssignment = (query: Record<string, any>) => {
-    let objectQuery = {};
+import { Assignment, AssignmentDocument, User } from '@/models';
+import { IAssignment, OmitIsDelete, UserRole } from '@/types';
+import { getFilterData, getRecordData } from '@/utils';
 
-    for (const key in query) {
+export const getFilterAssignment = (query: Record<string, any>) => {
+    const queryObject = Object.keys(query).reduce((prev, key) => {
         if (/^(assignmentTime.date)+_(gte|gt|lte|lt|ne)+$/.test(key)) {
-            objectQuery = {
-                ...objectQuery,
+            return {
+                ...prev,
                 'assignmentTime.date': {
                     [`$${key.split('_')[1]}`]: new Date(query[key]),
                 },
             };
-        } else if (key === 'assignmentTime.date') {
-            objectQuery = {
-                ...objectQuery,
+        }
+
+        if (key === 'assignmentTime.date') {
+            return {
+                ...prev,
                 'assignmentTime.date': {
                     $gte: startOfDay(new Date(query[key])),
                     $lt: endOfDay(new Date(query[key])),
                 },
             };
-        } else {
-            objectQuery = { ...objectQuery, [key]: query[key] };
         }
-    }
 
-    return getFilterData<AssignmentDocument>(Assignment, objectQuery, [
+        return { ...prev, [key]: query[key] };
+    }, {});
+
+    return getFilterData<AssignmentDocument>(Assignment, queryObject, [
         'status',
         'notes',
         'assignmentTime.time',
@@ -53,9 +54,8 @@ export const getAssignmentById = async (
     return assignment;
 };
 
-export const newAssignment = async (assignment: OmitIsDelete<IAssignment>) => {
-    return Assignment.create({ ...assignment });
-};
+export const newAssignment = async (assignment: OmitIsDelete<IAssignment>) =>
+    Assignment.create({ ...assignment });
 
 interface FindAndUpdateAssignmentProps {
     id: string;

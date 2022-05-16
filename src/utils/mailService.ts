@@ -1,3 +1,10 @@
+import ejs from 'ejs';
+import { htmlToText } from 'html-to-text';
+import createHttpError from 'http-errors';
+import { INTERNAL_SERVER_ERROR } from 'http-status';
+import nodemailer from 'nodemailer';
+import path from 'path';
+
 import {
     EMAIL_FROM,
     ENV,
@@ -9,12 +16,6 @@ import {
     SENDGRID_USERNAME,
 } from '@/config';
 import { MailTemplate } from '@/types';
-import nodemailer from 'nodemailer';
-import path from 'path';
-import ejs from 'ejs';
-import createHttpError from 'http-errors';
-import { htmlToText } from 'html-to-text';
-import { INTERNAL_SERVER_ERROR } from 'http-status';
 
 interface MailData {
     subject: string;
@@ -29,6 +30,7 @@ export class MailService {
 
     constructor(private email: string, private data: MailData) {}
 
+    // eslint-disable-next-line class-methods-use-this
     private createTransport() {
         if (ENV === 'development') {
             return nodemailer.createTransport({

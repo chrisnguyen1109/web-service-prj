@@ -1,3 +1,6 @@
+import { celebrate, Segments } from 'celebrate';
+import { Router } from 'express';
+
 import {
     createUser,
     deleteUser,
@@ -15,8 +18,6 @@ import {
     schemaUserCreate,
     schemaUserUpdate,
 } from '@/validators';
-import { celebrate, Segments } from 'celebrate';
-import { Router } from 'express';
 
 export const userRouter = Router();
 

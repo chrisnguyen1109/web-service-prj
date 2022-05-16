@@ -1,10 +1,14 @@
+import { celebrate, Segments } from 'celebrate';
+import { Router } from 'express';
+import passport from 'passport';
+
 import {
     forgotPassword,
     getMe,
     getMyAssignments,
     login,
     logout,
-    refreshToken,
+    refreshAccessToken,
     register,
     resetPassword,
     updateMe,
@@ -20,9 +24,6 @@ import {
     schemaAuthResetPassword,
     schemaAuthUpdate,
 } from '@/validators';
-import { celebrate, Segments } from 'celebrate';
-import { Router } from 'express';
-import passport from 'passport';
 
 export const authRouter = Router();
 
@@ -39,20 +40,20 @@ authRouter.post(
     celebrate({
         [Segments.BODY]: schemaAuthLogin,
     }),
-    passport.authenticate('local', { session: false }),
+    passport.authenticate(AuthType.LOCAL, { session: false }),
     login(AuthType.LOCAL)
 );
 
 authRouter.get(
     '/login-facebook',
-    passport.authenticate('facebook', { scope: ['email'] })
+    passport.authenticate(AuthType.FACEBOOK, { scope: ['email'] })
 );
 
 authRouter.get('/login-facebook/callback', login(AuthType.FACEBOOK));
 
 authRouter.get(
     '/login-google',
-    passport.authenticate('google', { scope: ['profile', 'email'] })
+    passport.authenticate(AuthType.GOOGLE, { scope: ['profile', 'email'] })
 );
 
 authRouter.get('/login-google/callback', login(AuthType.GOOGLE));
@@ -62,7 +63,7 @@ authRouter.post(
     celebrate({
         [Segments.BODY]: schemaAuthRefreshToken,
     }),
-    refreshToken
+    refreshAccessToken
 );
 
 authRouter.post(

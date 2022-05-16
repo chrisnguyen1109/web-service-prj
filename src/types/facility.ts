@@ -6,6 +6,6 @@ export interface IFacility extends IsDelete {
     image?: string;
     location: {
         type: 'Point';
-        coordinates: [Number];
+        coordinates: [number];
     };
 }

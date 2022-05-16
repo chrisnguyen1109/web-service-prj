@@ -1,3 +1,2 @@
-export const checkMultipleWords = (value: string, length: number) => {
-    return value.trim().split(' ').length >= length;
-};
+export const checkMultipleWords = (value: string, length: number) =>
+    value.trim().split(' ').length >= length;

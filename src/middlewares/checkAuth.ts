@@ -1,5 +1,5 @@
-import { catchAsync } from '@/utils';
 import { decodeToken } from '@/services';
+import { catchAsync } from '@/utils';
 
 export const checkAuth = catchAsync(async (req, _res, next) => {
     const header = req.headers;

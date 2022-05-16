@@ -1,5 +1,7 @@
 import 'dotenv/config';
+
 import express from 'express';
+
 import { PORT } from '@/config';
 import { UserDocument } from '@/models';
 

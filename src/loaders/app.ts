@@ -1,12 +1,18 @@
-import { globalErrorHandler } from '@/controllers';
 import { errors } from 'celebrate';
 import compression from 'compression';
 import cors from 'cors';
 import express, { Express } from 'express';
 import createHttpError from 'http-errors';
 import { NOT_FOUND } from 'http-status';
+
+import { globalErrorHandler } from '@/controllers';
+
 import { connectDB } from './database';
+import { loadJobs } from './jobs';
+import { loadPassports } from './passport';
 import { connectRedisDB } from './redisDatabase';
+import { loadRoutes } from './routes';
+import { loadSwaggerDocs } from './swagger';
 
 export const loadApp = async (app: Express) => {
     const mongoDB = connectDB();
@@ -28,13 +34,13 @@ export const loadApp = async (app: Express) => {
 
     app.use(compression());
 
-    require('./jobs').loadJobs();
+    loadJobs();
 
-    require('./passport').loadPassports();
+    loadPassports();
 
-    require('./routes').loadRoutes(app);
+    loadRoutes(app);
 
-    require('./swagger').loadSwaggerDocs(app);
+    loadSwaggerDocs(app);
 
     app.all('*', (req, _res, next) => {
         next(

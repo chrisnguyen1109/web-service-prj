@@ -1,14 +1,16 @@
-import { AssignmentStatus, IAssignment, UserRole } from '@/types';
-import { trimmedStringType } from '@/utils';
 import { endOfDay, startOfDay } from 'date-fns';
 import createHttpError from 'http-errors';
 import { BAD_REQUEST, NOT_FOUND } from 'http-status';
 import mongoose, { Document, Model, Query, Schema } from 'mongoose';
+
+import { AssignmentStatus, IAssignment, UserRole } from '@/types';
+import { omitValueObj, trimmedStringType } from '@/utils';
+
 import { User } from './user';
 
 export interface AssignmentDocument extends IAssignment, Document {}
 
-interface AssignmentModel extends Model<AssignmentDocument> {}
+type AssignmentModel = Model<AssignmentDocument>;
 
 const assignmentSchema: Schema<AssignmentDocument, AssignmentModel> =
     new Schema(
@@ -53,9 +55,9 @@ const assignmentSchema: Schema<AssignmentDocument, AssignmentModel> =
             timestamps: true,
             toJSON: {
                 transform(_doc, ret) {
-                    delete ret.__v;
-                    delete ret.isDelete;
-                    return ret;
+                    const response = omitValueObj(ret, ['__v', 'isDelete']);
+
+                    return response;
                 },
             },
         }
@@ -96,6 +98,7 @@ assignmentSchema.pre('save', async function (next) {
         throw createHttpError(NOT_FOUND, `No doctor with this id: ${doctorId}`);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     const assignment = await Assignment.findOne({
         doctor: doctorId,
         'assignmentTime.date': {
@@ -123,7 +126,7 @@ assignmentSchema.pre('save', async function (next) {
         }
     );
 
-    next();
+    return next();
 });
 
 export const Assignment = mongoose.model<AssignmentDocument, AssignmentModel>(

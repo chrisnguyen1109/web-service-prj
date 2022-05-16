@@ -1,3 +1,6 @@
+import { celebrate, Segments } from 'celebrate';
+import { Router } from 'express';
+
 import {
     createFacility,
     deleteFacility,
@@ -10,17 +13,13 @@ import { checkAuth, checkRole } from '@/middlewares';
 import { UserRole } from '@/types';
 import {
     schemaAuthAuthorization,
+    schemaFacilityCreate,
+    schemaFacilityUpdate,
+    schemaGetFacilities,
     schemaGetFacilitiesWithinParams,
     schemaMongoIdParam,
     schemaRecordQuery,
 } from '@/validators';
-import {
-    schemaFacilityCreate,
-    schemaFacilityUpdate,
-    schemaGetFacilities,
-} from '@/validators';
-import { celebrate, Segments } from 'celebrate';
-import { Router } from 'express';
 
 export const facilityRouter = Router();
 

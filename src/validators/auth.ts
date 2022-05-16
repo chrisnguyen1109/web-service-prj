@@ -1,4 +1,5 @@
 import { Joi } from 'celebrate';
+
 import {
     objectSchemaUserCreate,
     objectSchemaUserUpdate,

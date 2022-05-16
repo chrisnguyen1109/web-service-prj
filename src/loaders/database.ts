@@ -1,7 +1,8 @@
-import { DATABASE } from '@/config';
 import createHttpError from 'http-errors';
 import { SERVICE_UNAVAILABLE } from 'http-status';
 import mongoose from 'mongoose';
+
+import { DATABASE } from '@/config';
 
 export const connectDB = async () => {
     if (!DATABASE) {

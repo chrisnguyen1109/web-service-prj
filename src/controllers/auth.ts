@@ -1,3 +1,6 @@
+import { CREATED, OK } from 'http-status';
+import passport from 'passport';
+
 import { RESPONSE_MESSAGE } from '@/config';
 import {
     findAndUpdateUser,
@@ -13,8 +16,6 @@ import {
 } from '@/services';
 import { AuthType } from '@/types';
 import { catchAsync } from '@/utils';
-import { CREATED, OK } from 'http-status';
-import passport from 'passport';
 
 export const register = catchAsync(async (req, res) => {
     const user = await newUser(req.body);
@@ -42,7 +43,7 @@ export const login = (authType: AuthType) =>
             const accessToken = await generateAccessToken({ id: user?._id });
             const refreshToken = await generateRefreshToken({ id: user?._id });
 
-            res.status(OK).json({
+            return res.status(OK).json({
                 message: RESPONSE_MESSAGE,
                 data: {
                     user,
@@ -71,8 +72,8 @@ export const updateMe = catchAsync(async (req, res) => {
         currentRole: req.user!.role,
     });
 
-    let accessToken: string | undefined = undefined;
-    let refreshToken: string | undefined = undefined;
+    let accessToken: string | undefined;
+    let refreshToken: string | undefined;
 
     if (newPassword && password) {
         await updatePassword({ user: req.user!, password, newPassword });
@@ -99,7 +100,7 @@ export const logout = catchAsync(async (req, res) => {
     });
 });
 
-export const refreshToken = catchAsync(async (req, res) => {
+export const refreshAccessToken = catchAsync(async (req, res) => {
     const id = await verifyRefreshToken(req.body.refreshToken);
 
     const accessToken = await generateAccessToken({ id });

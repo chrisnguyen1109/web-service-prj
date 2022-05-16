@@ -1,7 +1,9 @@
-import { IFacility } from '@/types';
 import { Joi } from 'celebrate';
-import { objectSchemaQuery } from './common';
 import validator from 'validator';
+
+import { IFacility } from '@/types';
+
+import { objectSchemaQuery } from './common';
 
 const facilityFields: (keyof IFacility)[] = ['address', 'name'];
 

@@ -1,3 +1,5 @@
+import { CREATED, NO_CONTENT, OK } from 'http-status';
+
 import { RESPONSE_MESSAGE } from '@/config';
 import { UserDocument } from '@/models';
 import {
@@ -9,7 +11,6 @@ import {
     updatePassword,
 } from '@/services';
 import { catchAsync } from '@/utils';
-import { CREATED, NO_CONTENT, OK } from 'http-status';
 
 export const getUsers = catchAsync<UserDocument[]>(async (req, res) => {
     const data = await getFilterUser(req.query as Record<string, any>);
@@ -21,7 +22,7 @@ export const getUsers = catchAsync<UserDocument[]>(async (req, res) => {
 });
 
 export const getUser = catchAsync<UserDocument>(async (req, res) => {
-    const id = req.params.id;
+    const {id} = req.params;
 
     const data = await getUserById(id, req.query as Record<string, any>);
 
@@ -43,7 +44,7 @@ export const createUser = catchAsync<UserDocument>(async (req, res) => {
 });
 
 export const updateUser = catchAsync<UserDocument>(async (req, res) => {
-    const id = req.params.id;
+    const {id} = req.params;
     const { password, newPassword, ...rest } = req.body;
 
     const user = await findAndUpdateUser({
@@ -65,7 +66,7 @@ export const updateUser = catchAsync<UserDocument>(async (req, res) => {
 });
 
 export const deleteUser = catchAsync(async (req, res) => {
-    const id = req.params.id;
+    const {id} = req.params;
 
     await softDeleteUser(id);
 

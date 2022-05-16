@@ -1,5 +1,6 @@
-import swaggerUi from 'swagger-ui-express';
 import { Express, Request, Response } from 'express';
+import swaggerUi from 'swagger-ui-express';
+
 import openapi from '@/docs/openapi.json';
 
 export const loadSwaggerDocs = (app: Express) => {

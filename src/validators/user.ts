@@ -1,5 +1,7 @@
-import { IUser, UserRole } from '@/types';
 import { Joi } from 'celebrate';
+
+import { IUser, UserRole } from '@/types';
+
 import {
     objectSchemaQuery,
     objectSchemaUserCreate,
