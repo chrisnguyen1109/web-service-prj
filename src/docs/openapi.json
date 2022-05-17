@@ -407,6 +407,13 @@
         "tags": [
           "Assignment"
         ],
+        "security": {
+          "BearerAuth": [
+            "admin",
+            "doctor",
+            "patient"
+          ]
+        },
         "requestBody": {
           "$ref": "#/components/requestBodies/assignmentBody"
         },
@@ -519,6 +526,13 @@
         "tags": [
           "Assignment"
         ],
+        "security": {
+          "BearerAuth": [
+            "admin",
+            "doctor",
+            "patient"
+          ]
+        },
         "responses": {
           "204": {
             "$ref": "#/components/responses/EmptyResponse"

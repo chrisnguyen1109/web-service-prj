@@ -66,6 +66,9 @@
     "delete": {
         "summary": "Remove the assignment by id",
         "tags": ["Assignment"],
+        "security": {
+            "BearerAuth": ["admin", "doctor", "patient"]
+        },
         "responses": {
             "204": {
                 "$ref": "../../responses/empty-response.json"

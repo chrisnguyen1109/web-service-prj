@@ -81,6 +81,9 @@
     "post": {
         "summary": "Create new assignment",
         "tags": ["Assignment"],
+        "security": {
+            "BearerAuth": ["admin", "doctor", "patient"]
+        },
         "requestBody": {
             "$ref": "../../requests/assignment.json"
         },
