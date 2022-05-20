@@ -69,10 +69,10 @@ export const updatePassword = async ({
 export const getUserAssignments = (user: UserDocument) => {
     switch (user.role) {
         case UserRole.DOCTOR: {
-            return Assignment.find({ doctor: user._id }).populate('doctor');
+            return Assignment.find({ doctor: user._id }).populate('patient');
         }
         case UserRole.PATIENT: {
-            return Assignment.find({ patient: user._id }).populate('patient');
+            return Assignment.find({ patient: user._id }).populate('doctor');
         }
         default: {
             return [];
