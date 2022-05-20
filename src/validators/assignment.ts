@@ -9,7 +9,7 @@ import {
     schemaValidMongoId,
 } from './common';
 
-const assignmentFields: Leaves<IAssignment>[] = ['status'];
+const assignmentFields: Leaves<IAssignment>[] = ['status', 'patient', 'doctor'];
 
 export const schemaGetAssignments = objectSchemaQuery(assignmentFields).keys({
     'assignmentTime.time': Joi.string().pattern(

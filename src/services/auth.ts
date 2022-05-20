@@ -12,7 +12,7 @@ import {
     RESET_PASSWORD_TOKEN_EXPIRE,
 } from '@/config';
 import { redisClient } from '@/loaders';
-import { User, UserDocument } from '@/models';
+import { Assignment, User, UserDocument } from '@/models';
 import { TokenType, UserRole } from '@/types';
 import {
     compareBcrypt,
@@ -69,13 +69,13 @@ export const updatePassword = async ({
 export const getUserAssignments = (user: UserDocument) => {
     switch (user.role) {
         case UserRole.DOCTOR: {
-            return user.populate('doctorAssignments');
+            return Assignment.find({ doctor: user._id }).populate('doctor');
         }
         case UserRole.PATIENT: {
-            return user.populate('patientAssignments');
+            return Assignment.find({ patient: user._id }).populate('patient');
         }
         default: {
-            return user;
+            return [];
         }
     }
 };

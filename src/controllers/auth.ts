@@ -116,12 +116,12 @@ export const refreshAccessToken = catchAsync(async (req, res) => {
 });
 
 export const getMyAssignments = catchAsync(async (req, res) => {
-    const user = await getUserAssignments(req.user!);
+    const records = await getUserAssignments(req.user!);
 
     res.status(OK).json({
         message: RESPONSE_MESSAGE,
         data: {
-            user,
+            records,
         },
     });
 });
