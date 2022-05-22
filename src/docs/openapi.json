@@ -13,6 +13,12 @@
   ],
   "tags": [
     {
+      "Auth": {
+        "name": "Auth",
+        "description": "Authentication Management API"
+      }
+    },
+    {
       "Facility": {
         "name": "Facility",
         "description": "Facility Management API"
@@ -28,12 +34,6 @@
       "Assignment": {
         "name": "Assignment",
         "description": "Assignment Management API"
-      }
-    },
-    {
-      "Auth": {
-        "name": "Auth",
-        "description": "Authentication Management API"
       }
     }
   ],

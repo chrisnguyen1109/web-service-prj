@@ -1,5 +1,10 @@
 [
     {
+        "Auth": {
+            "$ref": "./auth.json"
+        }
+    },
+    {
         "Facility": {
             "$ref": "./facility.json"
         }
@@ -12,11 +17,6 @@
     {
         "Assignment": {
             "$ref": "./assignment.json"
-        }
-    },
-    {
-        "Auth": {
-            "$ref": "./auth.json"
         }
     }
 ]
