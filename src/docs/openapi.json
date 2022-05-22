@@ -38,6 +38,830 @@
     }
   ],
   "paths": {
+    "/auth/register": {
+      "post": {
+        "summary": "Register new patient",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/authRegister"
+        },
+        "responses": {
+          "201": {
+            "description": "Register successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "$ref": "#/components/schemas/AuthUserRes"
+                        },
+                        "accessToken": {
+                          "$ref": "#/components/schemas/AuthTokenRes"
+                        },
+                        "refreshToken": {
+                          "$ref": "#/components/schemas/AuthTokenRes"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Login account",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/authLogin"
+        },
+        "responses": {
+          "200": {
+            "description": "Login successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "$ref": "#/components/schemas/AuthUserRes"
+                        },
+                        "accessToken": {
+                          "$ref": "#/components/schemas/AuthTokenRes"
+                        },
+                        "refreshToken": {
+                          "$ref": "#/components/schemas/AuthTokenRes"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    },
+    "/auth/login-facebook": {
+      "get": {
+        "summary": "Login with facebook account",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "Login successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "$ref": "#/components/schemas/AuthUserRes"
+                        },
+                        "accessToken": {
+                          "$ref": "#/components/schemas/AuthTokenRes"
+                        },
+                        "refreshToken": {
+                          "$ref": "#/components/schemas/AuthTokenRes"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    },
+    "/auth/login-google": {
+      "get": {
+        "summary": "Login with google account",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "Login successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "$ref": "#/components/schemas/AuthUserRes"
+                        },
+                        "accessToken": {
+                          "$ref": "#/components/schemas/AuthTokenRes"
+                        },
+                        "refreshToken": {
+                          "$ref": "#/components/schemas/AuthTokenRes"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    },
+    "/auth/refresh-token": {
+      "post": {
+        "summary": "Refresh new access token",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/authRefreshToken"
+        },
+        "responses": {
+          "200": {
+            "description": "New access token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "accessToken": {
+                          "$ref": "#/components/schemas/AuthTokenRes"
+                        },
+                        "refreshToken": {
+                          "$ref": "#/components/schemas/AuthTokenRes"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    },
+    "/auth/forgot-password": {
+      "post": {
+        "summary": "Forgot password",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/authForgotPassword"
+        },
+        "responses": {
+          "200": {
+            "description": "Token sent to your email"
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    },
+    "/auth/reset-password": {
+      "post": {
+        "summary": "Reset new password",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/authResetPassword"
+        },
+        "responses": {
+          "200": {
+            "description": "Updated new password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "$ref": "#/components/schemas/AuthUserRes"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "summary": "Return my profile",
+        "tags": [
+          "Auth"
+        ],
+        "security": {
+          "BearerAuth": [
+            "admin",
+            "doctor",
+            "patient"
+          ]
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "$ref": "#/components/schemas/AuthUserRes"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update my profile",
+        "tags": [
+          "Auth"
+        ],
+        "security": {
+          "BearerAuth": [
+            "admin",
+            "doctor",
+            "patient"
+          ]
+        },
+        "requestBody": {
+          "$ref": "#/components/requestBodies/authUpdateme"
+        },
+        "responses": {
+          "200": {
+            "description": "Update profile successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "$ref": "#/components/schemas/AuthUserRes"
+                        },
+                        "accessToken": {
+                          "$ref": "#/components/schemas/AuthTokenRes"
+                        },
+                        "refreshToken": {
+                          "$ref": "#/components/schemas/AuthTokenRes"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    },
+    "/auth/me/assignments": {
+      "get": {
+        "summary": "Return my history assignments",
+        "tags": [
+          "Auth"
+        ],
+        "security": {
+          "BearerAuth": [
+            "admin",
+            "doctor",
+            "patient"
+          ]
+        },
+        "responses": {
+          "200": {
+            "description": "A list of my history assignments",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "records": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/AssignmentRes"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "summary": "Logout account",
+        "tags": [
+          "Auth"
+        ],
+        "security": {
+          "BearerAuth": [
+            "admin",
+            "doctor",
+            "patient"
+          ]
+        },
+        "responses": {
+          "200": {
+            "description": "Logout successfully"
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "summary": "Return a list of the user",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/start"
+          },
+          {
+            "$ref": "#/components/parameters/end"
+          },
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "$ref": "#/components/parameters/fields"
+          },
+          {
+            "$ref": "#/components/parameters/expand"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "in": "query",
+            "name": "email",
+            "schema": {
+              "type": "string",
+              "format": "email"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fullName",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "phoneNumber",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "specialisation",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "descriptions",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "role",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "admin",
+                "doctor",
+                "patient"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "email_ne",
+            "schema": {
+              "type": "string",
+              "format": "email"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fullName_ne",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "phoneNumber_ne",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "email_ne",
+            "schema": {
+              "type": "string",
+              "format": "email"
+            }
+          },
+          {
+            "in": "query",
+            "name": "specialisation_ne",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "descriptions_ne",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of the user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "records": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/UserRes"
+                          }
+                        },
+                        "pagination": {
+                          "$ref": "#/components/responses/PaginationRes"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create new user",
+        "description": "Create new user requires role: `admin`",
+        "tags": [
+          "User"
+        ],
+        "security": {
+          "BearerAuth": [
+            "admin"
+          ]
+        },
+        "requestBody": {
+          "$ref": "#/components/requestBodies/userBody"
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "record": {
+                          "$ref": "#/components/schemas/UserRes"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true,
+          "description": "The user ID"
+        }
+      ],
+      "get": {
+        "summary": "Return the user by id",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/fields"
+          },
+          {
+            "$ref": "#/components/parameters/expand"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A user by id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "record": {
+                          "$ref": "#/components/schemas/UserRes"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update the user by id",
+        "description": "Create new user requires role: `admin`",
+        "tags": [
+          "User"
+        ],
+        "security": {
+          "BearerAuth": [
+            "admin"
+          ]
+        },
+        "requestBody": {
+          "$ref": "#/components/requestBodies/userBody"
+        },
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "record": {
+                          "$ref": "#/components/schemas/UserRes"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove the user by id",
+        "description": "Create new user requires role: `admin`",
+        "tags": [
+          "User"
+        ],
+        "security": {
+          "BearerAuth": [
+            "admin"
+          ]
+        },
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/EmptyResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    },
     "/facility": {
       "get": {
         "summary": "Return a list of the facilities",
@@ -712,830 +1536,6 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
-          },
-          "default": {
-            "$ref": "#/components/responses/UnexpectedError"
-          }
-        }
-      }
-    },
-    "/user": {
-      "get": {
-        "summary": "Return a list of the user",
-        "tags": [
-          "User"
-        ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/page"
-          },
-          {
-            "$ref": "#/components/parameters/limit"
-          },
-          {
-            "$ref": "#/components/parameters/start"
-          },
-          {
-            "$ref": "#/components/parameters/end"
-          },
-          {
-            "$ref": "#/components/parameters/search"
-          },
-          {
-            "$ref": "#/components/parameters/fields"
-          },
-          {
-            "$ref": "#/components/parameters/expand"
-          },
-          {
-            "$ref": "#/components/parameters/sort"
-          },
-          {
-            "in": "query",
-            "name": "email",
-            "schema": {
-              "type": "string",
-              "format": "email"
-            }
-          },
-          {
-            "in": "query",
-            "name": "fullName",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "phoneNumber",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "specialisation",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "descriptions",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "role",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "admin",
-                "doctor",
-                "patient"
-              ]
-            }
-          },
-          {
-            "in": "query",
-            "name": "email_ne",
-            "schema": {
-              "type": "string",
-              "format": "email"
-            }
-          },
-          {
-            "in": "query",
-            "name": "fullName_ne",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "phoneNumber_ne",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "email_ne",
-            "schema": {
-              "type": "string",
-              "format": "email"
-            }
-          },
-          {
-            "in": "query",
-            "name": "specialisation_ne",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "descriptions_ne",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A list of the user",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "$ref": "#/components/responses/SuccessRes"
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "records": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/UserRes"
-                          }
-                        },
-                        "pagination": {
-                          "$ref": "#/components/responses/PaginationRes"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/components/responses/UnexpectedError"
-          }
-        }
-      },
-      "post": {
-        "summary": "Create new user",
-        "description": "Create new user requires role: `admin`",
-        "tags": [
-          "User"
-        ],
-        "security": {
-          "BearerAuth": [
-            "admin"
-          ]
-        },
-        "requestBody": {
-          "$ref": "#/components/requestBodies/userBody"
-        },
-        "responses": {
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "$ref": "#/components/responses/SuccessRes"
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "record": {
-                          "$ref": "#/components/schemas/UserRes"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "default": {
-            "$ref": "#/components/responses/UnexpectedError"
-          }
-        }
-      }
-    },
-    "/user/{id}": {
-      "parameters": [
-        {
-          "in": "path",
-          "name": "id",
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "required": true,
-          "description": "The user ID"
-        }
-      ],
-      "get": {
-        "summary": "Return the user by id",
-        "tags": [
-          "User"
-        ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/fields"
-          },
-          {
-            "$ref": "#/components/parameters/expand"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A user by id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "$ref": "#/components/responses/SuccessRes"
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "record": {
-                          "$ref": "#/components/schemas/UserRes"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "default": {
-            "$ref": "#/components/responses/UnexpectedError"
-          }
-        }
-      },
-      "patch": {
-        "summary": "Update the user by id",
-        "description": "Create new user requires role: `admin`",
-        "tags": [
-          "User"
-        ],
-        "security": {
-          "BearerAuth": [
-            "admin"
-          ]
-        },
-        "requestBody": {
-          "$ref": "#/components/requestBodies/userBody"
-        },
-        "responses": {
-          "200": {
-            "description": "Updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "$ref": "#/components/responses/SuccessRes"
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "record": {
-                          "$ref": "#/components/schemas/UserRes"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "default": {
-            "$ref": "#/components/responses/UnexpectedError"
-          }
-        }
-      },
-      "delete": {
-        "summary": "Remove the user by id",
-        "description": "Create new user requires role: `admin`",
-        "tags": [
-          "User"
-        ],
-        "security": {
-          "BearerAuth": [
-            "admin"
-          ]
-        },
-        "responses": {
-          "204": {
-            "$ref": "#/components/responses/EmptyResponse"
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "default": {
-            "$ref": "#/components/responses/UnexpectedError"
-          }
-        }
-      }
-    },
-    "/auth/register": {
-      "post": {
-        "summary": "Register new patient",
-        "tags": [
-          "Auth"
-        ],
-        "requestBody": {
-          "$ref": "#/components/requestBodies/authRegister"
-        },
-        "responses": {
-          "201": {
-            "description": "Register successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "$ref": "#/components/responses/SuccessRes"
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "user": {
-                          "$ref": "#/components/schemas/AuthUserRes"
-                        },
-                        "accessToken": {
-                          "$ref": "#/components/schemas/AuthTokenRes"
-                        },
-                        "refreshToken": {
-                          "$ref": "#/components/schemas/AuthTokenRes"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "default": {
-            "$ref": "#/components/responses/UnexpectedError"
-          }
-        }
-      }
-    },
-    "/auth/login": {
-      "post": {
-        "summary": "Login account",
-        "tags": [
-          "Auth"
-        ],
-        "requestBody": {
-          "$ref": "#/components/requestBodies/authLogin"
-        },
-        "responses": {
-          "200": {
-            "description": "Login successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "$ref": "#/components/responses/SuccessRes"
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "user": {
-                          "$ref": "#/components/schemas/AuthUserRes"
-                        },
-                        "accessToken": {
-                          "$ref": "#/components/schemas/AuthTokenRes"
-                        },
-                        "refreshToken": {
-                          "$ref": "#/components/schemas/AuthTokenRes"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "default": {
-            "$ref": "#/components/responses/UnexpectedError"
-          }
-        }
-      }
-    },
-    "/auth/login-facebook": {
-      "get": {
-        "summary": "Login with facebook account",
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "Login successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "$ref": "#/components/responses/SuccessRes"
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "user": {
-                          "$ref": "#/components/schemas/AuthUserRes"
-                        },
-                        "accessToken": {
-                          "$ref": "#/components/schemas/AuthTokenRes"
-                        },
-                        "refreshToken": {
-                          "$ref": "#/components/schemas/AuthTokenRes"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/components/responses/UnexpectedError"
-          }
-        }
-      }
-    },
-    "/auth/login-google": {
-      "get": {
-        "summary": "Login with google account",
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "Login successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "$ref": "#/components/responses/SuccessRes"
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "user": {
-                          "$ref": "#/components/schemas/AuthUserRes"
-                        },
-                        "accessToken": {
-                          "$ref": "#/components/schemas/AuthTokenRes"
-                        },
-                        "refreshToken": {
-                          "$ref": "#/components/schemas/AuthTokenRes"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "$ref": "#/components/responses/UnexpectedError"
-          }
-        }
-      }
-    },
-    "/auth/refresh-token": {
-      "post": {
-        "summary": "Refresh new access token",
-        "tags": [
-          "Auth"
-        ],
-        "requestBody": {
-          "$ref": "#/components/requestBodies/authRefreshToken"
-        },
-        "responses": {
-          "200": {
-            "description": "New access token",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "$ref": "#/components/responses/SuccessRes"
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "accessToken": {
-                          "$ref": "#/components/schemas/AuthTokenRes"
-                        },
-                        "refreshToken": {
-                          "$ref": "#/components/schemas/AuthTokenRes"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "default": {
-            "$ref": "#/components/responses/UnexpectedError"
-          }
-        }
-      }
-    },
-    "/auth/forgot-password": {
-      "post": {
-        "summary": "Forgot password",
-        "tags": [
-          "Auth"
-        ],
-        "requestBody": {
-          "$ref": "#/components/requestBodies/authForgotPassword"
-        },
-        "responses": {
-          "200": {
-            "description": "Token sent to your email"
-          },
-          "400": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "default": {
-            "$ref": "#/components/responses/UnexpectedError"
-          }
-        }
-      }
-    },
-    "/auth/reset-password": {
-      "post": {
-        "summary": "Reset new password",
-        "tags": [
-          "Auth"
-        ],
-        "requestBody": {
-          "$ref": "#/components/requestBodies/authResetPassword"
-        },
-        "responses": {
-          "200": {
-            "description": "Updated new password",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "$ref": "#/components/responses/SuccessRes"
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "user": {
-                          "$ref": "#/components/schemas/AuthUserRes"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "default": {
-            "$ref": "#/components/responses/UnexpectedError"
-          }
-        }
-      }
-    },
-    "/auth/me": {
-      "get": {
-        "summary": "Return my profile",
-        "tags": [
-          "Auth"
-        ],
-        "security": {
-          "BearerAuth": [
-            "admin",
-            "doctor",
-            "patient"
-          ]
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "$ref": "#/components/responses/SuccessRes"
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "user": {
-                          "$ref": "#/components/schemas/AuthUserRes"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "default": {
-            "$ref": "#/components/responses/UnexpectedError"
-          }
-        }
-      },
-      "patch": {
-        "summary": "Update my profile",
-        "tags": [
-          "Auth"
-        ],
-        "security": {
-          "BearerAuth": [
-            "admin",
-            "doctor",
-            "patient"
-          ]
-        },
-        "requestBody": {
-          "$ref": "#/components/requestBodies/authUpdateme"
-        },
-        "responses": {
-          "200": {
-            "description": "Update profile successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "$ref": "#/components/responses/SuccessRes"
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "user": {
-                          "$ref": "#/components/schemas/AuthUserRes"
-                        },
-                        "accessToken": {
-                          "$ref": "#/components/schemas/AuthTokenRes"
-                        },
-                        "refreshToken": {
-                          "$ref": "#/components/schemas/AuthTokenRes"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "default": {
-            "$ref": "#/components/responses/UnexpectedError"
-          }
-        }
-      }
-    },
-    "/auth/me/assignments": {
-      "get": {
-        "summary": "Return my history assignments",
-        "tags": [
-          "Auth"
-        ],
-        "security": {
-          "BearerAuth": [
-            "admin",
-            "doctor",
-            "patient"
-          ]
-        },
-        "responses": {
-          "200": {
-            "description": "A list of my history assignments",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "$ref": "#/components/responses/SuccessRes"
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "records": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/AssignmentRes"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "default": {
-            "$ref": "#/components/responses/UnexpectedError"
-          }
-        }
-      }
-    },
-    "/auth/logout": {
-      "post": {
-        "summary": "Logout account",
-        "tags": [
-          "Auth"
-        ],
-        "security": {
-          "BearerAuth": [
-            "admin",
-            "doctor",
-            "patient"
-          ]
-        },
-        "responses": {
-          "200": {
-            "description": "Logout successfully"
-          },
-          "400": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "401": {
-            "$ref": "#/components/responses/UnauthorizedError"
           },
           "default": {
             "$ref": "#/components/responses/UnexpectedError"
