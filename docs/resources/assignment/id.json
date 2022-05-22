@@ -12,11 +12,24 @@
         ],
         "responses": {
             "200": {
-                "description": "A assignment by id",
+                "description": "An assignment by id",
                 "content": {
                     "application/json": {
                         "schema": {
-                            "$ref": "../../schemas/assignment/response.json"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "$ref": "../../responses/success-response.json"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "record": {
+                                            "$ref": "../../schemas/assignment/response.json"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -31,6 +44,7 @@
     },
     "patch": {
         "summary": "Update the assignment by id",
+        "description": "Update assignment requires role: `admin`, `doctor`",
         "tags": ["Assignment"],
         "security": {
             "BearerAuth": ["admin", "doctor"]
@@ -44,7 +58,20 @@
                 "content": {
                     "application/json": {
                         "schema": {
-                            "$ref": "../../schemas/assignment/response.json"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "$ref": "../../responses/success-response.json"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "record": {
+                                            "$ref": "../../schemas/assignment/response.json"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -65,6 +92,7 @@
     },
     "delete": {
         "summary": "Remove the assignment by id",
+        "description": "Delete assignment requires role: `admin`, `doctor` and `patient`",
         "tags": ["Assignment"],
         "security": {
             "BearerAuth": ["admin", "doctor", "patient"]
@@ -72,6 +100,9 @@
         "responses": {
             "204": {
                 "$ref": "../../responses/empty-response.json"
+            },
+            "401": {
+                "$ref": "../../responses/unauthorized-error.json"
             },
             "404": {
                 "$ref": "../../responses/not-found.json"

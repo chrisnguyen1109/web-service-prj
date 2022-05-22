@@ -1,0 +1,12 @@
+{
+    "type": "object",
+    "required": ["refreshToken"],
+    "properties": {
+        "refreshToken": {
+            "type": "string"
+        }
+    },
+    "example": {
+        "refreshToken": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOGEwZTMzODk2N2U0ZjdhMmYzMGYyOCIsImlhdCI6MTY1MzIxNDc3MiwiZXhwIjoxNjYwOTkwNzcyfQ.sE9r31dv8GcHrvERXVj-eQLPFpW1-qOb_sxV-85mPbVAgpe-ZYdv8Mk7tt9ODUm_NOoO560XOPrppicCA1FeYFkPQtnq_3xUEQP7kLbHqjZn-buMusYltrmWD75iPKmdV07zWAj9Rx88v3whInTNOiSZ8ed419CcVrpKF5OwIkU"
+    }
+}

@@ -37,9 +37,22 @@
                 "content": {
                     "application/json": {
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "../../schemas/facility/response.json"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "$ref": "../../responses/success-response.json"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "records": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "../../schemas/facility/response.json"
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

@@ -1,0 +1,40 @@
+{
+    "get": {
+        "summary": "Login with facebook account",
+        "tags": ["Auth"],
+        "responses": {
+            "200": {
+                "description": "Login successfully",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "$ref": "../../responses/success-response.json"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "user": {
+                                            "$ref": "../../schemas/auth/user-response.json"
+                                        },
+                                        "accessToken": {
+                                            "$ref": "../../schemas/auth/token-response.json"
+                                        },
+                                        "refreshToken": {
+                                            "$ref": "../../schemas/auth/token-response.json"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "default": {
+                "$ref": "../../responses/unexpected-error.json"
+            }
+        }
+    }
+}

@@ -1,0 +1,46 @@
+{
+    "get": {
+        "summary": "Return my history assignments",
+        "tags": ["Auth"],
+        "security": {
+            "BearerAuth": ["admin", "doctor", "patient"]
+        },
+        "responses": {
+            "200": {
+                "description": "A list of my history assignments",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "$ref": "../../responses/success-response.json"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "records": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "../../schemas/assignment/response.json"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "401": {
+                "$ref": "../../responses/unauthorized-error.json"
+            },
+            "404": {
+                "$ref": "../../responses/not-found.json"
+            },
+            "default": {
+                "$ref": "../../responses/unexpected-error.json"
+            }
+        }
+    }
+}

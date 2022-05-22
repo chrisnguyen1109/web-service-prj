@@ -1,0 +1,46 @@
+{
+    "post": {
+        "summary": "Login account",
+        "tags": ["Auth"],
+        "requestBody": {
+            "$ref": "../../requests/login.json"
+        },
+        "responses": {
+            "200": {
+                "description": "Login successfully",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "$ref": "../../responses/success-response.json"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "user": {
+                                            "$ref": "../../schemas/auth/user-response.json"
+                                        },
+                                        "accessToken": {
+                                            "$ref": "../../schemas/auth/token-response.json"
+                                        },
+                                        "refreshToken": {
+                                            "$ref": "../../schemas/auth/token-response.json"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "400": {
+                "$ref": "../../responses/validation-error.json"
+            },
+            "default": {
+                "$ref": "../../responses/unexpected-error.json"
+            }
+        }
+    }
+}

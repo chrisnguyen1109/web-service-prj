@@ -73,7 +73,7 @@
             },
             {
                 "in": "query",
-                "name": "email_(gte|gt|lte|lt|ne)",
+                "name": "email_ne",
                 "schema": {
                     "type": "string",
                     "format": "email"
@@ -81,21 +81,21 @@
             },
             {
                 "in": "query",
-                "name": "fullName_(gte|gt|lte|lt|ne)",
+                "name": "fullName_ne",
                 "schema": {
                     "type": "string"
                 }
             },
             {
                 "in": "query",
-                "name": "phoneNumber_(gte|gt|lte|lt|ne)",
+                "name": "phoneNumber_ne",
                 "schema": {
                     "type": "string"
                 }
             },
             {
                 "in": "query",
-                "name": "email_(gte|gt|lte|lt|ne)",
+                "name": "email_ne",
                 "schema": {
                     "type": "string",
                     "format": "email"
@@ -103,14 +103,14 @@
             },
             {
                 "in": "query",
-                "name": "specialisation_(gte|gt|lte|lt|ne)",
+                "name": "specialisation_ne",
                 "schema": {
                     "type": "string"
                 }
             },
             {
                 "in": "query",
-                "name": "descriptions_(gte|gt|lte|lt|ne)",
+                "name": "descriptions_ne",
                 "schema": {
                     "type": "string"
                 }
@@ -122,9 +122,25 @@
                 "content": {
                     "application/json": {
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "../../schemas/user/response.json"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "$ref": "../../responses/success-response.json"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "records": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "../../schemas/user/response.json"
+                                            }
+                                        },
+                                        "pagination": {
+                                            "$ref": "../../responses/pagination.json"
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -137,6 +153,7 @@
     },
     "post": {
         "summary": "Create new user",
+        "description": "Create new user requires role: `admin`",
         "tags": ["User"],
         "security": {
             "BearerAuth": ["admin"]
@@ -150,7 +167,20 @@
                 "content": {
                     "application/json": {
                         "schema": {
-                            "$ref": "../../schemas/user/response.json"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "$ref": "../../responses/success-response.json"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "record": {
+                                            "$ref": "../../schemas/user/response.json"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }

@@ -1,0 +1,96 @@
+{
+    "get": {
+        "summary": "Return my profile",
+        "tags": ["Auth"],
+        "security": {
+            "BearerAuth": ["admin", "doctor", "patient"]
+        },
+        "responses": {
+            "200": {
+                "description": "Success",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "$ref": "../../responses/success-response.json"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "user": {
+                                            "$ref": "../../schemas/auth/user-response.json"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "401": {
+                "$ref": "../../responses/unauthorized-error.json"
+            },
+            "404": {
+                "$ref": "../../responses/not-found.json"
+            },
+            "default": {
+                "$ref": "../../responses/unexpected-error.json"
+            }
+        }
+    },
+    "patch": {
+        "summary": "Update my profile",
+        "tags": ["Auth"],
+        "security": {
+            "BearerAuth": ["admin", "doctor", "patient"]
+        },
+        "requestBody": {
+            "$ref": "../../requests/update-me.json"
+        },
+        "responses": {
+            "200": {
+                "description": "Update profile successfully",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "$ref": "../../responses/success-response.json"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "user": {
+                                            "$ref": "../../schemas/auth/user-response.json"
+                                        },
+                                        "accessToken": {
+                                            "$ref": "../../schemas/auth/token-response.json"
+                                        },
+                                        "refreshToken": {
+                                            "$ref": "../../schemas/auth/token-response.json"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "400": {
+                "$ref": "../../responses/validation-error.json"
+            },
+            "401": {
+                "$ref": "../../responses/unauthorized-error.json"
+            },
+            "404": {
+                "$ref": "../../responses/not-found.json"
+            },
+            "default": {
+                "$ref": "../../responses/unexpected-error.json"
+            }
+        }
+    }
+}

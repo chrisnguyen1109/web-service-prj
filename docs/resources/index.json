@@ -55,5 +55,35 @@
             }
         ],
         "$ref": "./user/id.json"
+    },
+    "/auth/register": {
+        "$ref": "./auth/register.json"
+    },
+    "/auth/login": {
+        "$ref": "./auth/login.json"
+    },
+    "/auth/login-facebook": {
+        "$ref": "./auth/login-facebook.json"
+    },
+    "/auth/login-google": {
+        "$ref": "./auth/login-google.json"
+    },
+    "/auth/refresh-token": {
+        "$ref": "./auth/refresh-token.json"
+    },
+    "/auth/forgot-password": {
+        "$ref": "./auth/forgot-password.json"
+    },
+    "/auth/reset-password": {
+        "$ref": "./auth/reset-password.json"
+    },
+    "/auth/me": {
+        "$ref": "./auth/me.json"
+    },
+    "/auth/me/assignments": {
+        "$ref": "./auth/my-assignment.json"
+    },
+    "/auth/logout": {
+        "$ref": "./auth/logout.json"
     }
 }

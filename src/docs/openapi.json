@@ -85,14 +85,14 @@
           },
           {
             "in": "query",
-            "name": "address_(gte|gt|lte|lt|ne)",
+            "name": "address_ne",
             "schema": {
               "type": "string"
             }
           },
           {
             "in": "query",
-            "name": "name_(gte|gt|lte|lt|ne)",
+            "name": "name_ne",
             "schema": {
               "type": "string"
             }
@@ -104,9 +104,25 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/facilityRes"
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "records": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/FacilityRes"
+                          }
+                        },
+                        "pagination": {
+                          "$ref": "#/components/responses/PaginationRes"
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -119,6 +135,7 @@
       },
       "post": {
         "summary": "Create new facility",
+        "description": "Create new facility requires role: `admin`",
         "tags": [
           "Facility"
         ],
@@ -136,7 +153,20 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/facilityRes"
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "record": {
+                          "$ref": "#/components/schemas/FacilityRes"
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -185,7 +215,20 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/facilityRes"
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "record": {
+                          "$ref": "#/components/schemas/FacilityRes"
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -200,6 +243,7 @@
       },
       "patch": {
         "summary": "Update the facility by id",
+        "description": "Update facility requires role: `admin`",
         "tags": [
           "Facility"
         ],
@@ -217,7 +261,20 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/facilityRes"
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "record": {
+                          "$ref": "#/components/schemas/FacilityRes"
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -238,6 +295,7 @@
       },
       "delete": {
         "summary": "Remove the facility by id",
+        "description": "Delete facility requires role: `admin`",
         "tags": [
           "Facility"
         ],
@@ -303,9 +361,22 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/facilityRes"
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "records": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/FacilityRes"
+                          }
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -361,6 +432,20 @@
           },
           {
             "in": "query",
+            "name": "patient",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "doctor",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
             "name": "assignmentTime.time",
             "schema": {
               "type": "string"
@@ -376,7 +461,31 @@
           },
           {
             "in": "query",
-            "name": "assignmentTime.date_(gte|gt|lte|lt|ne)",
+            "name": "assignmentTime.date_gt",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "in": "query",
+            "name": "assignmentTime.date_gte",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "in": "query",
+            "name": "assignmentTime.date_lt",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "in": "query",
+            "name": "assignmentTime.date_lte",
             "schema": {
               "type": "string",
               "format": "date"
@@ -389,9 +498,25 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/assignmentRes"
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "records": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/AssignmentRes"
+                          }
+                        },
+                        "pagination": {
+                          "$ref": "#/components/responses/PaginationRes"
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -404,6 +529,7 @@
       },
       "post": {
         "summary": "Create new assignment",
+        "description": "Create new assignment requires role: `admin`, `doctor` and `patient`",
         "tags": [
           "Assignment"
         ],
@@ -423,13 +549,29 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/assignmentRes"
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "record": {
+                          "$ref": "#/components/schemas/AssignmentRes"
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
           },
           "400": {
             "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
           },
           "default": {
             "$ref": "#/components/responses/UnexpectedError"
@@ -465,11 +607,24 @@
         ],
         "responses": {
           "200": {
-            "description": "A assignment by id",
+            "description": "An assignment by id",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/assignmentRes"
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "record": {
+                          "$ref": "#/components/schemas/AssignmentRes"
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -484,6 +639,7 @@
       },
       "patch": {
         "summary": "Update the assignment by id",
+        "description": "Update assignment requires role: `admin`, `doctor`",
         "tags": [
           "Assignment"
         ],
@@ -502,7 +658,20 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/assignmentRes"
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "record": {
+                          "$ref": "#/components/schemas/AssignmentRes"
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -523,6 +692,7 @@
       },
       "delete": {
         "summary": "Remove the assignment by id",
+        "description": "Delete assignment requires role: `admin`, `doctor` and `patient`",
         "tags": [
           "Assignment"
         ],
@@ -536,6 +706,9 @@
         "responses": {
           "204": {
             "$ref": "#/components/responses/EmptyResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
@@ -627,7 +800,7 @@
           },
           {
             "in": "query",
-            "name": "email_(gte|gt|lte|lt|ne)",
+            "name": "email_ne",
             "schema": {
               "type": "string",
               "format": "email"
@@ -635,21 +808,21 @@
           },
           {
             "in": "query",
-            "name": "fullName_(gte|gt|lte|lt|ne)",
+            "name": "fullName_ne",
             "schema": {
               "type": "string"
             }
           },
           {
             "in": "query",
-            "name": "phoneNumber_(gte|gt|lte|lt|ne)",
+            "name": "phoneNumber_ne",
             "schema": {
               "type": "string"
             }
           },
           {
             "in": "query",
-            "name": "email_(gte|gt|lte|lt|ne)",
+            "name": "email_ne",
             "schema": {
               "type": "string",
               "format": "email"
@@ -657,14 +830,14 @@
           },
           {
             "in": "query",
-            "name": "specialisation_(gte|gt|lte|lt|ne)",
+            "name": "specialisation_ne",
             "schema": {
               "type": "string"
             }
           },
           {
             "in": "query",
-            "name": "descriptions_(gte|gt|lte|lt|ne)",
+            "name": "descriptions_ne",
             "schema": {
               "type": "string"
             }
@@ -676,9 +849,25 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/userRes"
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "records": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/UserRes"
+                          }
+                        },
+                        "pagination": {
+                          "$ref": "#/components/responses/PaginationRes"
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -691,6 +880,7 @@
       },
       "post": {
         "summary": "Create new user",
+        "description": "Create new user requires role: `admin`",
         "tags": [
           "User"
         ],
@@ -708,7 +898,20 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/userRes"
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "record": {
+                          "$ref": "#/components/schemas/UserRes"
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -757,7 +960,20 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/userRes"
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "record": {
+                          "$ref": "#/components/schemas/UserRes"
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -772,6 +988,7 @@
       },
       "patch": {
         "summary": "Update the user by id",
+        "description": "Create new user requires role: `admin`",
         "tags": [
           "User"
         ],
@@ -789,7 +1006,20 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/userRes"
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "record": {
+                          "$ref": "#/components/schemas/UserRes"
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -810,6 +1040,7 @@
       },
       "delete": {
         "summary": "Remove the user by id",
+        "description": "Create new user requires role: `admin`",
         "tags": [
           "User"
         ],
@@ -833,11 +1064,489 @@
           }
         }
       }
+    },
+    "/auth/register": {
+      "post": {
+        "summary": "Register new patient",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/authRegister"
+        },
+        "responses": {
+          "201": {
+            "description": "Register successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "$ref": "#/components/schemas/AuthUserRes"
+                        },
+                        "accessToken": {
+                          "$ref": "#/components/schemas/AuthTokenRes"
+                        },
+                        "refreshToken": {
+                          "$ref": "#/components/schemas/AuthTokenRes"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Login account",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/authLogin"
+        },
+        "responses": {
+          "200": {
+            "description": "Login successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "$ref": "#/components/schemas/AuthUserRes"
+                        },
+                        "accessToken": {
+                          "$ref": "#/components/schemas/AuthTokenRes"
+                        },
+                        "refreshToken": {
+                          "$ref": "#/components/schemas/AuthTokenRes"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    },
+    "/auth/login-facebook": {
+      "get": {
+        "summary": "Login with facebook account",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "Login successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "$ref": "#/components/schemas/AuthUserRes"
+                        },
+                        "accessToken": {
+                          "$ref": "#/components/schemas/AuthTokenRes"
+                        },
+                        "refreshToken": {
+                          "$ref": "#/components/schemas/AuthTokenRes"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    },
+    "/auth/login-google": {
+      "get": {
+        "summary": "Login with google account",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "Login successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "$ref": "#/components/schemas/AuthUserRes"
+                        },
+                        "accessToken": {
+                          "$ref": "#/components/schemas/AuthTokenRes"
+                        },
+                        "refreshToken": {
+                          "$ref": "#/components/schemas/AuthTokenRes"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    },
+    "/auth/refresh-token": {
+      "post": {
+        "summary": "Refresh new access token",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/authRefreshToken"
+        },
+        "responses": {
+          "200": {
+            "description": "New access token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "accessToken": {
+                          "$ref": "#/components/schemas/AuthTokenRes"
+                        },
+                        "refreshToken": {
+                          "$ref": "#/components/schemas/AuthTokenRes"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    },
+    "/auth/forgot-password": {
+      "post": {
+        "summary": "Forgot password",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/authForgotPassword"
+        },
+        "responses": {
+          "200": {
+            "description": "Token sent to your email"
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    },
+    "/auth/reset-password": {
+      "post": {
+        "summary": "Reset new password",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/authResetPassword"
+        },
+        "responses": {
+          "200": {
+            "description": "Updated new password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "$ref": "#/components/schemas/AuthUserRes"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "summary": "Return my profile",
+        "tags": [
+          "Auth"
+        ],
+        "security": {
+          "BearerAuth": [
+            "admin",
+            "doctor",
+            "patient"
+          ]
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "$ref": "#/components/schemas/AuthUserRes"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update my profile",
+        "tags": [
+          "Auth"
+        ],
+        "security": {
+          "BearerAuth": [
+            "admin",
+            "doctor",
+            "patient"
+          ]
+        },
+        "requestBody": {
+          "$ref": "#/components/requestBodies/authUpdateme"
+        },
+        "responses": {
+          "200": {
+            "description": "Update profile successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "$ref": "#/components/schemas/AuthUserRes"
+                        },
+                        "accessToken": {
+                          "$ref": "#/components/schemas/AuthTokenRes"
+                        },
+                        "refreshToken": {
+                          "$ref": "#/components/schemas/AuthTokenRes"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    },
+    "/auth/me/assignments": {
+      "get": {
+        "summary": "Return my history assignments",
+        "tags": [
+          "Auth"
+        ],
+        "security": {
+          "BearerAuth": [
+            "admin",
+            "doctor",
+            "patient"
+          ]
+        },
+        "responses": {
+          "200": {
+            "description": "A list of my history assignments",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "$ref": "#/components/responses/SuccessRes"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "records": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/AssignmentRes"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "summary": "Logout account",
+        "tags": [
+          "Auth"
+        ],
+        "security": {
+          "BearerAuth": [
+            "admin",
+            "doctor",
+            "patient"
+          ]
+        },
+        "responses": {
+          "200": {
+            "description": "Logout successfully"
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
-      "facilityReq": {
+      "FacilityReq": {
         "type": "object",
         "required": [
           "name",
@@ -887,7 +1596,7 @@
           "image": "https:*res.cloudinary.com/chriscloud1109/image/upload/v1651629584/media/default_gr1p4q.jpg"
         }
       },
-      "facilityRes": {
+      "FacilityRes": {
         "type": "object",
         "properties": {
           "_id": {
@@ -946,7 +1655,7 @@
           "updatedAt": "2022-05-06T18:04:16.092Z"
         }
       },
-      "assignmentReq": {
+      "AssignmentReq": {
         "type": "object",
         "required": [
           "patient",
@@ -992,12 +1701,12 @@
           "notes": "test notes",
           "status": "pending",
           "assignmentTime": {
-            "date": "2022-06-13T00:00:00.000Z",
+            "date": "05/22/2022",
             "time": "13:00"
           }
         }
       },
-      "assignmentRes": {
+      "AssignmentRes": {
         "type": "object",
         "properties": {
           "_id": {
@@ -1057,7 +1766,7 @@
           "updatedAt": "2022-05-08T16:29:47.195Z"
         }
       },
-      "userReq": {
+      "UserReq": {
         "type": "object",
         "required": [
           "fullName",
@@ -1153,7 +1862,7 @@
           }
         }
       },
-      "userRes": {
+      "UserRes": {
         "type": "object",
         "properties": {
           "_id": {
@@ -1180,6 +1889,14 @@
               "admin",
               "patient",
               "doctor"
+            ]
+          },
+          "authType": {
+            "type": "string",
+            "enum": [
+              "local",
+              "facebook",
+              "google"
             ]
           },
           "descriptions": {
@@ -1224,6 +1941,7 @@
           "email": "vanc@gmail.com",
           "avatar": "https://res.cloudinary.com/chriscloud1109/image/upload/v1651629584/media/default_gr1p4q.jpg",
           "role": "patient",
+          "authType": "local",
           "createdAt": "2022-05-09T15:55:11.421Z",
           "updatedAt": "2022-05-11T18:00:00.016Z",
           "healthInfor": {
@@ -1232,6 +1950,210 @@
             "temprature": "3"
           }
         }
+      },
+      "AuthRegisterReq": {
+        "type": "object",
+        "required": [
+          "fullName",
+          "email",
+          "password"
+        ],
+        "properties": {
+          "fullName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "format": "password"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string",
+            "format": "uri",
+            "default": "https://res.cloudinary.com/chriscloud1109/image/upload/v1651629584/media/default_gr1p4q.jpg"
+          }
+        },
+        "example": {
+          "fullName": "Van C",
+          "email": "vanc@gmail.com",
+          "avatar": "https://res.cloudinary.com/chriscloud1109/image/upload/v1651629584/media/default_gr1p4q.jpg",
+          "password": "123456",
+          "phoneNumber": "0123456"
+        }
+      },
+      "AuthLoginReq": {
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "format": "password"
+          }
+        },
+        "example": {
+          "email": "vanc@gmail.com",
+          "password": "123456"
+        }
+      },
+      "AuthRefreshTokenReq": {
+        "type": "object",
+        "required": [
+          "refreshToken"
+        ],
+        "properties": {
+          "refreshToken": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "refreshToken": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOGEwZTMzODk2N2U0ZjdhMmYzMGYyOCIsImlhdCI6MTY1MzIxNDc3MiwiZXhwIjoxNjYwOTkwNzcyfQ.sE9r31dv8GcHrvERXVj-eQLPFpW1-qOb_sxV-85mPbVAgpe-ZYdv8Mk7tt9ODUm_NOoO560XOPrppicCA1FeYFkPQtnq_3xUEQP7kLbHqjZn-buMusYltrmWD75iPKmdV07zWAj9Rx88v3whInTNOiSZ8ed419CcVrpKF5OwIkU"
+        }
+      },
+      "AuthForgotPasswordReq": {
+        "type": "object",
+        "required": [
+          "email"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          }
+        },
+        "example": {
+          "email": "vanc@gmail.com"
+        }
+      },
+      "AuthResetPasswordReq": {
+        "type": "object",
+        "required": [
+          "fullName",
+          "email",
+          "password"
+        ],
+        "properties": {
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "token": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "format": "password"
+          }
+        },
+        "example": {
+          "userId": "627562f765deb06b9af8e806",
+          "token": "3b38f6a760a50807c12e156b6ce6cc7671a542bce80feeccb476214473a55d88",
+          "password": "123456"
+        }
+      },
+      "AuthUpdateMeReq": {
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "format": "password"
+          },
+          "newPassword": {
+            "type": "string",
+            "format": "password"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string",
+            "format": "uri",
+            "default": "https://res.cloudinary.com/chriscloud1109/image/upload/v1651629584/media/default_gr1p4q.jpg"
+          }
+        },
+        "example": {
+          "fullName": "Van C",
+          "avatar": "https://res.cloudinary.com/chriscloud1109/image/upload/v1651629584/media/default_gr1p4q.jpg",
+          "password": "123456",
+          "newPassword": "12345678",
+          "phoneNumber": "0123456"
+        }
+      },
+      "AuthUserRes": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "fullName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string",
+            "format": "uri"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "admin",
+              "patient",
+              "doctor"
+            ]
+          },
+          "authType": {
+            "type": "string",
+            "enum": [
+              "local",
+              "facebook",
+              "google"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "example": {
+          "_id": "6279395f041ad2609c7c9d67",
+          "fullName": "Van C",
+          "email": "vanc@gmail.com",
+          "avatar": "https://res.cloudinary.com/chriscloud1109/image/upload/v1651629584/media/default_gr1p4q.jpg",
+          "role": "patient",
+          "authType": "local",
+          "createdAt": "2022-05-09T15:55:11.421Z",
+          "updatedAt": "2022-05-11T18:00:00.016Z"
+        }
+      },
+      "AuthTokenRes": {
+        "type": "string",
+        "example": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOGEwZTMzODk2N2U0ZjdhMmYzMGYyOCIsImlhdCI6MTY1MzIxNDc3MiwiZXhwIjoxNjUzMzAxMTcyfQ.cz4abP3fqyuMlU80sUeODvCJs_LRHavv2aF9OYOog89VtCIsmQbPOBAGkEonvBxE8pVEPwJpvHS7TWi_PhikiJeOVY772nVkvfYEQv7e0XCkXySuJaKA23ULUD50CXGcUf9JC8i10GmCkYg3I_UowjiU9epYpadaEQE-Og5emtg"
       }
     },
     "requestBodies": {
@@ -1241,12 +2163,12 @@
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/facilityReq"
+              "$ref": "#/components/schemas/FacilityReq"
             }
           },
           "application/x-www-form-urlencoded": {
             "schema": {
-              "$ref": "#/components/schemas/facilityReq"
+              "$ref": "#/components/schemas/FacilityReq"
             }
           }
         }
@@ -1257,12 +2179,12 @@
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/assignmentReq"
+              "$ref": "#/components/schemas/AssignmentReq"
             }
           },
           "application/x-www-form-urlencoded": {
             "schema": {
-              "$ref": "#/components/schemas/assignmentReq"
+              "$ref": "#/components/schemas/AssignmentReq"
             }
           }
         }
@@ -1273,12 +2195,108 @@
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/userReq"
+              "$ref": "#/components/schemas/UserReq"
             }
           },
           "application/x-www-form-urlencoded": {
             "schema": {
-              "$ref": "#/components/schemas/userReq"
+              "$ref": "#/components/schemas/UserReq"
+            }
+          }
+        }
+      },
+      "authRegister": {
+        "description": "A request body for Register",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/AuthRegisterReq"
+            }
+          },
+          "application/x-www-form-urlencoded": {
+            "schema": {
+              "$ref": "#/components/schemas/AuthRegisterReq"
+            }
+          }
+        }
+      },
+      "authLogin": {
+        "description": "A request body for Login",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/AuthLoginReq"
+            }
+          },
+          "application/x-www-form-urlencoded": {
+            "schema": {
+              "$ref": "#/components/schemas/AuthLoginReq"
+            }
+          }
+        }
+      },
+      "authRefreshToken": {
+        "description": "A request body for Refresh token",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/AuthRefreshTokenReq"
+            }
+          },
+          "application/x-www-form-urlencoded": {
+            "schema": {
+              "$ref": "#/components/schemas/AuthRefreshTokenReq"
+            }
+          }
+        }
+      },
+      "authForgotPassword": {
+        "description": "A request body for Forgot password",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/AuthForgotPasswordReq"
+            }
+          },
+          "application/x-www-form-urlencoded": {
+            "schema": {
+              "$ref": "#/components/schemas/AuthForgotPasswordReq"
+            }
+          }
+        }
+      },
+      "authResetPassword": {
+        "description": "A request body for Reset password",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/AuthResetPasswordReq"
+            }
+          },
+          "application/x-www-form-urlencoded": {
+            "schema": {
+              "$ref": "#/components/schemas/AuthResetPasswordReq"
+            }
+          }
+        }
+      },
+      "authUpdateme": {
+        "description": "A request body for Update me",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/AuthUpdateMeReq"
+            }
+          },
+          "application/x-www-form-urlencoded": {
+            "schema": {
+              "$ref": "#/components/schemas/AuthUpdateMeReq"
             }
           }
         }
@@ -1365,6 +2383,37 @@
       },
       "EmptyResponse": {
         "description": "The resource was deleted"
+      },
+      "PaginationRes": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer"
+          },
+          "limit": {
+            "type": "integer"
+          },
+          "records": {
+            "type": "integer"
+          },
+          "total_records": {
+            "type": "integer"
+          },
+          "total_page": {
+            "type": "integer"
+          }
+        },
+        "example": {
+          "page": 1,
+          "limit": 20,
+          "records": 1,
+          "total_records": 1,
+          "total_page": 1
+        }
+      },
+      "SuccessRes": {
+        "type": "string",
+        "example": "Success"
       }
     },
     "securitySchemes": {

@@ -1,20 +1,44 @@
 {
-    "facilityReq": {
+    "FacilityReq": {
         "$ref": "./facility/request.json"
     },
-    "facilityRes": {
+    "FacilityRes": {
         "$ref": "./facility/response.json"
     },
-    "assignmentReq": {
+    "AssignmentReq": {
         "$ref": "./assignment/request.json"
     },
-    "assignmentRes": {
+    "AssignmentRes": {
         "$ref": "./assignment/response.json"
     },
-    "userReq": {
+    "UserReq": {
         "$ref": "./user/request.json"
     },
-    "userRes": {
+    "UserRes": {
         "$ref": "./user/response.json"
+    },
+    "AuthRegisterReq": {
+        "$ref": "./auth/register-request.json"
+    },
+    "AuthLoginReq": {
+        "$ref": "./auth/login-request.json"
+    },
+    "AuthRefreshTokenReq": {
+        "$ref": "./auth/refresh-token-request.json"
+    },
+    "AuthForgotPasswordReq": {
+        "$ref": "./auth/forgot-password-request.json"
+    },
+    "AuthResetPasswordReq": {
+        "$ref": "./auth/reset-password-request.json"
+    },
+    "AuthUpdateMeReq": {
+        "$ref": "./auth/update-me-request.json"
+    },
+    "AuthUserRes": {
+        "$ref": "./auth/user-response.json"
+    },
+    "AuthTokenRes": {
+        "$ref": "./auth/token-response.json"
     }
 }

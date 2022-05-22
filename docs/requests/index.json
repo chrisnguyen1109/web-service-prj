@@ -7,5 +7,23 @@
     },
     "userBody": {
         "$ref": "./user.json"
+    },
+    "authRegister": {
+        "$ref": "./register.json"
+    },
+    "authLogin": {
+        "$ref": "./login.json"
+    },
+    "authRefreshToken": {
+        "$ref": "./refresh-token.json"
+    },
+    "authForgotPassword": {
+        "$ref": "./forgot-password.json"
+    },
+    "authResetPassword": {
+        "$ref": "./reset-password.json"
+    },
+    "authUpdateme": {
+        "$ref": "./update-me.json"
     }
 }

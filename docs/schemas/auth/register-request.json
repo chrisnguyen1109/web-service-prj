@@ -1,0 +1,32 @@
+{
+    "type": "object",
+    "required": ["fullName", "email", "password"],
+    "properties": {
+        "fullName": {
+            "type": "string"
+        },
+        "email": {
+            "type": "string",
+            "format": "email"
+        },
+        "password": {
+            "type": "string",
+            "format": "password"
+        },
+        "phoneNumber": {
+            "type": "string"
+        },
+        "avatar": {
+            "type": "string",
+            "format": "uri",
+            "default": "https://res.cloudinary.com/chriscloud1109/image/upload/v1651629584/media/default_gr1p4q.jpg"
+        }
+    },
+    "example": {
+        "fullName": "Van C",
+        "email": "vanc@gmail.com",
+        "avatar": "https://res.cloudinary.com/chriscloud1109/image/upload/v1651629584/media/default_gr1p4q.jpg",
+        "password": "123456",
+        "phoneNumber": "0123456"
+    }
+}

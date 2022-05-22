@@ -13,5 +13,11 @@
     },
     "EmptyResponse": {
         "$ref": "./empty-response.json"
+    },
+    "PaginationRes": {
+        "$ref": "./pagination.json"
+    },
+    "SuccessRes": {
+        "$ref": "./success-response.json"
     }
 }

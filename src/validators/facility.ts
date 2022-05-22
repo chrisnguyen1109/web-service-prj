@@ -27,6 +27,10 @@ export const schemaFacilityUpdate = Joi.object({
     image: Joi.string().custom((val, helpers) =>
         validator.isURL(val) ? val : helpers.message({ custom: 'Invalid url' })
     ),
+    location: Joi.object({
+        type: Joi.string().valid('Point').required(),
+        coordinates: Joi.array().length(2).items(Joi.number()),
+    }),
 });
 
 export const schemaGetFacilitiesWithinParams = Joi.object({

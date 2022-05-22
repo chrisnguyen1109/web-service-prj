@@ -37,6 +37,20 @@
             },
             {
                 "in": "query",
+                "name": "patient",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "in": "query",
+                "name": "doctor",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "in": "query",
                 "name": "assignmentTime.time",
                 "schema": {
                     "type": "string"
@@ -52,7 +66,31 @@
             },
             {
                 "in": "query",
-                "name": "assignmentTime.date_(gte|gt|lte|lt|ne)",
+                "name": "assignmentTime.date_gt",
+                "schema": {
+                    "type": "string",
+                    "format": "date"
+                }
+            },
+            {
+                "in": "query",
+                "name": "assignmentTime.date_gte",
+                "schema": {
+                    "type": "string",
+                    "format": "date"
+                }
+            },
+            {
+                "in": "query",
+                "name": "assignmentTime.date_lt",
+                "schema": {
+                    "type": "string",
+                    "format": "date"
+                }
+            },
+            {
+                "in": "query",
+                "name": "assignmentTime.date_lte",
                 "schema": {
                     "type": "string",
                     "format": "date"
@@ -65,9 +103,25 @@
                 "content": {
                     "application/json": {
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "../../schemas/assignment/response.json"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "$ref": "../../responses/success-response.json"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "records": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "../../schemas/assignment/response.json"
+                                            }
+                                        },
+                                        "pagination": {
+                                            "$ref": "../../responses/pagination.json"
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -80,6 +134,7 @@
     },
     "post": {
         "summary": "Create new assignment",
+        "description": "Create new assignment requires role: `admin`, `doctor` and `patient`",
         "tags": ["Assignment"],
         "security": {
             "BearerAuth": ["admin", "doctor", "patient"]
@@ -93,13 +148,29 @@
                 "content": {
                     "application/json": {
                         "schema": {
-                            "$ref": "../../schemas/assignment/response.json"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "$ref": "../../responses/success-response.json"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "record": {
+                                            "$ref": "../../schemas/assignment/response.json"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             },
             "400": {
                 "$ref": "../../responses/validation-error.json"
+            },
+            "401": {
+                "$ref": "../../responses/unauthorized-error.json"
             },
             "default": {
                 "$ref": "../../responses/unexpected-error.json"

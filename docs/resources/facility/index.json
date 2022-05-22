@@ -43,14 +43,14 @@
             },
             {
                 "in": "query",
-                "name": "address_(gte|gt|lte|lt|ne)",
+                "name": "address_ne",
                 "schema": {
                     "type": "string"
                 }
             },
             {
                 "in": "query",
-                "name": "name_(gte|gt|lte|lt|ne)",
+                "name": "name_ne",
                 "schema": {
                     "type": "string"
                 }
@@ -62,9 +62,25 @@
                 "content": {
                     "application/json": {
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "../../schemas/facility/response.json"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "$ref": "../../responses/success-response.json"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "records": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "../../schemas/facility/response.json"
+                                            }
+                                        },
+                                        "pagination": {
+                                            "$ref": "../../responses/pagination.json"
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -77,6 +93,7 @@
     },
     "post": {
         "summary": "Create new facility",
+        "description": "Create new facility requires role: `admin`",
         "tags": ["Facility"],
         "security": {
             "BearerAuth": ["admin"]
@@ -90,7 +107,20 @@
                 "content": {
                     "application/json": {
                         "schema": {
-                            "$ref": "../../schemas/facility/response.json"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "$ref": "../../responses/success-response.json"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "record": {
+                                            "$ref": "../../schemas/facility/response.json"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }

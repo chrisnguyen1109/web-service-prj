@@ -16,7 +16,20 @@
                 "content": {
                     "application/json": {
                         "schema": {
-                            "$ref": "../../schemas/facility/response.json"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "$ref": "../../responses/success-response.json"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "record": {
+                                            "$ref": "../../schemas/facility/response.json"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -31,6 +44,7 @@
     },
     "patch": {
         "summary": "Update the facility by id",
+        "description": "Update facility requires role: `admin`",
         "tags": ["Facility"],
         "security": {
             "BearerAuth": ["admin"]
@@ -44,7 +58,20 @@
                 "content": {
                     "application/json": {
                         "schema": {
-                            "$ref": "../../schemas/facility/response.json"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "$ref": "../../responses/success-response.json"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "record": {
+                                            "$ref": "../../schemas/facility/response.json"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -65,6 +92,7 @@
     },
     "delete": {
         "summary": "Remove the facility by id",
+        "description": "Delete facility requires role: `admin`",
         "tags": ["Facility"],
         "security": {
             "BearerAuth": ["admin"]

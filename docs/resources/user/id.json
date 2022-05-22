@@ -16,7 +16,20 @@
                 "content": {
                     "application/json": {
                         "schema": {
-                            "$ref": "../../schemas/user/response.json"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "$ref": "../../responses/success-response.json"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "record": {
+                                            "$ref": "../../schemas/user/response.json"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -31,6 +44,7 @@
     },
     "patch": {
         "summary": "Update the user by id",
+        "description": "Create new user requires role: `admin`",
         "tags": ["User"],
         "security": {
             "BearerAuth": ["admin"]
@@ -44,7 +58,20 @@
                 "content": {
                     "application/json": {
                         "schema": {
-                            "$ref": "../../schemas/user/response.json"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "$ref": "../../responses/success-response.json"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "record": {
+                                            "$ref": "../../schemas/user/response.json"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -65,6 +92,7 @@
     },
     "delete": {
         "summary": "Remove the user by id",
+        "description": "Create new user requires role: `admin`",
         "tags": ["User"],
         "security": {
             "BearerAuth": ["admin"]

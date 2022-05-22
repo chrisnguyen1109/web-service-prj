@@ -1,0 +1,31 @@
+{
+    "type": "object",
+    "properties": {
+        "fullName": {
+            "type": "string"
+        },
+        "password": {
+            "type": "string",
+            "format": "password"
+        },
+        "newPassword": {
+            "type": "string",
+            "format": "password"
+        },
+        "phoneNumber": {
+            "type": "string"
+        },
+        "avatar": {
+            "type": "string",
+            "format": "uri",
+            "default": "https://res.cloudinary.com/chriscloud1109/image/upload/v1651629584/media/default_gr1p4q.jpg"
+        }
+    },
+    "example": {
+        "fullName": "Van C",
+        "avatar": "https://res.cloudinary.com/chriscloud1109/image/upload/v1651629584/media/default_gr1p4q.jpg",
+        "password": "123456",
+        "newPassword": "12345678",
+        "phoneNumber": "0123456"
+    }
+}

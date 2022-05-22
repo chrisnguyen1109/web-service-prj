@@ -1,0 +1,23 @@
+{
+    "post": {
+        "summary": "Logout account",
+        "tags": ["Auth"],
+        "security": {
+            "BearerAuth": ["admin", "doctor", "patient"]
+        },
+        "responses": {
+            "200": {
+                "description": "Logout successfully"
+            },
+            "400": {
+                "$ref": "../../responses/validation-error.json"
+            },
+            "401": {
+                "$ref": "../../responses/unauthorized-error.json"
+            },
+            "default": {
+                "$ref": "../../responses/unexpected-error.json"
+            }
+        }
+    }
+}

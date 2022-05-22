@@ -23,6 +23,10 @@
             "type": "string",
             "enum": ["admin", "patient", "doctor"]
         },
+        "authType": {
+            "type": "string",
+            "enum": ["local", "facebook", "google"]
+        },
         "descriptions": {
             "type": "string"
         },
@@ -65,6 +69,7 @@
         "email": "vanc@gmail.com",
         "avatar": "https://res.cloudinary.com/chriscloud1109/image/upload/v1651629584/media/default_gr1p4q.jpg",
         "role": "patient",
+        "authType": "local",
         "createdAt": "2022-05-09T15:55:11.421Z",
         "updatedAt": "2022-05-11T18:00:00.016Z",
         "healthInfor": {

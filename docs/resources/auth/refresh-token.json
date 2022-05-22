@@ -1,0 +1,43 @@
+{
+    "post": {
+        "summary": "Refresh new access token",
+        "tags": ["Auth"],
+        "requestBody": {
+            "$ref": "../../requests/refresh-token.json"
+        },
+        "responses": {
+            "200": {
+                "description": "New access token",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "$ref": "../../responses/success-response.json"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "accessToken": {
+                                            "$ref": "../../schemas/auth/token-response.json"
+                                        },
+                                        "refreshToken": {
+                                            "$ref": "../../schemas/auth/token-response.json"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "400": {
+                "$ref": "../../responses/validation-error.json"
+            },
+            "default": {
+                "$ref": "../../responses/unexpected-error.json"
+            }
+        }
+    }
+}
