@@ -4,7 +4,7 @@
     "main": "index.js",
     "license": "MIT",
     "scripts": {
-        "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json && cp src/config/keys -r build/config/",
+        "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json && cp src/config/keys -r build/config/ && cp -r src/views build",
         "start": "node build/server.js",
         "build:swagger": "swagger-cli bundle ./docs/openapi.json --outfile ./src/docs/openapi.json --type json",
         "dev": "SET NODE_ENV=development&&nodemon",

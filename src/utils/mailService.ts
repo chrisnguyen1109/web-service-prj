@@ -71,7 +71,6 @@ export class MailService {
 
             await transporter.sendMail(mailOptions);
         } catch (error) {
-            console.log(error);
             throw createHttpError(
                 INTERNAL_SERVER_ERROR,
                 'There was an error when sending the email. Try again later!'
